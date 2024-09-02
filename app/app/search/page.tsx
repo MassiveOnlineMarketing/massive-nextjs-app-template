@@ -9,14 +9,13 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 const page = async () => {
-  // const session = await isAllowedToViewPage()
+  const session = await isAllowedToViewPage()
   return (
     <div>
       <LogoutButton />
       <Link href='/auth/login'>Login</Link>
       <h1>page</h1>
-      {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
-      {/* <pre>{JSON.stringify(heads, null, 2)}</pre> */}
+      <pre>{JSON.stringify(session, null, 2)}</pre>
     </div>
   )
 }
@@ -26,8 +25,6 @@ export default page
 async function isAllowedToViewPage() {
   const headersList = headers();
   const route = headersList.get("referer")
-  console.log(route)
-
   
   const session = await auth()
 
