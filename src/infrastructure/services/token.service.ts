@@ -1,22 +1,32 @@
 import { v4 as uuidv4 } from "uuid";
+import { inject, injectable } from "inversify";
+import "reflect-metadata";
 
-import tokenRepository from "@/infrastructure/repositories/token.repository";
-import { ITokenService } from "@/application/services/token.service.interface";
+import { ITokenService } from "@/src/application/services/token.service.interface";
 import { PasswordResetToken, VerificationToken } from "@prisma/client";
+import { DI_SYMBOLS } from "@/di/types";
+import type { ITokenRepository } from "@/src/application/repositories/token.service.interface";
 
-
+@injectable()
 export class TokenService implements ITokenService {
+  constructor(
+    @inject(DI_SYMBOLS.ITokenRepository) 
+    private _tokenRepository: ITokenRepository,
+  ) {
+    this._tokenRepository = _tokenRepository;
+  }
+
   async generateVerificationToken(email: string, userId?: string): Promise<VerificationToken> {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000);
 
-    const existingVerificationToken = await tokenRepository.getVerificationTokenByEmail(email);
+    const existingVerificationToken = await this._tokenRepository.getVerificationTokenByEmail(email);
 
     if (existingVerificationToken) {
-      await tokenRepository.deleteVerificationToken(existingVerificationToken.id);
+      await this._tokenRepository.deleteVerificationToken(existingVerificationToken.id);
     }
 
-    const verificationToken = tokenRepository.createVerificationToken(email, token, expires, userId);
+    const verificationToken = this._tokenRepository.createVerificationToken(email, token, expires, userId);
   
     return verificationToken;
   }
@@ -25,12 +35,12 @@ export class TokenService implements ITokenService {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000);
 
-    const existingPasswordResetToken = await tokenRepository.getPasswordResetTokenByEmail(email);
+    const existingPasswordResetToken = await this._tokenRepository.getPasswordResetTokenByEmail(email);
     if (existingPasswordResetToken) {
-      await tokenRepository.deletePasswordResetToken(existingPasswordResetToken.id);
+      await this._tokenRepository.deletePasswordResetToken(existingPasswordResetToken.id);
     }
 
-    const passwordResetToken = tokenRepository.createPasswordResetToken(email, token, expires);
+    const passwordResetToken = this._tokenRepository.createPasswordResetToken(email, token, expires);
 
     return passwordResetToken;
   }

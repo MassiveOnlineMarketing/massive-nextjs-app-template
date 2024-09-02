@@ -3,8 +3,8 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
-import { DEFAULT_LOGIN_REDIRECT } from "../../../../routes";
-import { Button } from "@/presentation/components/ui/button";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { Button } from "@/app/_components/ui/button";
 
 // TODO: Implement GoogleIconSvg
 // import { GoogleIconSvg } from "@/app/(protected)/app/search/google-search/_assets";
@@ -23,7 +23,7 @@ export const Social = () => {
   return (
     <div className="flex items-center w-full gap-x-2">
       <Button
-        size="md"
+        size="default"
         className="w-full gap-2 font-medium"
         variant="secondary"
         onClick={() => onClick("google")}

@@ -16,7 +16,7 @@ export interface ITokenRepository {
    * @param userId - The ID of the user associated with the token.
    * @returns A promise that resolves to the created verification token.
    */
-  createVerificationToken(email: string, token: string, expires: Date, userId: string): Promise<VerificationToken>;
+  createVerificationToken(email: string, token: string, expires: Date, userId?: string): Promise<VerificationToken>;
 
   /**
    * Deletes a verification token.

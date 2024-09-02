@@ -1,10 +1,13 @@
+import { injectable } from "inversify";
+import "reflect-metadata";
 
-import { IEmailService } from "@/application/services/email.service.interface";
+import { IEmailService } from "@/src/application/services/email.service.interface";
 import { Resend } from "resend";
 
 const domain = process.env.WEBSITE_URL;
 
-export default class EmailRepository implements IEmailService {
+@injectable()
+export class EmailService implements IEmailService {
   sendVerificationEmail = async (email: string, token: string): Promise<void> => {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {

@@ -1,1 +1,1 @@
-export { GET, POST } from "@/application/services/AuthService";
+export { GET, POST } from "./_nextAuth";

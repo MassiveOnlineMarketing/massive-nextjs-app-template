@@ -1,4 +1,5 @@
-import { cn } from "@/presentation/components/utils";
+
+import { cn } from "@/app/_components/utils";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 
 interface FormSuccessProps {

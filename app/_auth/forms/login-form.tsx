@@ -6,36 +6,38 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
-import { LoginSchema } from "@/application/schemas/authSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
+import { signIn } from "../actions";
+import { loginSchema } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
 import { CardWrapper } from "./card-wrapper";
-import { Button } from "@/presentation/components/ui/button";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 
-import { InputFieldAppWithIcon } from "@/presentation/components/ui/inputFields";
+import { Button } from "@/app/_components/ui/button";
+import { InputFieldAppWithIcon } from "@/app/_components/ui/inputFields";
+import { LoadingSpinnerSmall } from "@/app/_components/ui/loading-spinner";
+
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import { login } from "@/application/useCases/auth/login";
-import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((data) => {
+      signIn(values).then((data) => {
         setError(data?.error);
         // @ts-ignore
         setSuccess(data?.success);
@@ -106,7 +108,7 @@ export const LoginForm = () => {
             <FormError message={error} />
             <FormSuccess message={success} />
           </div>
-          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
+          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='default'>
             {isPending ? <LoadingSpinnerSmall /> : 'Login' } 
           </Button>
         </form>

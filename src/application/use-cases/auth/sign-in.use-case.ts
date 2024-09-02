@@ -1,12 +1,14 @@
-import usersRepository from "@/infrastructure/repositories/users.repository";
-import EmailRepository from "@/infrastructure/services/email.service";
-import { TokenService } from "@/infrastructure/services/token.service";
-import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from "../../../../routes";
 import { AuthError } from "next-auth";
 
+import { getInjection } from "@/di/container";
+import { signIn } from "@/app/api/auth/[...nextauth]/_nextAuth";
 
-export async function signInUseCase(input: {email: string, password: string}, callbackUrl?: string | null) {
+
+export async function signInUseCase(input: { email: string, password: string }) {
+  const usersRepository = getInjection('IUsersRepository')
+  const tokenService = getInjection('ITokenService')
+  const emailRepository = getInjection('IEmailService')
+
   const existingUser = await usersRepository.getByEmail(input.email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -15,9 +17,9 @@ export async function signInUseCase(input: {email: string, password: string}, ca
 
   if (!existingUser.emailVerified) {
 
-    const verificationToken = await new TokenService().generateVerificationToken(input.email, existingUser.id);
+    const verificationToken = await tokenService.generateVerificationToken(input.email, existingUser.id);
 
-    const h = new EmailRepository().sendVerificationEmail(
+    const h = emailRepository.sendVerificationEmail(
       verificationToken.email,
       verificationToken.token,
     );
@@ -31,11 +33,10 @@ export async function signInUseCase(input: {email: string, password: string}, ca
     await signIn("credentials", {
       email: lowerCaseEmail,
       password: input.password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      redirect: false,
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      console.log('error', error)
       console.log('error.type', error.type)
       switch (error.type) {
         case "CredentialsSignin":

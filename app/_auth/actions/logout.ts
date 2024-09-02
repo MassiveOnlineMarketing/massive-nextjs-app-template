@@ -1,6 +1,7 @@
 "use server";
 
-import { signOut } from "@/application/services/AuthService";
+import { signOut } from "@/app/api/auth/[...nextauth]/_nextAuth";
+
 
 
 export const logout = async () => {

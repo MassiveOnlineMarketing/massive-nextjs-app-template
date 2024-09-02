@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
-import { db } from "../../../../prisma";
-import authConfig from "../../../../auth.config";
+import { db } from "@/prisma";
+import authConfig from "@/auth.config";
 import { User } from "@prisma/client";
 
 export const {
@@ -14,7 +14,7 @@ export const {
     signIn: "/auth/login",
     error: "/auth/error",
   },
-  adapter: PrismaAdapter(db) as any, // TODO: Fix this type
+  adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   events: {
     async linkAccount({ user, account }) {
@@ -26,21 +26,23 @@ export const {
     },
   },
   callbacks: {
-    // * Triggered when a user signs in or gives permissions using sign in function
-    async signIn({ user, account }) {
-      // * only triggers when email has been used to create an account
-      if (user.id && account?.provider === "credentials") {
-        const existingUser = await getById(user.id);
+    // // * Triggered when a user signs in or gives permissions using sign in function
+    // async signIn({ user, account }) {
+    //   console.log("signIn", user, account);
+      
+    //   // * only triggers when email has been used to create an account
+    //   if (user.id && account?.provider === "credentials") {
+    //     const existingUser = await getById(user.id);
 
-        // Prevent sign in without email verification
-        if (!existingUser?.emailVerified) return false;
+    //     // Prevent sign in without email verification
+    //     if (!existingUser?.emailVerified) return false;
 
-        // Update login provider for showing correct setting in the UI
-        await updateLoginProvider(user.id as string, account.provider);
-      }
+    //     // Update login provider for showing correct setting in the UI
+    //     await updateLoginProvider(user.id as string, account.provider);
+    //   }
 
-      return true;
-    },
+    //   return true;
+    // },
     async jwt({ token, account, trigger, session }) {
       // * Token is accessible in the middleware
       // If there's no user ID in the token, return the token as is

@@ -1,10 +1,13 @@
+import { injectable } from 'inversify';
+import "reflect-metadata";
 
-import { IUsersRepository } from '@/application/repositories/users.repository.interface';
-import { db } from '../../../prisma';
+import { db } from '@/prisma';
+import { IUsersRepository } from '@/src/application/repositories/users.repository.interface';
 import { Account, User } from '@prisma/client';
 
-
-class UsersRepository implements IUsersRepository {
+import "reflect-metadata";
+@injectable()
+export class UsersRepository implements IUsersRepository {
   async create(email: string, password: string, name: string): Promise<User> {
     const user = await db.user.create({
       data: {
@@ -64,6 +67,3 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 }
-
-const usersRepository = new UsersRepository();
-export default usersRepository;

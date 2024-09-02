@@ -1,9 +1,12 @@
+import { injectable } from "inversify";
+import "reflect-metadata";
 
-import { ITokenRepository } from "@/application/repositories/token.service.interface";
-import { db } from "../../../prisma";
+import { ITokenRepository } from "@/src/application/repositories/token.service.interface";
+import { db } from "@/prisma";
 import { PasswordResetToken, VerificationToken } from "@prisma/client";
 
-class TokenRepository implements ITokenRepository {
+@injectable()
+export class TokenRepository implements ITokenRepository {
   // Verification Token
   async createVerificationToken(email: string, token: string, expires: Date, userId?: string): Promise<VerificationToken> {
     const verificationToken = await db.verificationToken.create({
@@ -68,14 +71,4 @@ class TokenRepository implements ITokenRepository {
 
     return passwordResetToken;
   }
-
-
 }
-
-
-/**
- * Repository for managing tokens.
- */
-const tokenRepository = new TokenRepository();
-
-export default tokenRepository;

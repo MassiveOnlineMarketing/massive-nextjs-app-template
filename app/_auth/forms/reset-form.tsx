@@ -5,36 +5,39 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ResetSchema } from "@/application/schemas/authSchema";
-import { reset } from "@/application/useCases/auth/reset";
+import { reset } from "../actions";
+import { resetSchema } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
-import { CardWrapper } from "./card-wrapper";
-import { Button } from "@/presentation/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
-import { InputFieldAppWithIcon } from "@/presentation/components/ui/inputFields";
+import { CardWrapper } from "./card-wrapper";
+
+import { Button } from "@/app/_components/ui/button";
+import { InputFieldAppWithIcon } from "@/app/_components/ui/inputFields";
+import { LoadingSpinnerSmall } from "@/app/_components/ui/loading-spinner";
+
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof ResetSchema>>({
-    resolver: zodResolver(ResetSchema),
+  const form = useForm<z.infer<typeof resetSchema>>({
+    resolver: zodResolver(resetSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+  const onSubmit = (values: z.infer<typeof resetSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
       reset(values).then((data) => {
+        // @ts-ignore
         setError(data?.error);
         // @ts-ignore
         setSuccess(data?.success);
@@ -76,7 +79,7 @@ export const ResetForm = () => {
             <FormError message={error} />
             <FormSuccess message={success} />
           </div>
-          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
+          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='default'>
             {isPending ? <LoadingSpinnerSmall /> : 'Send reset email'}
           </Button>
         </form>

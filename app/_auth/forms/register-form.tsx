@@ -5,25 +5,26 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { RegisterSchema } from "@/application/schemas/authSchema";
-import { register } from "@/application/useCases/auth/register";
+import { signUp } from "../actions";
+import { registerSchema } from "@/src/interface-adapters/controllers/auth/sign-up.controller";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
-import { CardWrapper } from "./card-wrapper";
-import { Button } from "@/presentation/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
-import { InputFieldAppWithIcon } from "@/presentation/components/ui/inputFields";
+
+import { Button } from "@/app/_components/ui/button";
+import { LoadingSpinnerSmall } from "@/app/_components/ui/loading-spinner";
+import { InputFieldAppWithIcon } from "@/app/_components/ui/inputFields";
+
 import { EnvelopeIcon, LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
-import { LoadingSpinnerSmall } from "@/presentation/components/ui/loading-spinner";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -31,12 +32,12 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof registerSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      register(values).then((data) => {
+      signUp(values).then((data) => {
         // @ts-ignore
         setError(data.error);
         // @ts-ignore
@@ -119,7 +120,7 @@ export const RegisterForm = () => {
             <FormError message={error} />
             <FormSuccess message={success} />
           </div>
-          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='md'>
+          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='default'>
             {isPending ? <LoadingSpinnerSmall /> : 'Create an account'}
           </Button>
         </form>

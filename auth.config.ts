@@ -7,7 +7,7 @@ import Google from "next-auth/providers/google";
 import { db } from "./prisma";
 
 import bcrypt from "bcryptjs";
-import { LoginSchema } from "@/interface-adapters/controllers/auth/sign-in.controller";
+import { loginSchema } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
 
 export default {
   providers: [
@@ -28,12 +28,14 @@ export default {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = LoginSchema.safeParse(credentials);
+        const validatedFields = loginSchema.safeParse(credentials);
 
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
-          const user = await getUserByEmail(email);
+          const lowerCaseEmail = email.toLowerCase();
+
+          const user = await getUserByEmail(lowerCaseEmail);
           if (!user || !user.password) return null;
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
