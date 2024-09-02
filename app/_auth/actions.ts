@@ -21,6 +21,7 @@ export async function signIn(formData: z.infer<typeof loginSchema>, callbackUrl?
       return { error: signIn.error };
     }
 
+    console.log('redirecting to', callbackUrl || DEFAULT_LOGIN_REDIRECT);
     redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
 
     // TODO: when in a try catch block, the redirect from next auth throws a NEXT_REDIRECT error
