@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/_components/ui/card";
-import { Header } from "../components/header";
-import { Social } from "../components/social";
-import { BackButton } from "../components/back-button";
+import { Header } from "../_components/header";
+import { Social } from "../_components/social";
+import { BackButton } from "../_components/back-button";
 
 interface CardWrapperProps {
   children: React.ReactNode;

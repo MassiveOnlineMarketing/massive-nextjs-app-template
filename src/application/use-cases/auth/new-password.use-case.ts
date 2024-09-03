@@ -1,8 +1,11 @@
+import { startSpan } from "@sentry/nextjs";
 import { getInjection } from "@/di/container";
+
 import { AuthenticationError } from "@/src/entities/errors/auth";
 import bcrypt from "bcryptjs";
 
 export async function newPasswordUseCase(input: { password: string}, token: string) {
+  return startSpan({ name: "newPassword Use Case", op: "function" }, async () => {
   const tokenRepository = getInjection("ITokenRepository");
   const userRepository = getInjection("IUsersRepository");
 
@@ -27,4 +30,5 @@ export async function newPasswordUseCase(input: { password: string}, token: stri
   await tokenRepository.deletePasswordResetToken(existingToken.id);
 
   return { success: "Password updated!" };
+});
 }

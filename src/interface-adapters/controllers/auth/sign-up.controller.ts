@@ -1,7 +1,6 @@
-
-
-import { signUpUseCase } from "@/src/application/use-cases/auth/sign-up.use-case";
+import { startSpan } from "@sentry/nextjs";
 import { InputParseError } from "@/src/entities/errors/common";
+import { signUpUseCase } from "@/src/application/use-cases/auth/sign-up.use-case";
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -17,6 +16,7 @@ export const registerSchema = z.object({
 });
 
 export async function signUpController(formData: z.infer<typeof registerSchema>) {
+  return await startSpan({ name: "signUp Controller" }, async () => {
   const { data, error: inputParseError } = registerSchema.safeParse(formData);
 
   if (inputParseError) {
@@ -24,4 +24,5 @@ export async function signUpController(formData: z.infer<typeof registerSchema>)
   }
 
   return await signUpUseCase(data);
+})
 }

@@ -1,6 +1,4 @@
 import { ContainerModule, interfaces } from "inversify";
-import "reflect-metadata";
-
 import { DI_SYMBOLS } from "../types";
 
 import { IEmailService } from "@/src/application/services/email.service.interface";

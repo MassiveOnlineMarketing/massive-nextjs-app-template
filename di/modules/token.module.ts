@@ -1,7 +1,4 @@
 import { ContainerModule, interfaces } from "inversify";
-import "reflect-metadata";
-
-
 import { DI_SYMBOLS } from "../types";
 
 import { ITokenService } from "@/src/application/services/token.service.interface";

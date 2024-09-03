@@ -1,3 +1,4 @@
+import { startSpan } from "@sentry/nextjs";
 import { signInUseCase } from "@/src/application/use-cases/auth/sign-in.use-case";
 import { z } from "zod";
 
@@ -12,11 +13,13 @@ export const loginSchema = z.object({
 });
 
 export async function signInController(formData: z.infer<typeof loginSchema>) {
-  const { data, error: inputParseError } = loginSchema.safeParse(formData);
+  return await startSpan({ name: "signIn Controller" }, async () => {
+    const { data, error: inputParseError } = loginSchema.safeParse(formData);
 
-  if (inputParseError) {
-    return { error: "Invalid data" };
-  }
+    if (inputParseError) {
+      return { error: "Invalid data" };
+    }
 
-  return await signInUseCase(data);
+    return await signInUseCase(data);
+  });
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import LogoutButton from '@/app/_auth/components/logout-button'
+import LogoutButton from '@/app/(auth)/_components/logout-button'
 import { auth } from '@/app/api/auth/[...nextauth]/_nextAuth'
 import { BASE_URL } from '@/routes'
 import { headers } from 'next/headers'
@@ -25,6 +25,8 @@ export default page
 async function isAllowedToViewPage() {
   const headersList = headers();
   const route = headersList.get("referer")
+  console.log('route', route)
+  console.log('path', headersList.get('x-current-path'))
   
   const session = await auth()
 

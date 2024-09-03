@@ -1,5 +1,4 @@
-
-
+import { startSpan } from "@sentry/nextjs";
 import { resetUseCase } from "@/src/application/use-cases/auth/reset.use-case";
 import { InputParseError } from "@/src/entities/errors/common";
 import { z } from "zod";
@@ -11,11 +10,13 @@ export const resetSchema = z.object({
 });
 
 export async function resetController(formData: z.infer<typeof resetSchema>) {
-  const { data, error: inputParseError } = resetSchema.safeParse(formData);
+  return await startSpan({ name: "reset Controller" }, async () => {
+    const { data, error: inputParseError } = resetSchema.safeParse(formData);
 
-  if (inputParseError) {
-    throw new InputParseError("Invalid data");
-  }
+    if (inputParseError) {
+      throw new InputParseError("Invalid data");
+    }
 
-  return await resetUseCase(data);
+    return await resetUseCase(data);
+  });
 }
