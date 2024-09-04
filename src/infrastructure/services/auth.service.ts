@@ -1,13 +1,31 @@
-// import { DI_SYMBOLS } from "../../../di/types";
+import { injectable } from "inversify";
+import 'reflect-metadata'
 
+import { Session } from "next-auth"
+import { ExtendedUser } from "@/next-auth";
+;
+import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
 
-// export class AuthenticationService implements IAuthenticationService {
-  
-//   constructor(
-//     @inject(DI_SYMBOLS.IUsersRepository) private _usersRepository: IUsersRepository,
-//   )
+import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
 
-//   async test(id: string): Promise<User> {
-//     return await this._usersRepository.getUserById(id);
-//   }
-// }
+@injectable()
+export class AuthenticationService implements IAuthenticationService {
+  async session(): Promise<Session | null> {
+    return auth()
+  }
+
+  async currentUser(): Promise<ExtendedUser | null> {
+    const session = await auth();
+    const user = session?.user as ExtendedUser;
+
+    return user || null
+  }
+
+  async isAdmin() {
+    const session = await auth();
+    const user = session?.user as ExtendedUser;
+
+    return user.role === "ADMIN";
+  }
+
+}

@@ -4,7 +4,8 @@ import { db } from '@/prisma';
 import { Account, User } from '@prisma/client';
 
 import { IUsersRepository } from '@/src/application/repositories/users.repository.interface';
-import { startSpan } from '@sentry/nextjs';
+import { captureException, startSpan } from '@sentry/nextjs';
+import { DatabaseOperationError } from '@/src/entities/errors/common';
 
 // TODO: Add try catch blocks with db errors
 @injectable()
@@ -13,15 +14,24 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > create" },
       async () => {
-        const user = await db.user.create({
-          data: {
-            name,
-            email,
-            password,
-          },
-        });
+        try {
+          const user = await db.user.create({
+            data: {
+              name,
+              email,
+              password,
+            },
+          });
 
-        return user;
+          if (user) {
+            return user;
+          } else {
+            throw new DatabaseOperationError("User not created");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -30,11 +40,20 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > getByEmail" },
       async () => {
-        const user = await db.user.findUnique({
-          where: { email },
-        });
-
-        return user;
+        try {
+          const user = await db.user.findUnique({
+            where: { email },
+          });
+  
+          if (user) {
+            return user;
+          } else {
+            throw new DatabaseOperationError("User not found");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -43,11 +62,20 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > getById" },
       async () => {
-        const user = await db.user.findUnique({
-          where: { id },
-        });
-
-        return user;
+        try {
+          const user = await db.user.findUnique({
+            where: { id },
+          });
+  
+          if (user) {
+            return user;
+          } else {
+            throw new DatabaseOperationError("User not found");
+          }          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -56,11 +84,20 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > getAccountById" },
       async () => {
-        const user = await db.account.findFirst({
-          where: { userId: id },
-        });
-
-        return user;
+        try {
+          const user = await db.account.findFirst({
+            where: { userId: id },
+          });
+  
+          if (user) {
+            return user;
+          } else {
+            throw new DatabaseOperationError("Account not found");
+          }           
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -69,10 +106,21 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > updateEmailVerified" },
       async () => {
-        await db.user.update({
-          where: { id },
-          data: { emailVerified: new Date(), email },
-        });
+        try {
+          const res = await db.user.update({
+            where: { id },
+            data: { emailVerified: new Date(), email },
+          });
+
+          if (res) {
+            return;
+          } else {
+            throw new DatabaseOperationError("User not found");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -81,10 +129,21 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > updatePassword" },
       async () => {
-        await db.user.update({
-          where: { id },
-          data: { password },
-        });
+        try {
+          const res = await db.user.update({
+            where: { id },
+            data: { password },
+          });
+          
+          if (res) {
+            return;
+          } else {
+            throw new DatabaseOperationError("User not found");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -93,12 +152,21 @@ export class UsersRepository implements IUsersRepository {
     return await startSpan(
       { name: "UsersRepository > update" },
       async () => {
-        const user = await db.user.update({
-          where: { id: userId },
-          data: { ...data },
-        });
-
-        return user;
+        try {
+          const user = await db.user.update({
+            where: { id: userId },
+            data: { ...data },
+          });
+  
+          if (user) {
+            return user;
+          } else {
+            throw new DatabaseOperationError("User not found");
+          }          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }

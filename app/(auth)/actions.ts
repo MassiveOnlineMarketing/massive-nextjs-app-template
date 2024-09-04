@@ -14,7 +14,9 @@ import { newVerificationController } from "@/src/interface-adapters/controllers/
 import { resetController } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
 
-import { signOut } from "../api/auth/[...nextauth]/_nextAuth";
+import { auth, signOut } from "../api/auth/[...nextauth]/_nextAuth";
+import { headers } from "next/headers";
+
 export const logout = async () => {
   await signOut();
 };
@@ -31,10 +33,8 @@ export async function signIn(formData: z.infer<typeof loginSchema>, callbackUrl?
       if (signIn.error) {
         return { error: signIn.error };
       }
-
       console.log('redirecting to', callbackUrl || DEFAULT_LOGIN_REDIRECT);
       redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
-
     },
   );
 
@@ -66,7 +66,6 @@ export async function signUp(formData: z.infer<typeof registerSchema>) {
       } catch (error) {
         if (error instanceof InputParseError) {
           return { error: "Incorrect username or password" };
-
         } else if (error instanceof AuthenticationError) {
           return { error: "Email already exist!" };
         }
@@ -86,9 +85,7 @@ export async function newPassword(formData: z.infer<typeof newPasswordSchema>, t
         return await newPasswordController(formData, token);
 
       } catch (error) {
-        if (
-          error instanceof InputParseError
-        ) {
+        if (error instanceof InputParseError) {
           return { error: "Incorrect username or password" };
         } else if (error instanceof AuthenticationError) {
           return { error: "Email does not exist!" };
@@ -109,9 +106,7 @@ export async function newVerification(token: string) {
         return await newVerificationController(token);
 
       } catch (error) {
-        if (
-          error instanceof InputParseError
-        ) {
+        if (error instanceof InputParseError) {
           return { error: "Incorrect username or password" };
         } else if (error instanceof AuthenticationError) {
           return { error: "Email does not exist!" };
@@ -132,9 +127,7 @@ export async function reset(formData: { email: string }) {
         return await resetController(formData);
 
       } catch (error) {
-        if (
-          error instanceof InputParseError
-        ) {
+        if (error instanceof InputParseError) {
           return { error: "Incorrect username or password" };
         } else if (error instanceof AuthenticationError) {
           return { error: "Email does not exist!" };

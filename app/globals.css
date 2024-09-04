@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.layout {
+  box-sizing: border-box;
+}
+
+/* Target the scrollbar track */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Default width of the scrollbar */
+}
+
+/* Scrollbar track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-p-25 
+  /* dark:bg-p-1100 */
+   /* Track color */
+}
+
+/* Scrollbar thumb */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #6366f1 ; /* Scrollbar color */
+  border-radius: 16px; /* Optional: Rounded corners */
+}
+
+/* Hover state */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color on hover */
+}
+
+.custom-scrollbar {
+  overflow-y: scroll; /* Add the ability to scroll vertically */
+  position: relative;
+}

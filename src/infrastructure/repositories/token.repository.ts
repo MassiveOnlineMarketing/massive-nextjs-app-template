@@ -4,7 +4,8 @@ import { db } from "@/prisma";
 import { PasswordResetToken, VerificationToken } from "@prisma/client";
 
 import { ITokenRepository } from "@/src/application/repositories/token.service.interface";
-import { startSpan } from "@sentry/nextjs";
+import { captureException, startSpan } from "@sentry/nextjs";
+import { DatabaseOperationError } from "@/src/entities/errors/common";
 
 // TODO: Add try catch blocks with db errors
 @injectable()
@@ -14,16 +15,25 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > createVerificationToken" },
       async () => {
-        const verificationToken = await db.verificationToken.create({
-          data: {
-            email,
-            token,
-            expires,
-            userId,
-          },
-        });
-
-        return verificationToken;
+        try {
+          const verificationToken = await db.verificationToken.create({
+            data: {
+              email,
+              token,
+              expires,
+              userId,
+            },
+          });
+  
+          if (verificationToken) {
+            return verificationToken;
+          } else {
+            throw new DatabaseOperationError("Verification token not created");
+          }          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -32,23 +42,42 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > deleteVerificationToken" },
       async () => {
-        await db.verificationToken.delete({
-          where: { id },
-        });
+        try {
+          const res = await db.verificationToken.delete({
+            where: { id },
+          });
+          
+          if (res) {
+            return 
+          } else {
+            throw new DatabaseOperationError("Verification token not found");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
-
 
   async getVerificationTokenByEmail(email: string): Promise<VerificationToken | null> {
     return await startSpan(
       { name: "TokenRepository > getVerificationTokenByEmail" },
       async () => {
-        const verificationToken = await db.verificationToken.findFirst({
-          where: { email },
-        });
-
-        return verificationToken;
+        try {
+          const verificationToken = await db.verificationToken.findFirst({
+            where: { email },
+          });
+  
+          if (verificationToken) {
+            return verificationToken;
+          } else {
+            throw new DatabaseOperationError("Verification token not found");
+          }          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -57,11 +86,20 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > getVerificationTokenByToken" },
       async () => {
-        const verificationToken = await db.verificationToken.findFirst({
-          where: { token },
-        });
-
-        return verificationToken;
+        try {
+          const verificationToken = await db.verificationToken.findFirst({
+            where: { token },
+          });
+          
+          if (verificationToken) {
+            return verificationToken;
+          } else {
+            throw new DatabaseOperationError("Verification token not found");
+          }          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -72,15 +110,24 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > createPasswordResetToken" },
       async () => {
-        const passwordResetToken = await db.passwordResetToken.create({
-          data: {
-            email,
-            token,
-            expires,
-          },
-        });
-
-        return passwordResetToken;
+        try {
+          const passwordResetToken = await db.passwordResetToken.create({
+            data: {
+              email,
+              token,
+              expires,
+            },
+          });
+  
+          if (passwordResetToken) {
+            return passwordResetToken;
+          } else {
+            throw new DatabaseOperationError("Password reset token not created");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -89,9 +136,21 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > deletePasswordResetToken" },
       async () => {
-        await db.passwordResetToken.delete({
-          where: { id },
-        });
+        try {
+          const res = await db.passwordResetToken.delete({
+            where: { id },
+          });
+  
+          if (res) {
+            return 
+          } else {
+            throw new DatabaseOperationError("Password reset token not found");
+          }
+          
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }
@@ -100,11 +159,20 @@ export class TokenRepository implements ITokenRepository {
     return await startSpan(
       { name: "TokenRepository > getPasswordResetTokenByEmail" },
       async () => {
-        const passwordResetToken = await db.passwordResetToken.findFirst({
-          where: { token },
-        });
-
-        return passwordResetToken;
+        try {
+          const passwordResetToken = await db.passwordResetToken.findFirst({
+            where: { token },
+          });
+          
+          if (passwordResetToken) {
+            return passwordResetToken;
+          } else {
+            throw new DatabaseOperationError("Password reset token not found");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }

@@ -3,7 +3,8 @@ import 'reflect-metadata'
 import { Resend } from "resend";
 
 import { IEmailService } from "@/src/application/services/email.service.interface";
-import { startSpan } from "@sentry/nextjs";
+import { captureException, startSpan } from "@sentry/nextjs";
+import { ResendError } from "@/src/entities/errors/common";
 
 const domain = process.env.NEXT_PUBLIC_WEBSITE_URL;
 
@@ -22,12 +23,23 @@ export class EmailService implements IEmailService {
 
         const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
-        await resend.emails.send({
-          from: "noreply@massiveonlinemarketing.nl",
-          to: email,
-          subject: "Confirm your email",
-          html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
-        });
+        try {
+          const res = await resend.emails.send({
+            from: "noreply@massiveonlinemarketing.nl",
+            to: email,
+            subject: "Confirm your email",
+            html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
+          });
+
+          if (res) {
+            return;
+          } else {
+            throw new ResendError("Email not sent");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   };
@@ -45,12 +57,23 @@ export class EmailService implements IEmailService {
 
         const resetLink = `${domain}/auth/new-password?token=${token}`;
 
-        await resend.emails.send({
-          from: "noreply@massiveonlinemarketing.nl",
-          to: email,
-          subject: "Reset your password",
-          html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`,
-        });
+        try {
+          const res = await resend.emails.send({
+            from: "noreply@massiveonlinemarketing.nl",
+            to: email,
+            subject: "Reset your password",
+            html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`,
+          });
+          
+          if (res) {
+            return;
+          } else {
+            throw new ResendError("Email not sent");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error
+        }
       }
     );
   };
@@ -65,12 +88,23 @@ export class EmailService implements IEmailService {
         }
         const resend = new Resend(resendApiKey);
 
-        await resend.emails.send({
-          from: "noreply@massiveonlinemarketing.nl",
-          to: email,
-          subject: "2FA Code",
-          html: `<p>Your 2FA code: ${token}</p>`,
-        });
+        try {
+          const res = await resend.emails.send({
+            from: "noreply@massiveonlinemarketing.nl",
+            to: email,
+            subject: "2FA Code",
+            html: `<p>Your 2FA code: ${token}</p>`,
+          });
+
+          if (res) {
+            return;
+          } else {
+            throw new ResendError("Email not sent");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
       }
     );
   }

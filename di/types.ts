@@ -1,3 +1,4 @@
+import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
 import { IEmailService } from "@/src/application/services/email.service.interface";
 import { ITokenService } from "@/src/application/services/token.service.interface";
 
@@ -6,7 +7,7 @@ import { IUsersRepository } from "@/src/application/repositories/users.repositor
 
 export const DI_SYMBOLS = {
   // Services
-  // IAuthenticationService: Symbol.for("IAuthenticationService"),
+  IAuthenticationService: Symbol.for("IAuthenticationService"),
   ITokenService: Symbol.for("ITokenService"),
   IEmailService: Symbol.for("IEmailService"),
 
@@ -17,7 +18,7 @@ export const DI_SYMBOLS = {
 
 export interface DI_RETURN_TYPES {
   // Services
-  // IAuthenticationService: IAuthenticationService;
+  IAuthenticationService: IAuthenticationService;
   ITokenService: ITokenService;
   IEmailService: IEmailService;
 

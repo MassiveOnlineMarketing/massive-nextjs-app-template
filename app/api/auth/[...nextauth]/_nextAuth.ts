@@ -4,9 +4,20 @@ import { db } from "@/prisma";
 import authConfig from "@/auth.config";
 import { User } from "@prisma/client";
 
+
+// * get the session object
+// Use Auth() in server side code te
+// Use GetSession() in client code to
+
+// * get the session data with the session object
+// Use useSession() for client sessions
+
+// Bottom of the file has more examples
+
 export const {
   handlers: { GET, POST },
   auth,
+  unstable_update,
   signIn,
   signOut,
 } = NextAuth({
@@ -26,54 +37,41 @@ export const {
     },
   },
   callbacks: {
-    // // * Triggered when a user signs in or gives permissions using sign in function
-    // async signIn({ user, account }) {
-    //   console.log("signIn", user, account);
-      
-    //   // * only triggers when email has been used to create an account
-    //   if (user.id && account?.provider === "credentials") {
-    //     const existingUser = await getById(user.id);
-
-    //     // Prevent sign in without email verification
-    //     if (!existingUser?.emailVerified) return false;
-
-    //     // Update login provider for showing correct setting in the UI
-    //     await updateLoginProvider(user.id as string, account.provider);
-    //   }
-
-    //   return true;
-    // },
     async jwt({ token, account, trigger, session }) {
-      // * Token is accessible in the middleware
-      // If there's no user ID in the token, return the token as is
+
       if (!token.sub) return token;
 
-      // Fetch the existing user
       const existingUser = await getById(token.sub);
-
-      // If the user doesn't exist, return the token as is
       if (!existingUser) return token;
 
-      // Add role, credits, and refreshToken to the token
+      // * here we can set custom fields (dependent on the databse user) in the token, als needs to be added to the session. 
+      // When adding new fields to the token/ session. Als add them the the extendedUser type in the root of the project.
       token.role = existingUser.role;
-      token.email = existingUser.email;
-      token.loginProvider = existingUser.loginProvider;
-      token.name = existingUser.name;
+
+      // * here we can update the token with the user name, also update in the database
+      if (trigger === "update") {
+        console.log('jwt update session')
+
+        // Example () => update({ user: { name: "John Doe" }}) --> { update } from useSession()
+        if (session.user.name) {
+          token.name = session.user.name;
+        }
+      }
 
       return token;
     },
-    //* is available in auth()
     async session({ session, token }: any) {
-      const latestUserData = await getById(token.sub);
 
-      // If there's a user in the session, add extra data to the user
-      if (session.user && latestUserData) {
-        session.user.id = latestUserData.id || session.user.id;
-        session.user.role = latestUserData.role || session.user.role;
-        session.user.name = latestUserData.name; 
-        session.user.email = token.email;
-        session.user.loginProvider = latestUserData.loginProvider || session.user.loginProvider;
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
       }
+
+      if (token.role && session.user) {
+        session.user.role = token.role
+      }
+
+      // * here we can set custom fields in the session
+      // session.user.customField = "customField";
 
       return session;
     },
@@ -81,47 +79,6 @@ export const {
   ...authConfig,
 });
 
-const updateLoginProvider = async (id: string, provider: string) => {
-  try {
-    const user = await db.user.update({
-      where: { id },
-      data: { loginProvider: provider },
-    });
-
-    return user;
-  } catch {
-    return null;
-  }
-};
-
-
-export const updateGoogleAccount = async (
-  userId: string,
-  refresh_token: string,
-  scope: string,
-) => {
-  return await db.$transaction(async (prisma) => {
-    const account = await prisma.account.findFirst({
-      where: { userId: userId },
-    });
-
-    if (!account) {
-      return null;
-    }
-
-    const updatedAccount = await prisma.account.update({
-      where: {
-        id: account.id,
-      },
-      data: {
-        refresh_token,
-        scope,
-      },
-    });
-
-    return updatedAccount;
-  });
-};
 
 async function getById(id: string): Promise<User | null> {
   const user = await db.user.findUnique({
@@ -130,3 +87,38 @@ async function getById(id: string): Promise<User | null> {
 
   return user;
 }
+
+// * Example of using the unstable_update function Server side
+// <form
+//   action={
+//   async () => {
+//     'use server';
+//     await unstable_update({ user: { name: 'Serverserver-man' } });
+//   }
+// }
+// >
+//   <button>
+//   Server Side Update
+//     </button>
+//     </form>
+
+
+// * Example of using the signOut function Server side
+//     <form
+//   action={
+//   async () => {
+//     'use server';
+//     await signOut();
+//   }
+// }
+// >
+//   <button>
+//   Log Out
+//     </button>
+//     </form>
+
+
+// * Example of using update function client side 
+// const { update } = useSession()
+
+// <button onClick={() => update({ user: { name: "John Doe" }})}>update session</button>
