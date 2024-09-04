@@ -21,7 +21,7 @@ export const initializeContainer = () => {
 };
 
 export const destroyContainer = () => {
-  ApplicationContainer.load(AuthenticationServiceModule);
+  ApplicationContainer.unload(AuthenticationServiceModule);
   ApplicationContainer.unload(UsersRepositoryModule);
   ApplicationContainer.unload(TokenServiceModule);
   ApplicationContainer.unload(TokenRepositoryModule);
