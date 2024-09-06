@@ -28,9 +28,19 @@ const ClientPage = () => {
     console.log(updateSession)
   }
 
+  const handleUpdateSession = async () => {
+    try {
+      await update({ user: { name: "John Doees" }})
+      console.log("Session updated successfully in ClientPage")
+    } catch (error) {
+      console.error("Failed to update session in ClientPage", error)
+    }
+  }
+
+
   return (
     <div>
-      <button onClick={() => update({ user: { name: "John Doe" }})}>update session</button>
+      <button onClick={handleUpdateSession}>update session</button>
       <button onClick={handleClick}>getSession</button>
       <button onClick={handleSecondClick}>update user</button>
     </div>

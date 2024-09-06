@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 
-.layout {
-  box-sizing: border-box;
-}
 
 /* Target the scrollbar track */
 .custom-scrollbar::-webkit-scrollbar {
@@ -14,8 +11,7 @@
 
 /* Scrollbar track */
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-p-25 
-  /* dark:bg-p-1100 */
+  @apply bg-p-25 dark:bg-p-1100
    /* Track color */
 }
 

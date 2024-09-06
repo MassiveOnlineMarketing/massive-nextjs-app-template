@@ -28,6 +28,10 @@ export async function isAllowedToViewPage(pageType: PageType) {
   const session = await getSession();
   const isLoggedIn = !!session?.user;
 
+  if (!session?.user) {
+    return redirectToLogin(route);
+  }
+
   if (pageType === "private") {
     if (!isLoggedIn) {
       return redirectToLogin(route);
@@ -40,5 +44,5 @@ export async function isAllowedToViewPage(pageType: PageType) {
     }
   }
 
-  return { session, notAllowedPage: undefined };
+  return { user: session.user, session, notAllowedPage: undefined };
 }

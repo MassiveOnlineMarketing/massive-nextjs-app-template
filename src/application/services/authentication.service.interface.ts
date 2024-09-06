@@ -1,4 +1,5 @@
 import { ExtendedUser } from "@/next-auth";
+import { User } from "@prisma/client";
 import { Session } from "next-auth";
 
 /**
@@ -10,6 +11,11 @@ export interface IAuthenticationService {
    * @returns The current session.
    */
   session(): Promise<Session | null>;
+  /**
+   * Validates the current session and returns the user and session.
+   * @returns The user and session.
+   */
+  validateSession(): Promise<{user: User, session: Session}>
   /**
    * Returns the current user.
    * @returns The current user.

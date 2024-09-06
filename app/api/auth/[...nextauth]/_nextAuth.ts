@@ -17,7 +17,6 @@ import { User } from "@prisma/client";
 export const {
   handlers: { GET, POST },
   auth,
-  unstable_update,
   signIn,
   signOut,
 } = NextAuth({
@@ -38,6 +37,7 @@ export const {
   },
   callbacks: {
     async jwt({ token, account, trigger, session }) {
+      // console.log('jwt callback', token, account, trigger, session)
 
       if (!token.sub) return token;
 
@@ -47,6 +47,7 @@ export const {
       // * here we can set custom fields (dependent on the databse user) in the token, als needs to be added to the session. 
       // When adding new fields to the token/ session. Als add them the the extendedUser type in the root of the project.
       token.role = existingUser.role;
+      token.loginProvider = existingUser.loginProvider;
 
       // * here we can update the token with the user name, also update in the database
       if (trigger === "update") {
@@ -55,6 +56,9 @@ export const {
         // Example () => update({ user: { name: "John Doe" }}) --> { update } from useSession()
         if (session.user.name) {
           token.name = session.user.name;
+        }
+        if (session.user.email) {
+          token.email = session.user.email
         }
       }
 
@@ -68,6 +72,10 @@ export const {
 
       if (token.role && session.user) {
         session.user.role = token.role
+      }
+
+      if (token.loginProvider && session.user) {
+        session.user.loginProvider = token.loginProvider
       }
 
       // * here we can set custom fields in the session

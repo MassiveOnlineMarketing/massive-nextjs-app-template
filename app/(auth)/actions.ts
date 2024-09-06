@@ -3,23 +3,58 @@ import { captureException, withServerActionInstrumentation } from "@sentry/nextj
 import { redirect } from "next/navigation";
 
 import { AuthenticationError } from "@/src/entities/errors/auth";
-import { InputParseError } from "@/src/entities/errors/common";
+import { InputParseError, ValidationError } from "@/src/entities/errors/common";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 import { z } from "zod";
+import { updateUserDetailsController, updateUserDetailtsSchema } from "@/src/interface-adapters/controllers/auth/update-user-details.controller";
 import { loginSchema, signInController } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
 import { registerSchema, signUpController } from "@/src/interface-adapters/controllers/auth/sign-up.controller";
 import { newPasswordSchema, newPasswordController } from "@/src/interface-adapters/controllers/auth/new-password.controller";
 import { newVerificationController } from "@/src/interface-adapters/controllers/auth/new-verification.controller";
 import { resetController } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
-
 import { auth, signOut } from "../api/auth/[...nextauth]/_nextAuth";
-import { headers } from "next/headers";
+import { ExtendedUser } from "@/next-auth";
 
 export const logout = async () => {
   await signOut();
 };
+
+
+export interface UpdateUserDetailsResponse {
+  user?: ExtendedUser;
+  success?: string;
+  error?: string;
+}
+export async function updateUserDetails(formData: z.infer<typeof updateUserDetailtsSchema >): Promise<UpdateUserDetailsResponse> {
+  return await withServerActionInstrumentation(
+    "updateUserDetails",
+    { recordResponse: true },
+    async () => {
+      const session = await auth();
+      if (!session?.user || !session?.user.id) {
+        return { error: "Must be logged in to update your profile information" };
+      }
+      try {
+        return await updateUserDetailsController(formData);
+
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { error: "Incorrect username or password" };
+        } else if (error instanceof ValidationError) {
+          return { error: error.message};
+        } else if (error instanceof AuthenticationError) {
+          return { error: "Email does not exist!" };
+        }
+        console.log('error', error)
+        captureException(error);
+        return { error: "An error happened. The developers have been notified. Please try again later." };
+      }
+    },
+  );
+}
+
 
 
 export async function signIn(formData: z.infer<typeof loginSchema>, callbackUrl?: string | null) {
@@ -132,6 +167,7 @@ export async function reset(formData: { email: string }) {
         } else if (error instanceof AuthenticationError) {
           return { error: "Email does not exist!" };
         }
+        console.error('reset error', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }

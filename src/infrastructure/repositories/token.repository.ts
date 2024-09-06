@@ -24,12 +24,12 @@ export class TokenRepository implements ITokenRepository {
               userId,
             },
           });
-  
+
           if (verificationToken) {
             return verificationToken;
           } else {
             throw new DatabaseOperationError("Verification token not created");
-          }          
+          }
         } catch (error) {
           captureException(error);
           throw error;
@@ -46,9 +46,9 @@ export class TokenRepository implements ITokenRepository {
           const res = await db.verificationToken.delete({
             where: { id },
           });
-          
+
           if (res) {
-            return 
+            return
           } else {
             throw new DatabaseOperationError("Verification token not found");
           }
@@ -68,12 +68,8 @@ export class TokenRepository implements ITokenRepository {
           const verificationToken = await db.verificationToken.findFirst({
             where: { email },
           });
-  
-          if (verificationToken) {
-            return verificationToken;
-          } else {
-            throw new DatabaseOperationError("Verification token not found");
-          }          
+
+          return verificationToken;
         } catch (error) {
           captureException(error);
           throw error;
@@ -90,12 +86,8 @@ export class TokenRepository implements ITokenRepository {
           const verificationToken = await db.verificationToken.findFirst({
             where: { token },
           });
-          
-          if (verificationToken) {
-            return verificationToken;
-          } else {
-            throw new DatabaseOperationError("Verification token not found");
-          }          
+
+          return verificationToken;
         } catch (error) {
           captureException(error);
           throw error;
@@ -118,12 +110,8 @@ export class TokenRepository implements ITokenRepository {
               expires,
             },
           });
-  
-          if (passwordResetToken) {
-            return passwordResetToken;
-          } else {
-            throw new DatabaseOperationError("Password reset token not created");
-          }
+
+          return passwordResetToken;
         } catch (error) {
           captureException(error);
           throw error;
@@ -137,16 +125,9 @@ export class TokenRepository implements ITokenRepository {
       { name: "TokenRepository > deletePasswordResetToken" },
       async () => {
         try {
-          const res = await db.passwordResetToken.delete({
+          await db.passwordResetToken.delete({
             where: { id },
           });
-  
-          if (res) {
-            return 
-          } else {
-            throw new DatabaseOperationError("Password reset token not found");
-          }
-          
         } catch (error) {
           captureException(error);
           throw error;
@@ -163,12 +144,8 @@ export class TokenRepository implements ITokenRepository {
           const passwordResetToken = await db.passwordResetToken.findFirst({
             where: { token },
           });
-          
-          if (passwordResetToken) {
-            return passwordResetToken;
-          } else {
-            throw new DatabaseOperationError("Password reset token not found");
-          }
+
+          return passwordResetToken;
         } catch (error) {
           captureException(error);
           throw error;
