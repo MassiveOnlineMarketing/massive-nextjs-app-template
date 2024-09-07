@@ -4,7 +4,7 @@
 import React, { useState, useTransition } from 'react'
 
 import { z } from 'zod';
-import { websiteInputSchema } from '@/src/interface-adapters/controllers/website/create-website.controller';
+import { createWebsiteInputSchema } from '@/src/interface-adapters/controllers/website/create-website.controller';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -25,11 +25,11 @@ const CreateWebsiteForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof websiteInputSchema>>({
-    resolver: zodResolver(websiteInputSchema),
+  const form = useForm<z.infer<typeof createWebsiteInputSchema>>({
+    resolver: zodResolver(createWebsiteInputSchema),
   });
 
-  const onSubmit = async (values: z.infer<typeof websiteInputSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createWebsiteInputSchema>) => {
     setError("");
     setSuccess("");
 

@@ -15,7 +15,7 @@ export const selectWebsiteSchema = z.object({
 
 export type Website = z.infer<typeof selectWebsiteSchema>;
 
-export const insetWebsiteSchema = selectWebsiteSchema.pick({
+const insetWebsiteSchema = selectWebsiteSchema.pick({
   userId: true,
   websiteName: true,
   domainUrl: true,
@@ -23,3 +23,12 @@ export const insetWebsiteSchema = selectWebsiteSchema.pick({
 });
 
 export type WebsiteInsert = z.infer<typeof insetWebsiteSchema>;
+
+const updateWebsiteSchema = selectWebsiteSchema.pick({
+  id: true,
+  websiteName: true,
+  domainUrl: true,
+  gscUrl: true,
+});
+
+export type WebsiteUpdate = z.infer<typeof updateWebsiteSchema>;

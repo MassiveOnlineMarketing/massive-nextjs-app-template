@@ -5,11 +5,11 @@ import React, { useState, useTransition } from 'react'
 import Link from 'next/link';
 
 import { z } from 'zod';
-import { websiteInputSchema } from '@/src/interface-adapters/controllers/website/create-website.controller';
+import { updateWebsiteInputSchema } from '@/src/interface-adapters/controllers/website/update-website.controller';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { createWebsite } from '../../actions';
+import { updateWebsite } from '../../actions';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../_components/form/SettingsForm';
 import { FormInputField } from '../../_components/form/SettingsFromInput';
@@ -36,13 +36,9 @@ type DefaultValues = {
 }
 
 const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) => {
-  const REFRESH_TOKEN = ' '
+  // TODO: search console access, also check ui styles
   const HAS_ACCESS = true
 
-  console.log('REFRESH_TOKEN', REFRESH_TOKEN)
-  if (!REFRESH_TOKEN) {
-    throw new Error('No refresh token found')
-  }
 
   const [gscProperties, setGscProperties] = useState<PythonApiSite[] | null>([
     {
@@ -67,8 +63,8 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof websiteInputSchema>>({
-    resolver: zodResolver(websiteInputSchema),
+  const form = useForm<z.infer<typeof updateWebsiteInputSchema>>({
+    resolver: zodResolver(updateWebsiteInputSchema),
     defaultValues: {
       websiteName: defaultValues.websiteName,
       domainUrl: defaultValues.domainUrl,
@@ -76,29 +72,21 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof websiteInputSchema>) => {
+  const onSubmit = async (values: z.infer<typeof updateWebsiteInputSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(async () => {
-      throw new Error('Not implemented')
-
-      // TODO: Add update website action
-      const res = await createWebsite(values);
-      console.log('res', res)
+      const res = await updateWebsite(values, defaultValues.id);
+      // console.log('res', res)
 
       if (res.error) {
         setError(res.error);
       }
 
-      if (res.createdWebsite) {
-        setSuccess("Website created successfully");
-        // TODO: Add website to websites store
-        form.reset({
-          websiteName: "",
-          domainUrl: "",
-          gscUrl: "",
-        });
+      if (res.updatedWebsite) {
+        setSuccess("Website updated successfully");
+        // TODO: Set new website state in store
       }
     })
   }
@@ -147,7 +135,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
               )}
             />
 
-            <GoogleSearchConsolePropertyInputSelector hasAcces={HAS_ACCESS} sites={gscProperties} form={form} />
+            <GoogleSearchConsolePropertyInputSelector hasAcces={HAS_ACCESS} sites={gscProperties} form={form} isPending={isPending} />
 
           </CardContent>
         </Card>
@@ -171,9 +159,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
 }
 
 
-const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, form }: { hasAcces: boolean, isLoading?: boolean, sites: PythonApiSite[] | null, form: UseFormReturn<z.infer<typeof websiteInputSchema>> }) => {
-
-  console.log('sites', sites)
+const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, form, isPending }: { hasAcces: boolean, isLoading?: boolean, sites: PythonApiSite[] | null, form: UseFormReturn<z.infer<typeof updateWebsiteInputSchema>>, isPending: boolean }) => {
 
   if (!hasAcces) {
     return (
@@ -195,8 +181,6 @@ const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, 
     )
   }
 
-  console.log('hasAcces', hasAcces)
-
   if (!sites || sites.length === 0) {
     return (
       <div>
@@ -210,8 +194,6 @@ const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, 
     )
   }
 
-  console.log('sites', sites)
-
   return (
     <FormField
       control={form.control}
@@ -221,7 +203,7 @@ const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, 
           <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
           <FormInputSelect onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <FormInputSelectTrigger>
+              <FormInputSelectTrigger disabled={isPending}>
                 <FormInputSelectValue placeholder="Select a property" />
               </FormInputSelectTrigger>
             </FormControl>
@@ -231,6 +213,7 @@ const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, 
                   {site.siteUrl}
                 </FormInputSelectItem>
               ))}
+              <FormInputSelectItem value="noWebsite">Don&apos;t use a property</FormInputSelectItem>
             </FormInputSelectContent>
           </FormInputSelect>
           <FormMessage />

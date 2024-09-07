@@ -1,7 +1,7 @@
+import { startSpan } from "@sentry/nextjs";
 import { getInjection } from "@/di/container";
 import { ExtendedUser } from "@/next-auth";
 import { Website } from "@/src/entities/models/website";
-import { startSpan } from "@sentry/nextjs";
 
 
 export async function createWebsiteUseCase(input: {
@@ -14,9 +14,9 @@ export async function createWebsiteUseCase(input: {
   return startSpan({ name: "createWebsite Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");
 
-    // TODO: rm as string after fixing the ExtendedUser type
+
     const website = await websiteRepository.create({
-      userId: user.id as string,
+      userId: user.id,
       websiteName: input.websiteName,
       domainUrl: input.domainUrl,
       gscUrl: input.gscUrl ?? null,

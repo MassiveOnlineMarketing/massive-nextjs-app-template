@@ -20,10 +20,10 @@ const page = async ({
       location: true
     }
   })
-  console.log('website', website)
+  console.log('website')
 
 
-  console.log('id', id)
+  // console.log('id', id)
 
   if (!website) {
     return <div>not found</div>
