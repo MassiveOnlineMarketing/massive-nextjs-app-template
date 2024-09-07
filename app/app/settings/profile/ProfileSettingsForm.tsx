@@ -15,7 +15,7 @@ import { updateUserDetails, UpdateUserDetailsResponse } from '@/app/(auth)/actio
 import { InputFieldApp } from '@/app/_components/ui/inputFields';
 import { FormError } from '@/app/(auth)/_forms/form-error';
 import { FormSuccess } from '@/app/(auth)/_forms/form-success';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../_components/SettingsForm';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../_components/form/SettingsForm';
 
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../_components/SettingsCard'

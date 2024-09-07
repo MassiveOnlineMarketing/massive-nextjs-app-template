@@ -22,7 +22,7 @@ const CardHeader = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("p-4", className)}
+    className={cn("p-4 text-p-800", className)}
     {...props}
   >
     {children}

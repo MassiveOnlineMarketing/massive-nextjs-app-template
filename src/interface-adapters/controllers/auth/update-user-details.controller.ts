@@ -1,10 +1,13 @@
-import { getInjection } from "@/di/container";
-import { ExtendedUser } from "@/next-auth";
-import { updateUserDetailsUseCase } from "@/src/application/use-cases/auth/update-user-details.use-case";
-import { InputParseError } from "@/src/entities/errors/common";
-import { User } from "@prisma/client";
 import { startSpan } from "@sentry/nextjs";
+import { getInjection } from "@/di/container";
 import { z } from "zod";
+
+import { User } from "@prisma/client";
+import { ExtendedUser } from "@/next-auth";
+
+import { InputParseError } from "@/src/entities/errors/common";
+
+import { updateUserDetailsUseCase } from "@/src/application/use-cases/auth/update-user-details.use-case";
 
 
 export const updateUserDetailtsSchema = z.object({
