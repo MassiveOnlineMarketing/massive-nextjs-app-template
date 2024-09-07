@@ -5,7 +5,7 @@ import { ITokenService } from "@/src/application/services/token.service.interfac
 import { TokenService } from "@/src/infrastructure/services/token.service";
 
 import { TokenRepository } from "@/src/infrastructure/repositories/token.repository";
-import { ITokenRepository } from "@/src/application/repositories/token.service.interface";
+import { ITokenRepository } from "@/src/application/repositories/token.repository.interface";
 // import { MocktokenRepository } from "@/src/infrastructure/repositories/users.repository.mock";
 
 

@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { db } from "@/prisma";
 import { PasswordResetToken, VerificationToken } from "@prisma/client";
 
-import { ITokenRepository } from "@/src/application/repositories/token.service.interface";
+import { ITokenRepository } from "@/src/application/repositories/token.repository.interface";
 import { captureException, startSpan } from "@sentry/nextjs";
 import { DatabaseOperationError } from "@/src/entities/errors/common";
 

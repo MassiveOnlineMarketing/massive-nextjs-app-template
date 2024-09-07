@@ -2,7 +2,7 @@ import { IAuthenticationService } from "@/src/application/services/authenticatio
 import { IEmailService } from "@/src/application/services/email.service.interface";
 import { ITokenService } from "@/src/application/services/token.service.interface";
 
-import { ITokenRepository } from "@/src/application/repositories/token.service.interface";
+import { ITokenRepository } from "@/src/application/repositories/token.repository.interface";
 import { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
 import { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
 
