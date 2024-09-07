@@ -4,7 +4,7 @@ import 'reflect-metadata'
 import { DI_SYMBOLS } from "@/di/types";
 import { PasswordResetToken, VerificationToken } from "@prisma/client";
 
-import type { ITokenRepository } from "@/src/application/repositories/token.service.interface";
+import type { ITokenRepository } from "@/src/application/repositories/token.repository.interface";
 import { ITokenService } from "@/src/application/services/token.service.interface";
 import { startSpan } from "@sentry/nextjs";
 
