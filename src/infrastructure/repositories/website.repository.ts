@@ -2,7 +2,7 @@ import { db } from "@/prisma";
 import { injectable } from "inversify";
 import { captureException, startSpan } from "@sentry/nextjs";
 
-import { Website, WebsiteInsert, WebsiteUpdate } from "@/src/entities/models/website";
+import { Website, WebsiteInsert, WebsiteUpdate, WebsiteWithLocation } from "@/src/entities/models/website";
 import { DatabaseOperationError } from "@/src/entities/errors/common";
 
 import { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
@@ -58,5 +58,68 @@ export class WebsiteRepository implements IWebsiteRepository {
         }
       }
     )
+  }
+
+  async delete(id: string): Promise<Website> {
+    return await startSpan(
+      { name: "WebsiteRepository > delete" },
+      async () => {
+        try {
+          const deleted = await db.website.delete({
+            where: {
+              id,
+            },
+          });
+
+          if (deleted) {
+            return deleted;
+          } else {
+            throw new DatabaseOperationError("Website not deleted");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async getById(id: string): Promise<Website | null> {
+    return await startSpan(
+      { name: "WebsiteRepository > getById" },
+      async () => {
+        try {
+          const website = await db.website.findUnique({
+            where: { id },
+          });
+
+          return website;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async getByIdWithLocation(id: string): Promise<WebsiteWithLocation | null> {
+    return await startSpan(
+      { name: "WebsiteRepository > getByIdWithLocation" },
+      async () => {
+        try {
+          const website = await db.website.findUnique({
+            where: { id },
+            include: {
+              location: true,
+            },
+          });
+
+          return website;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
   }
 }

@@ -39,7 +39,7 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   loginProvider String?
-  Website       Website[]
+  website       Website[]
 }
 
 model Account {

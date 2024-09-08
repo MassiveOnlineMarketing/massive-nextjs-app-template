@@ -46,6 +46,26 @@ const getKeywordTrackerToolWithLocation = () => {
   return keywordTrackerToolWithLocation;
 }
 
+const getLocation = () => {
+  const location = db.location.findFirst({
+    where: {
+      id: 'cm0s2it1c0000dnxb86h6dy7r'
+    },
+  })
+
+  return location;
+}
+
+const deleteWebsite = () => {
+  const deletedWebsite = db.website.delete({
+    where: {
+      id: 'cm0s2it1c0000dnxb86h6dy7r'
+    }
+  })
+
+  return deletedWebsite;
+}
+
 const isUserAllowedToAccessLocation = () => {
     const userAllowedToAccessLocation = db.user.findFirst({
       where: {

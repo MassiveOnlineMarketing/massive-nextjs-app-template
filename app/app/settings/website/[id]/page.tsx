@@ -1,9 +1,10 @@
 'use server';
 
-import { db } from '@/prisma';
 import React from 'react'
-import UpdateWebsiteForm from './UpdateWebsiteFrom';
 import Link from 'next/link';
+
+import UpdateWebsiteForm from './UpdateWebsiteFrom';
+import { getWebsiteWithLocation } from '../../actions';
 
 const page = async ({
   params: { id }
@@ -11,23 +12,14 @@ const page = async ({
   params: { id: string }
 }) => {
 
-  // TODO: move to actions
-  const website = await db.website.findFirst({
-    where: {
-      id
-    },
-    include: {
-      location: true
-    }
-  })
-  console.log('website')
+  const res = await getWebsiteWithLocation(id)
 
+  console.log('website/id page: ', res)
 
-  // console.log('id', id)
-
-  if (!website) {
+  if (!res?.website) {
     return <div>not found</div>
   }
+  const website = res.website
 
   const defaultValues = {
     id: website.id,

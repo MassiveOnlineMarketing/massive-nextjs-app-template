@@ -3,27 +3,29 @@
 
 import React, { useState, useTransition } from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { z } from 'zod';
-import { updateWebsiteInputSchema } from '@/src/interface-adapters/controllers/website/update-website.controller';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { updateWebsite } from '../../actions';
+import { formInputUpdateWebsiteSchema } from '@/src/entities/models/website';
+import { deleteWebsite, updateWebsite } from '../../actions';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../_components/form/SettingsForm';
 import { FormInputField } from '../../_components/form/SettingsFromInput';
 import { FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../../_components/SettingsFormInputs';
-
-import { Button } from '@/app/_components/ui/button';
-import { Card, CardContent, CardHeader } from '../../_components/SettingsCard';
+// TODO: also add in settings form
 import { FormError } from '@/app/(auth)/_forms/form-error';
 import { FormSuccess } from '@/app/(auth)/_forms/form-success';
 
-import { InformationCircleIcon } from '@heroicons/react/20/solid';
+import { Button } from '@/app/_components/ui/button';
+import { Card, CardContent, CardHeader } from '../../_components/SettingsCard';
+
+import { InformationCircleIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
-type PythonApiSite = {
+export type PythonApiSite = {
   permissionLevel: string;
   siteUrl: string;
 };
@@ -36,6 +38,7 @@ type DefaultValues = {
 }
 
 const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) => {
+  const router = useRouter()
   // TODO: search console access, also check ui styles
   const HAS_ACCESS = true
 
@@ -63,8 +66,8 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof updateWebsiteInputSchema>>({
-    resolver: zodResolver(updateWebsiteInputSchema),
+  const form = useForm<z.infer<typeof formInputUpdateWebsiteSchema>>({
+    resolver: zodResolver(formInputUpdateWebsiteSchema),
     defaultValues: {
       websiteName: defaultValues.websiteName,
       domainUrl: defaultValues.domainUrl,
@@ -72,7 +75,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof updateWebsiteInputSchema>) => {
+  const onFormSubmit = async (values: z.infer<typeof formInputUpdateWebsiteSchema>) => {
     setError("");
     setSuccess("");
 
@@ -86,18 +89,42 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
 
       if (res.updatedWebsite) {
         setSuccess("Website updated successfully");
+
         // TODO: Set new website state in store
+      }
+    })
+  }
+
+  const onDelete = async () => {
+    setError("");
+    setSuccess("");
+
+    startTransition(async () => {
+      const res = await deleteWebsite(defaultValues.id);
+
+      if (res.error) {
+        setError(res.error);
+      }
+
+      if (res.deletedWebsite) {
+        // TODO: Toast notification
+        // TODO: redirect to websites page
+        router.push('/app/settings/website')
       }
     })
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onFormSubmit)}>
         <Card className='mx-6 mb-5'>
-          <CardHeader className='flex flex-row items-center gap-[6px]'>
-            <GlobeAltIcon className='w-4 h-4 text-p-800' />
-            <p className='font-medium text-p-800'>Website Settings</p>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <div className='flex flex-row items-center gap-[6px] text-p-800'>
+              <GlobeAltIcon className='w-4 h-4 ' />
+              <p className='font-medium'>Website Settings</p>
+            </div>
+            {/* // TODO: add as delete button in the Card */}
+            <button onClick={onDelete} type='button' className='px-4 py-[6px] h-fit text-red-500 border border-red-500 rounded-[10px]'><TrashIcon className='w-4 h-4' /></button>
           </CardHeader>
           <CardContent className='space-y-3'>
             <FormField
@@ -158,8 +185,15 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   )
 }
 
-
-const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, form, isPending }: { hasAcces: boolean, isLoading?: boolean, sites: PythonApiSite[] | null, form: UseFormReturn<z.infer<typeof updateWebsiteInputSchema>>, isPending: boolean }) => {
+interface GoogleSearchConsolePropertyInputSelectorProps {
+  hasAcces: boolean;
+  isLoading?: boolean;
+  sites: PythonApiSite[] | null;
+  form: UseFormReturn<z.infer<typeof formInputUpdateWebsiteSchema>>;
+  isPending: boolean;
+}
+// ! if updating this component, make sure to also update the CreateWebsiteForm component
+const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsolePropertyInputSelectorProps>  = ({ hasAcces, isLoading, sites, form, isPending }) => {
 
   if (!hasAcces) {
     return (
@@ -201,7 +235,7 @@ const GoogleSearchConsolePropertyInputSelector = ({ hasAcces, isLoading, sites, 
       render={({ field }) => (
         <FormItem>
           <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
-          <FormInputSelect onValueChange={field.onChange} defaultValue={field.value}>
+          <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
             <FormControl>
               <FormInputSelectTrigger disabled={isPending}>
                 <FormInputSelectValue placeholder="Select a property" />

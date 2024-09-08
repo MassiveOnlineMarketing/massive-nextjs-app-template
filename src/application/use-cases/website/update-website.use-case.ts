@@ -7,7 +7,7 @@ import { Website } from "@/src/entities/models/website";
 export async function updateWebsiteUseCase(input: {
   websiteName: string,
   domainUrl: string,
-  gscUrl?: string | undefined,
+  gscUrl?: string | null,
 },
   websiteId: string,
   user: ExtendedUser

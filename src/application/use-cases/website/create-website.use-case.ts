@@ -1,13 +1,13 @@
 import { startSpan } from "@sentry/nextjs";
 import { getInjection } from "@/di/container";
+
 import { ExtendedUser } from "@/next-auth";
 import { Website } from "@/src/entities/models/website";
-
 
 export async function createWebsiteUseCase(input: {
   websiteName: string,
   domainUrl: string,
-  gscUrl?: string | undefined,
+  gscUrl?: string | null,
 },
   user: ExtendedUser
 ): Promise<Website> {
