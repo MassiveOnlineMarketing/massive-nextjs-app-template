@@ -24,6 +24,7 @@ import { Card, CardContent, CardHeader } from '../../_components/SettingsCard';
 
 import { InformationCircleIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 export type PythonApiSite = {
   permissionLevel: string;
@@ -66,6 +67,9 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
+  const removeWebsiteFromStore = useWebsiteDetailsStore(state => state.deleteWebsite);
+  const updateWebsiteInStore = useWebsiteDetailsStore(state => state.updateWebsite);
+
   const form = useForm<z.infer<typeof formInputUpdateWebsiteSchema>>({
     resolver: zodResolver(formInputUpdateWebsiteSchema),
     defaultValues: {
@@ -82,7 +86,6 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
 
     startTransition(async () => {
       const res = await updateWebsite(values, defaultValues.id);
-      // console.log('res', res)
 
       if (res.error) {
         setError(res.error);
@@ -90,8 +93,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
 
       if (res.updatedWebsite) {
         setSuccess("Website updated successfully");
-
-        // TODO: Set new website state in store
+        updateWebsiteInStore(res.updatedWebsite);
       }
     })
   }
@@ -110,6 +112,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
       if (res.deletedWebsite) {
         // TODO: Toast notification
         // TODO: redirect to websites page
+        removeWebsiteFromStore(res.deletedWebsite.id);
         router.push('/app/settings/website')
       }
     })

@@ -82,4 +82,8 @@ export class MockWebsiteRepository implements IWebsiteRepository {
       }
       return this._websites.find((w) => w.location?.some(loc => loc.id === id)) ?? null;
     }
+
+    async getByUserIdWithLocation(userId: string): Promise<WebsiteWithLocation[] | null> {
+      return this._websites.filter((w) => w.userId === userId);
+    }
 }

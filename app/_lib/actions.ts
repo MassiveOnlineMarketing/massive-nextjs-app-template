@@ -8,7 +8,7 @@ const getUserWithWebsite = () => {
       id: 'cm0lcohs30000almcm9lhywwk'
     },
     include: {
-      Website: true
+      website: true
     }
   })
 
@@ -72,7 +72,7 @@ const isUserAllowedToAccessLocation = () => {
         id: 'cm0lcohs30000almcm9lhywwk'
       },
       include: {
-        Website: {
+        website: {
           select: {
             location: true
           }
@@ -90,4 +90,17 @@ const isUserAllowedToAccessLocation = () => {
     })
 
   return userAllowedToAccessLocation;
+}
+
+
+const createWebsite = async () => {
+  const createdWebsite = await db.website.create({
+    data: {
+      websiteName: "test",
+      domainUrl: "https://test.com",
+      userId: 'cm0lcohs30000almcm9lhywwk'
+    }
+  })
+
+  return createdWebsite;
 }

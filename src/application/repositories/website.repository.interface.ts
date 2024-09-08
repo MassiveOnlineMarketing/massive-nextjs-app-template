@@ -6,4 +6,5 @@ export interface IWebsiteRepository {
   delete(id: string): Promise<Website>;
   getById(id: string): Promise<Website | null>;
   getByIdWithLocation(id: string): Promise<WebsiteWithLocation | null>;
+  getByUserIdWithLocation(userId: string): Promise<WebsiteWithLocation[] | null>;
 }

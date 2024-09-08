@@ -7,7 +7,7 @@ import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth
 import { DatabaseOperationError, InputParseError, NotFoundError, ValidationError } from "@/src/entities/errors/common";
 
 import { z } from "zod";
-import { formInputUpdateWebsiteSchema, formInputCreateWebsiteSchema,  Website, WebsiteWithLocation } from "@/src/entities/models/website";
+import { formInputUpdateWebsiteSchema, formInputCreateWebsiteSchema, Website, WebsiteWithLocation } from "@/src/entities/models/website";
 
 import { createWebsiteController } from "@/src/interface-adapters/controllers/website/create-website.controller";
 import { updateWebsiteController } from "@/src/interface-adapters/controllers/website/update-website.controller";
@@ -15,15 +15,16 @@ import { deleteWebsiteController } from "@/src/interface-adapters/controllers/we
 import { getWebsiteWithLocationController } from "@/src/interface-adapters/controllers/website/get-website-with-location.controller";
 
 import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
+import { getWebsiteWithLocationByUserController } from "@/src/interface-adapters/controllers/website/get-website-with-location-by-user.controller";
 
-export async function createWebsite(formData: z.infer<typeof formInputCreateWebsiteSchema>) {
+export async function createWebsite(formData: z.infer<typeof formInputCreateWebsiteSchema>): Promise<{ createdWebsite?: WebsiteWithLocation, error?: string }> {
   return await withServerActionInstrumentation(
     'createWebsite',
     { recordResponse: true },
     async () => {
       try {
         const createdWebsite = await createWebsiteController(formData);
-        return { createdWebsite };
+        return { createdWebsite: { location: null, ...createdWebsite } };
       } catch (error) {
         if (error instanceof InputParseError) {
           return { error: "Invalid data" };
@@ -42,7 +43,7 @@ export async function createWebsite(formData: z.infer<typeof formInputCreateWebs
   )
 }
 
-export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebsiteSchema>, id: string): Promise<{ updatedWebsite?: Website, error?: string }> {
+export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebsiteSchema>, id: string): Promise<{ updatedWebsite?: WebsiteWithLocation, error?: string }> {
   return await withServerActionInstrumentation(
     'updateWebsite',
     { recordResponse: true },
@@ -50,7 +51,7 @@ export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebs
       try {
         const updatedWebsite = await updateWebsiteController(formData);
         revalidatePath(`/app/settings/website/${id}`);
-        return { updatedWebsite };
+        return { updatedWebsite: { location: null, ...updatedWebsite } };
       } catch (error) {
         if (error instanceof InputParseError) {
           return { error: "Invalid data" };
@@ -103,31 +104,43 @@ export async function deleteWebsite(id: string): Promise<{ deletedWebsite?: Webs
   )
 }
 
-// TODO: Implement getWebsite
-// export async function getWebsite(id: string){
-//   return await withServerActionInstrumentation(
-//     'getWebsite',
-//     { recordResponse: true },
-//     async () => {
+/**
+ * Retrieves a website with location information for a given user.
+ * 
+ * @param userId - The ID of the user.
+ * @returns A promise that resolves to an object containing the retrieved website or an error message.
+ */
+export async function getWebsiteWithLocationByUser(userId: string): Promise<{ website?: WebsiteWithLocation[], error?: string }> {
+  return await withServerActionInstrumentation(
+    'getWebsiteWithLocationByUser',
+    { recordResponse: true },
+    async () => {
 
-//       throw new Error('getWebsite not implemented yet')
+      const session = await auth();
+      if (!session?.user || !session?.user.id) {
+        return { error: "Must be logged in to get a website" };
+      }
 
-//       try {
-//         const website = await getWebsiteController(id);
-//         return { website };
-//       } catch (error) {
-//         if (error instanceof UnauthenticatedError) {
-//           return { error: "Must be logged in to get a website" };
-//         } else if (error instanceof DatabaseOperationError) {
-//           return { error: "Error getting website" };
-//         }
-//         console.log('getWebsite error: ', error)
-//         captureException(error);
-//         return { error: "An error happened. The developers have been notified. Please try again later." };
-//       }
-//     }
-//   )
-// }
+      try {
+        const website = await getWebsiteWithLocationByUserController(userId);
+        return { website };
+      } catch (error) {
+        if (error instanceof UnauthenticatedError) {
+          return { error: "Must be logged in to get a website" };
+        } else if (error instanceof NotFoundError) {
+          return { error: "Website not found" };
+        } else if (error instanceof ForbiddenError) {
+          return { error: "You don't have permission to access this website" };
+        } else if (error instanceof DatabaseOperationError) {
+          return { error: "Error getting website" };
+        }
+        console.log('getWebsiteWithLocationByUser error: ', error)
+        captureException(error);
+        return { error: "An error happened. The developers have been notified. Please try again later." };
+      }
+    }
+  )
+}
 
 export async function getWebsiteWithLocation(id: string): Promise<{ website?: WebsiteWithLocation, error?: string }> {
   return await withServerActionInstrumentation(

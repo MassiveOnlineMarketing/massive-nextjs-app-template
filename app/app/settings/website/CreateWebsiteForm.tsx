@@ -23,6 +23,7 @@ import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../_components/SettingsCard';
 
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 const CreateWebsiteForm = () => {
   const HAS_ACCESS = true
@@ -53,6 +54,8 @@ const CreateWebsiteForm = () => {
     resolver: zodResolver(formInputCreateWebsiteSchema),
   });
 
+  const addWebsiteToStore = useWebsiteDetailsStore(state => state.addWebsite);
+
   const onSubmit = async (values: z.infer<typeof formInputCreateWebsiteSchema>) => {
     setError("");
     setSuccess("");
@@ -68,12 +71,8 @@ const CreateWebsiteForm = () => {
 
       if (res.createdWebsite) {
         setSuccess("Website created successfully");
-        // TODO: Add website to websites store
-        form.reset({
-          websiteName: "",
-          domainUrl: "",
-          gscUrl: "",
-        });
+        addWebsiteToStore(res.createdWebsite);
+        form.reset();
       }
     })
   }

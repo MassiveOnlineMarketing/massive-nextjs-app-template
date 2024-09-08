@@ -1,11 +1,14 @@
 'use client';
 
 import { cn } from '@/app/_components/utils';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import { LinkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect } from 'react'
+import { getWebsiteWithLocation, getWebsiteWithLocationByUser } from '../actions';
+import { useCurrentUser } from '@/app/(auth)/_hooks/user-current-user';
 
 
 type NavItem = {
@@ -16,19 +19,33 @@ type NavItem = {
 
 const SettingsNavBar = () => {
   const router = useRouter()
+  const websiteStore = useWebsiteDetailsStore(state => state.websites)
+  const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
+  const user = useCurrentUser()
+
+  useEffect(() => {
+    console.log('websiteStore', websiteStore)
+    const fetchWebsites = async () => {
+      if (!user) return
+      const res = await getWebsiteWithLocationByUser(user.id)
+      console.log('fetch initial websiteStore', res)
+      if (res.error) {
+        console.log('error', res.error)
+      }
+
+      if (res.website) {
+        setInitialWebsiteDetails(res.website)
+      }
+    }
+
+    fetchWebsites()
+  }, [])
 
   const navItems = [
     { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon },
     { href: '/app/settings/integrations', text: 'Integrations', icon: LinkIcon },
   ]
 
-  const websites = [
-    { id: 'cm0s2it1c0000dnxb86h6dy7r', websiteName: 'testName', domainUrl: 'domainUrl', gscUrl: 'gscUrl' },
-    { id: 'cm0s7iemd000nujt348c7zwu5', websiteName: 'test', domainUrl: 'domainUrl1', gscUrl: 'gscUrl1' },
-    { id: 'cm0s7j8a0000pujt3tg92fg72', websiteName: 'sdfg', domainUrl: 'domainUrl2', gscUrl: 'gscUrl2' },
-    { websiteName: 'website3', domainUrl: 'domainUrl3', gscUrl: 'gscUrl3' },
-    { websiteName: 'website4', domainUrl: 'domainUrl4', gscUrl: 'gscUrl4' },
-  ]
 
   const [websitesListExpanded, setWebsitesListExpanded] = React.useState(false)
 
@@ -61,7 +78,12 @@ const SettingsNavBar = () => {
             <div className={websitesListExpanded ? 'rotate-90' : ''}>
               <Svg />
             </div>
-            <p className='text-slate-500 text-sm'>Websites <span className='text-[#94A3B8] text-[14px]'>({websites.length})</span></p>
+            <p className='text-slate-500 text-sm '>
+              Websites
+              {websiteStore && websiteStore.length > 0 && (
+                <span className='text-[#94A3B8] text-[12px] ml-1'>({websiteStore.length})</span>
+              )}
+            </p>
           </button>
           <button onClick={handleAddWebsite}>
             +
@@ -74,7 +96,7 @@ const SettingsNavBar = () => {
             'mt-2 overflow-hidden',
             websitesListExpanded ? 'animate-accordion-down ' : 'animate-accordion-up'
           )}>
-            {websites.map((website, index) => (
+            {websiteStore?.map((website, index) => (
               <Link key={index} href={`/app/settings/website/${website.id}`}>
                 <div className='flex items-center gap-2 text-slate-600 p-3'>
                   <p>{website.websiteName}</p>
