@@ -57,7 +57,7 @@ const selectWebsiteWithUserSchema = selectWebsiteCoreSchema.extend({
 export type WebsiteWithUser = z.infer<typeof selectWebsiteWithUserSchema>;
 
 const selectWebsiteWithLocationSchema = selectWebsiteCoreSchema.extend({
-  location:  z.lazy(() => z.array(selectLocationSchema)),
+  location:  z.lazy(() => z.array(selectLocationSchema)).nullable(),
 });
 export type WebsiteWithLocation = z.infer<typeof selectWebsiteWithLocationSchema>;
 

@@ -3,11 +3,11 @@ import { startSpan } from "@sentry/nextjs";
 import { DI_SYMBOLS } from "@/di/types";
 import 'reflect-metadata';
 
-import { User } from "@prisma/client";
 import { UnauthenticatedError } from "@/src/entities/errors/auth";
 
 import { Session } from "next-auth";
 import { ExtendedUser } from "@/next-auth";
+import { User } from "@/src/entities/models/user";
 
 import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
 

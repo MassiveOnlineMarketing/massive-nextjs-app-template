@@ -37,7 +37,7 @@ const page = async ({
           <h1>Locations</h1>
           <p>Add</p>
         </div>
-        {website.location.map((location, index) => (
+        {website.location?.map((location, index) => (
           <Link href={`/app/settings/website/location/${location.id}`} key={index} className='flex gap-2'>
             <p>{location.id}</p>
             <p>{location.country}</p>

@@ -1,5 +1,5 @@
 import { ExtendedUser } from "@/next-auth";
-import { User } from "@prisma/client";
+import { User } from "@/src/entities/models/user";
 import { Session } from "next-auth";
 
 /**
