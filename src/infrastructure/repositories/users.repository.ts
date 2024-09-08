@@ -7,7 +7,6 @@ import { IUsersRepository } from '@/src/application/repositories/users.repositor
 import { captureException, startSpan } from '@sentry/nextjs';
 import { DatabaseOperationError } from '@/src/entities/errors/common';
 
-// TODO: Add try catch blocks with db errors
 @injectable()
 export class UsersRepository implements IUsersRepository {
   async create(email: string, password: string, name: string): Promise<User> {
@@ -44,12 +43,8 @@ export class UsersRepository implements IUsersRepository {
           const user = await db.user.findUnique({
             where: { email },
           });
-  
-          if (user) {
-            return user;
-          } else {
-            throw new DatabaseOperationError("User not found");
-          }
+
+          return user;
         } catch (error) {
           captureException(error);
           throw error;
@@ -66,12 +61,8 @@ export class UsersRepository implements IUsersRepository {
           const user = await db.user.findUnique({
             where: { id },
           });
-  
-          if (user) {
-            return user;
-          } else {
-            throw new DatabaseOperationError("User not found");
-          }          
+
+          return user;
         } catch (error) {
           captureException(error);
           throw error;
@@ -88,12 +79,8 @@ export class UsersRepository implements IUsersRepository {
           const user = await db.account.findFirst({
             where: { userId: id },
           });
-  
-          if (user) {
-            return user;
-          } else {
-            throw new DatabaseOperationError("Account not found");
-          }           
+
+          return user;
         } catch (error) {
           captureException(error);
           throw error;
@@ -134,7 +121,7 @@ export class UsersRepository implements IUsersRepository {
             where: { id },
             data: { password },
           });
-          
+
           if (res) {
             return;
           } else {
@@ -157,12 +144,12 @@ export class UsersRepository implements IUsersRepository {
             where: { id: userId },
             data: { ...data },
           });
-  
+
           if (user) {
             return user;
           } else {
             throw new DatabaseOperationError("User not found");
-          }          
+          }
         } catch (error) {
           captureException(error);
           throw error;

@@ -1,21 +1,16 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Button } from "@/app/_components/ui/button";
 
-// TODO: Implement GoogleIconSvg
-// import { GoogleIconSvg } from "@/app/(protected)/app/search/google-search/_assets";
+import { GoogleIconSvg } from "@/assets/logos";
 
 export const Social = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
 
   const onClick = (provider: "google" | "github") => {
     signIn(provider, {
-      // callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
       callbackUrl: DEFAULT_LOGIN_REDIRECT,
     });
   };
@@ -28,17 +23,9 @@ export const Social = () => {
         variant="secondary"
         onClick={() => onClick("google")}
       >
-        {/* <GoogleIconSvg className="w-5 h-5" /> */}
+        <GoogleIconSvg className="w-5 h-5" />
         Sign in with Google
       </Button>
-      {/* <Button
-        size="lg"
-        className="w-full"
-        variant="outline"
-        onClick={() => onClick("github")}
-      >
-        Github
-      </Button> */}
     </div>
   );
 };

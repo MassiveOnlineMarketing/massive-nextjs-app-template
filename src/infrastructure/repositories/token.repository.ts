@@ -7,7 +7,6 @@ import { ITokenRepository } from "@/src/application/repositories/token.repositor
 import { captureException, startSpan } from "@sentry/nextjs";
 import { DatabaseOperationError } from "@/src/entities/errors/common";
 
-// TODO: Add try catch blocks with db errors
 @injectable()
 export class TokenRepository implements ITokenRepository {
   // Verification Token

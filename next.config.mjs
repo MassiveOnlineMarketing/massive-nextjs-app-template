@@ -4,6 +4,13 @@ import webpack from "webpack";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
+    // Add @svgr/webpack loader for SVG files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [{ loader: "@svgr/webpack" }],
+    });
+
+    // Add the Reflect Metadata polyfill to the server build for DI injection
     if (isServer) {
       config.plugins.push(
         new webpack.BannerPlugin({
