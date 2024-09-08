@@ -19,6 +19,7 @@ export class UsersRepository implements IUsersRepository {
               name,
               email,
               password,
+              loginProvider: 'credentials',
             },
           });
 
