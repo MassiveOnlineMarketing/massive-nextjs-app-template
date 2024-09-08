@@ -3,7 +3,7 @@ import { z } from "zod";
 
 // Back-end schema
 
-export const selectWebsiteSchema = z.object({
+const selectWebsiteSchema = z.object({
   id: z.string(),
   userId: z.string(),
   websiteName: z.string().min(3),
