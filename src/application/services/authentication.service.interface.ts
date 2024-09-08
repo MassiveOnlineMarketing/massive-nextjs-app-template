@@ -1,5 +1,5 @@
 import { ExtendedUser } from "@/next-auth";
-import { User } from "@prisma/client";
+import { User } from "@/src/entities/models/user";
 import { Session } from "next-auth";
 
 /**
@@ -14,6 +14,9 @@ export interface IAuthenticationService {
   /**
    * Validates the current session and returns the user and session.
    * @returns The user and session.
+   * 
+   * @throws {UnauthenticatedError} Thrown if the user is not authenticated.
+   * @throws {UnauthenticatedError} Thrown if the user does not exist.
    */
   validateSession(): Promise<{user: User, session: Session}>
   /**

@@ -27,12 +27,12 @@ export interface IUsersRepository {
    */
   getById(id: string): Promise<User | null>;
 
-  /**
-   * Retrieves an account by the user ID.
-   * @param id - The ID of the user.
-   * @returns A promise that resolves to the found account, or null if not found.
-   */
-  getAccountById(id: string): Promise<Account | null>;
+  // /**
+  //  * Retrieves an account by the user ID.
+  //  * @param id - The ID of the user.
+  //  * @returns A promise that resolves to the found account, or null if not found.
+  //  */
+  // getAccountById(id: string): Promise<Account | null>;
 
   /**
    * Updates the email verification status of a user.
