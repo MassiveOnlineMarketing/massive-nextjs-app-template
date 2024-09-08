@@ -3,6 +3,7 @@ import { User } from "@/src/entities/models/user";
 import { injectable } from "inversify";
 import bcrypt from "bcryptjs";
 
+
 @injectable()
 export class MockUsersRepository implements IUsersRepository {
   private _users: User[];
