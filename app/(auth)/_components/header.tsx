@@ -1,8 +1,6 @@
 // TODO: Add logo
 // import { MassiveLogoColor } from "@/assets/branding";
 
-// import { MassiveLogoColor } from "@/assets/branding";
-
 interface HeaderProps {
   label: string;
 }

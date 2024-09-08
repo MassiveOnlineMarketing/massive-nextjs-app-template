@@ -8,7 +8,6 @@ import { ResendError } from "@/src/entities/errors/common";
 
 const domain = process.env.NEXT_PUBLIC_WEBSITE_URL;
 
-// TODO: Add try catch blocks
 @injectable()
 export class EmailService implements IEmailService {
   sendVerificationEmail = async (email: string, token: string): Promise<void> => {
