@@ -1,6 +1,5 @@
-
 import { destroyContainer, getInjection, initializeContainer } from "@/di/container";
-import { createWebsiteUseCase } from "@/src/application/use-cases/website/create-website.use-case";
+import { updateWebsiteUseCase } from "@/src/application/use-cases/website/update-website.use-case";
 import { afterEach, beforeEach, expect, it } from "vitest";
 
 beforeEach(() => {
@@ -11,15 +10,14 @@ afterEach(() => {
   destroyContainer();
 });
 
-it("creates website", async () => {
+it("updates website", async () => {
   const authenticationService = getInjection("IAuthenticationService");
-
   const { user } = await authenticationService.validateSession(); 
 
   expect(
-    createWebsiteUseCase({ websiteName: "test", domainUrl: "test.com" }, user)
+    updateWebsiteUseCase({ id: '1', websiteName: "test", domainUrl: "test.com" }, user)
   ).resolves.toMatchObject({
-    id: expect.any(String),
+    id: '1',
     userId: '1',
     websiteName: "test",
     domainUrl: "test.com",
@@ -27,4 +25,4 @@ it("creates website", async () => {
     createdAt: expect.any(Date),
     updatedAt: expect.any(Date)
   })
-})
+});

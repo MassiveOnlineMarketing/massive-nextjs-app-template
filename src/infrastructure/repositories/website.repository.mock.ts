@@ -1,4 +1,5 @@
 import { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
+import { DatabaseOperationError } from "@/src/entities/errors/common";
 import { Website, WebsiteInsert, WebsiteUpdate, WebsiteWithLocation } from "@/src/entities/models/website";
 import { injectable } from "inversify";
 
@@ -8,7 +9,18 @@ export class MockWebsiteRepository implements IWebsiteRepository {
     private _websites: WebsiteWithLocation[]
 
     constructor() {
-      this._websites = [];
+      this._websites = [
+        {
+          id: '1',
+          userId: '1',
+          websiteName: 'Test website 1',
+          domainUrl: 'test1.com',
+          gscUrl: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          location: null
+        }
+      ];
     }
 
     async create(website: WebsiteInsert): Promise<WebsiteWithLocation> {
@@ -32,7 +44,7 @@ export class MockWebsiteRepository implements IWebsiteRepository {
     async update(website: WebsiteUpdate): Promise<WebsiteWithLocation> {
       const index = this._websites.findIndex((w) => w.id === website.id);
       if (index === -1) {
-        throw new Error('Website not found');
+        throw new DatabaseOperationError('Website not found');
       }
 
       const updatedWebsite = {
