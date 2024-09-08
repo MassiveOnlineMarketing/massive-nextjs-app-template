@@ -69,6 +69,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   const form = useForm<z.infer<typeof formInputUpdateWebsiteSchema>>({
     resolver: zodResolver(formInputUpdateWebsiteSchema),
     defaultValues: {
+      id: defaultValues.id,
       websiteName: defaultValues.websiteName,
       domainUrl: defaultValues.domainUrl,
       gscUrl: defaultValues.gscUrl || undefined,

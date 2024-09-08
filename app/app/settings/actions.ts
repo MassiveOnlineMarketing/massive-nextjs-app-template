@@ -1,18 +1,20 @@
 'use server';
 
 import { captureException, withServerActionInstrumentation } from "@sentry/nextjs";
-import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth";
 import { DatabaseOperationError, InputParseError, NotFoundError, ValidationError } from "@/src/entities/errors/common";
 
+import { z } from "zod";
+import { formInputUpdateWebsiteSchema, formInputCreateWebsiteSchema,  Website, WebsiteWithLocation } from "@/src/entities/models/website";
+
 import { createWebsiteController } from "@/src/interface-adapters/controllers/website/create-website.controller";
 import { updateWebsiteController } from "@/src/interface-adapters/controllers/website/update-website.controller";
-import { revalidatePath } from "next/cache";
-import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
-import { getWebsiteWithLocationController } from "@/src/interface-adapters/controllers/website/get-website-with-location.controller";
-import { formInputUpdateWebsiteSchema, formInputCreateWebsiteSchema,  Website, WebsiteWithLocation } from "@/src/entities/models/website";
 import { deleteWebsiteController } from "@/src/interface-adapters/controllers/website/delete-website.controller";
+import { getWebsiteWithLocationController } from "@/src/interface-adapters/controllers/website/get-website-with-location.controller";
+
+import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
 
 export async function createWebsite(formData: z.infer<typeof formInputCreateWebsiteSchema>) {
   return await withServerActionInstrumentation(
@@ -40,13 +42,13 @@ export async function createWebsite(formData: z.infer<typeof formInputCreateWebs
   )
 }
 
-export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebsiteSchema>, id: string) {
+export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebsiteSchema>, id: string): Promise<{ updatedWebsite?: Website, error?: string }> {
   return await withServerActionInstrumentation(
     'updateWebsite',
     { recordResponse: true },
     async () => {
       try {
-        const updatedWebsite = await updateWebsiteController(formData, id);
+        const updatedWebsite = await updateWebsiteController(formData);
         revalidatePath(`/app/settings/website/${id}`);
         return { updatedWebsite };
       } catch (error) {

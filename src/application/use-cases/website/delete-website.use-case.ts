@@ -9,7 +9,7 @@ import { Website } from "@/src/entities/models/website";
 
 
 export async function deleteWebsiteUseCase(id: string, user: User): Promise<Website> {
-  return await startSpan({ name: "deleteWebsite UseCase" }, async () => {
+  return await startSpan({ name: "deleteWebsite Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");
 
     const website = await websiteRepository.getById(id);

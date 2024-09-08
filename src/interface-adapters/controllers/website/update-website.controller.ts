@@ -3,12 +3,12 @@ import { startSpan } from "@sentry/nextjs";
 
 import { InputParseError } from "@/src/entities/errors/common";
 import { z } from "zod";
-import { formInputUpdateWebsiteSchema } from "@/src/entities/models/website";
+import { formInputUpdateWebsiteSchema, Website } from "@/src/entities/models/website";
 
 import { updateWebsiteUseCase } from "@/src/application/use-cases/website/update-website.use-case";
 
 
-export async function updateWebsiteController(formData: z.infer<typeof formInputUpdateWebsiteSchema>, id: string) {
+export async function updateWebsiteController(formData: z.infer<typeof formInputUpdateWebsiteSchema>): Promise<Website> {
   return await startSpan({ name: "updateWebsite Controller" }, async () => {
     const authenticationService = getInjection("IAuthenticationService");
     const { user } = await authenticationService.validateSession();
@@ -23,6 +23,6 @@ export async function updateWebsiteController(formData: z.infer<typeof formInput
       throw new InputParseError("Invalid data");
     }
 
-    return await updateWebsiteUseCase(data, id, user);
+    return await updateWebsiteUseCase(data, user);
   });
 }

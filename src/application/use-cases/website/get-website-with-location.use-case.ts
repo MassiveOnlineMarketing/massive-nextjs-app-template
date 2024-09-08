@@ -8,7 +8,7 @@ import { ExtendedUser } from "@/next-auth";
 import { WebsiteWithLocation } from "@/src/entities/models/website";
 
 export async function getWebsiteWithLocationUseCase(id: string, user: ExtendedUser): Promise<WebsiteWithLocation> {
-  return await startSpan({ name: "getWebsiteWithLocationUseCase" }, async () => {
+  return await startSpan({ name: "getWebsiteWithLocation Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");
 
     const website = await websiteRepository.getByIdWithLocation(id);
