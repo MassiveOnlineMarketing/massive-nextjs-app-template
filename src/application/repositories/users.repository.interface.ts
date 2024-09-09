@@ -9,6 +9,7 @@ export interface IUsersRepository {
    * @param email - The email of the user.
    * @param password - The password of the user.
    * @param name - The name of the user.
+   * @throws {DatabaseOperationError} if the user is not created.
    * @returns A promise that resolves to the created user.
    */
   create(email: string, password: string, name: string): Promise<User>;
@@ -38,6 +39,7 @@ export interface IUsersRepository {
    * Updates the email verification status of a user.
    * @param id - The ID of the user.
    * @param email - The new email of the user.
+   * @throws {DatabaseOperationError} if the user is not found or the update fails.
    * @returns A promise that resolves when the update is complete.
    */
   updateEmailVerified(id: string, email: string): Promise<void>;
@@ -46,6 +48,7 @@ export interface IUsersRepository {
    * Updates the password of a user.
    * @param id - The ID of the user.
    * @param password - The new password of the user.
+   * @throws {DatabaseOperationError} if the user is not found or the update fails.
    * @returns A promise that resolves when the update is complete.
    */
   updatePassword(id: string, password: string): Promise<void>;
@@ -54,6 +57,7 @@ export interface IUsersRepository {
    * Updates the data of a user.
    * @param data - The updated data for the user.
    * @param userId - The ID of the user.
+   * @throws {DatabaseOperationError} if the user is not found or the update fails.
    * @returns A promise that resolves to the updated user.
    */
   update(data: any, userId: string): Promise<User>;

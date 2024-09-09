@@ -6,6 +6,14 @@ import { ValidationError } from "@/src/entities/errors/common";
 import { startSpan } from "@sentry/nextjs";
 
 
+/**
+ * Updates the user details.
+ * 
+ * @param input - The input object containing the user details to be updated.
+ * @param user - The user object to be updated.
+ * @throws {ValidationError} if the new password does not match the confirmation password.
+ * @returns A promise that resolves to an object containing the updated user or a success message.
+ */
 export async function updateUserDetailsUseCase(
   input:
     {

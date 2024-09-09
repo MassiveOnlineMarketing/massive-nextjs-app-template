@@ -3,6 +3,13 @@ import { getInjection } from "@/di/container";
 
 import { AuthenticationError } from "@/src/entities/errors/auth";
 
+/**
+ * Resets the password for a user.
+ *
+ * @param input - The input object containing the user's email.
+ * @throws {AuthenticationError} If the user does not exist.
+ * @returns A promise that resolves to an object with a success message if the reset email is sent successfully.
+ */
 export async function resetUseCase(input: { email: string }) {
   return startSpan({ name: "reset Use Case", op: "function" }, async () => {
     const userRepository = getInjection("IUsersRepository");

@@ -3,6 +3,13 @@ import { getInjection } from "@/di/container";
 
 import { AuthenticationError } from "@/src/entities/errors/auth";
 
+/**
+ * Performs a new verification use case for authenthication.
+ * 
+ * @param token - The verification token.
+ * @throws {AuthenticationError} if the user does not exist.
+ * @returns An object with either an error message or a success message.
+ */
 export async function newVerificationUseCase(token: string) {
   return startSpan({ name: "newVerification Use Case", op: "function" }, async () => {
     const tokenRepository = getInjection("ITokenRepository");
