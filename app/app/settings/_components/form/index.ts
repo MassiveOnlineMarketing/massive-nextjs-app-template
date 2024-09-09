@@ -1,5 +1,5 @@
 export * from './SettingsFormSuccess'
-export * from './SettingsFromError'
+export * from './SettingsFormError'
 export * from './SettingsForm'
 export * from './SettingsFormInputs'
 export * from './SettingsFormSelectInput'
