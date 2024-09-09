@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { newPassword } from "@/app/_modules/auth/actions";
-import { newPasswordSchema } from "@/src/interface-adapters/controllers/auth/new-password.controller";
+import { formInputNewPasswordSchema } from "@/src/entities/models/user";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
 import { FormError } from "./form-error";
@@ -28,14 +28,14 @@ export const NewPasswordForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof newPasswordSchema>>({
-    resolver: zodResolver(newPasswordSchema),
+  const form = useForm<z.infer<typeof formInputNewPasswordSchema>>({
+    resolver: zodResolver(formInputNewPasswordSchema),
     defaultValues: {
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof newPasswordSchema>) => {
+  const onSubmit = (values: z.infer<typeof formInputNewPasswordSchema>) => {
     setError("");
     setSuccess("");
 

@@ -6,8 +6,8 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { reset } from "@/app/_modules/auth/actions";
-import { resetSchema } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
+import { formInputResetAccountSchema } from "@/src/entities/models/user";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
@@ -24,14 +24,14 @@ export const ResetForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof resetSchema>>({
-    resolver: zodResolver(resetSchema),
+  const form = useForm<z.infer<typeof formInputResetAccountSchema>>({
+    resolver: zodResolver(formInputResetAccountSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof resetSchema>) => {
+  const onSubmit = (values: z.infer<typeof formInputResetAccountSchema>) => {
     setError("");
     setSuccess("");
 

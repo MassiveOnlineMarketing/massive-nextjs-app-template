@@ -1,17 +1,14 @@
 import { startSpan } from "@sentry/nextjs";
-import { resetUseCase } from "@/src/application/use-cases/auth/reset.use-case";
 import { InputParseError } from "@/src/entities/errors/common";
+
 import { z } from "zod";
+import { formInputResetAccountSchema } from "@/src/entities/models/user";
 
-export const resetSchema = z.object({
-  email: z.string().email({
-    message: "Email is required",
-  }),
-});
+import { resetUseCase } from "@/src/application/use-cases/auth/reset.use-case";
 
-export async function resetController(formData: z.infer<typeof resetSchema>) {
+export async function resetController(formData: z.infer<typeof formInputResetAccountSchema>) {
   return await startSpan({ name: "reset Controller" }, async () => {
-    const { data, error: inputParseError } = resetSchema.safeParse(formData);
+    const { data, error: inputParseError } = formInputResetAccountSchema.safeParse(formData);
 
     if (inputParseError) {
       throw new InputParseError("Invalid data");

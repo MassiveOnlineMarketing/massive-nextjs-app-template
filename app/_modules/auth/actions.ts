@@ -8,14 +8,15 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 import { z } from "zod";
 import { updateUserDetailsController, updateUserDetailtsSchema } from "@/src/interface-adapters/controllers/auth/update-user-details.controller";
-import { loginSchema, signInController } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
-import { registerSchema, signUpController } from "@/src/interface-adapters/controllers/auth/sign-up.controller";
-import { newPasswordSchema, newPasswordController } from "@/src/interface-adapters/controllers/auth/new-password.controller";
+import { signInController } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
+import { signUpController } from "@/src/interface-adapters/controllers/auth/sign-up.controller";
+import { newPasswordController } from "@/src/interface-adapters/controllers/auth/new-password.controller";
 import { newVerificationController } from "@/src/interface-adapters/controllers/auth/new-verification.controller";
 import { resetController } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
 import { auth, signOut } from "@/app/api/auth/[...nextauth]/_nextAuth";
 import { ExtendedUser } from "@/next-auth";
+import { formInputSignUpSchema, formInputSignInSchema, formInputNewPasswordSchema } from "@/src/entities/models/user";
 
 export const logout = async () => {
   await signOut();
@@ -57,7 +58,7 @@ export async function updateUserDetails(formData: z.infer<typeof updateUserDetai
 
 
 
-export async function signIn(formData: z.infer<typeof loginSchema>, callbackUrl?: string | null) {
+export async function signIn(formData: z.infer<typeof formInputSignInSchema>, callbackUrl?: string | null) {
   return await withServerActionInstrumentation(
     "signIn",
     { recordResponse: true },
@@ -90,7 +91,7 @@ export async function signIn(formData: z.infer<typeof loginSchema>, callbackUrl?
   // }
 }
 
-export async function signUp(formData: z.infer<typeof registerSchema>) {
+export async function signUp(formData: z.infer<typeof formInputSignUpSchema>): Promise<{ error: string } | {success: string}> {
   return await withServerActionInstrumentation(
     "signUp",
     { recordResponse: true },
@@ -111,7 +112,7 @@ export async function signUp(formData: z.infer<typeof registerSchema>) {
   );
 }
 
-export async function newPassword(formData: z.infer<typeof newPasswordSchema>, token?: string | null) {
+export async function newPassword(formData: z.infer<typeof formInputNewPasswordSchema>, token?: string | null) {
   return await withServerActionInstrumentation(
     "newPassword",
     { recordResponse: true },

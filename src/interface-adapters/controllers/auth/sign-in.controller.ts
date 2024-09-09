@@ -1,21 +1,21 @@
 import { startSpan } from "@sentry/nextjs";
-import { signInUseCase } from "@/src/application/use-cases/auth/sign-in.use-case";
+
 import { z } from "zod";
+import { formInputSignInSchema } from "@/src/entities/models/user";
 
-export const loginSchema = z.object({
-  email: z.string().email({
-    message: "Email is required",
-  }),
-  password: z.string().min(1, {
-    message: "Password is required",
-  }),
-  code: z.optional(z.string()),
-});
+import { signInUseCase } from "@/src/application/use-cases/auth/sign-in.use-case";
 
-export async function signInController(formData: z.infer<typeof loginSchema>) {
+/**
+ * Sign in controller function.
+ * 
+ * @param formData - The form data for signing in.
+ * @returns A promise that resolves to the result of the sign in use case.
+ */
+export async function signInController(formData: z.infer<typeof formInputSignInSchema>) {
   return await startSpan({ name: "signIn Controller" }, async () => {
-    const { data, error: inputParseError } = loginSchema.safeParse(formData);
+    const { data, error: inputParseError } = formInputSignInSchema.safeParse(formData);
 
+    // Leave this here for now, but we should handle this error in the actions.
     if (inputParseError) {
       return { error: "Invalid data" };
     }

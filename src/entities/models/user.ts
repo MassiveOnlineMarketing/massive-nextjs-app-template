@@ -5,8 +5,12 @@ import { websiteSchema } from "./website"; // Import the website schema separate
 // Core user schema (without website relation)
 export const selectUserCoreSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  email: z.string(),
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  email: z.string().email({
+    message: "Email is required",
+  }),
   emailVerified: z.date().nullable(),
   image: z.string().nullable(),
   password: z.string().nullable(),
@@ -33,9 +37,39 @@ export type User = z.infer<typeof userSchema>;
 
 
 
+
 // Back-end schema with relationships
 const selectUserWithWebsiteSchema = selectUserCoreSchema.extend({
   website:  z.lazy(() => z.array(websiteSchema)),  // Include the websites without circular dependency
 });
 
 export type UserWithWebsite = z.infer<typeof selectUserWithWebsiteSchema>;
+
+
+
+// Front-end schema
+export const formInputNewPasswordSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  password: true,
+});
+
+export const formInputResetAccountSchema = selectUserCoreSchema.pick({
+  email: true,
+});
+
+export const formInputSignInSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  email: true,
+  password: true,
+  // code: true,
+});
+
+export const formInputSignUpSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  email: true,
+  name: true,
+  password: true,
+});

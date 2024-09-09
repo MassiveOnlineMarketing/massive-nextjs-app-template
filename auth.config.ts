@@ -7,7 +7,7 @@ import Google from "next-auth/providers/google";
 import { db } from "./prisma";
 
 import bcrypt from "bcryptjs";
-import { loginSchema } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
+import { formInputSignInSchema } from "./src/entities/models/user";
 
 export default {
   providers: [
@@ -28,7 +28,7 @@ export default {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = loginSchema.safeParse(credentials);
+        const validatedFields = formInputSignInSchema.safeParse(credentials);
 
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
