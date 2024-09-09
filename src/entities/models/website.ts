@@ -50,9 +50,9 @@ const updateWebsiteSchema = selectWebsiteCoreSchema.pick({
 export type WebsiteUpdate = z.infer<typeof updateWebsiteSchema>;
 
 
-// Back-end schema with relationships
-const selectWebsiteWithUserSchema = selectWebsiteCoreSchema.extend({
-  user: selectUserCoreSchema,  // Use core user schema without circular reference
+// Use z.lazy to defer the evaluation of the user schema
+export const selectWebsiteWithUserSchema = selectWebsiteCoreSchema.extend({
+  user: z.lazy(() => selectUserCoreSchema), // Use core user schema without circular reference
 });
 export type WebsiteWithUser = z.infer<typeof selectWebsiteWithUserSchema>;
 
