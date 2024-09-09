@@ -10,7 +10,7 @@ import { updateUserDetailtsSchema } from '@/src/interface-adapters/controllers/a
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { updateUserDetails, UpdateUserDetailsResponse } from '@/app/(auth)/actions';
+import { updateUserDetails, UpdateUserDetailsResponse } from '@/app/_modules/auth/actions';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormSuccess, FormError, FormInputField } from '../_components/form';
 

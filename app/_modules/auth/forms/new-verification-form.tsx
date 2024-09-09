@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { newVerification } from "../actions";
+import { newVerification } from "@/app/_modules/auth/actions";
 
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";

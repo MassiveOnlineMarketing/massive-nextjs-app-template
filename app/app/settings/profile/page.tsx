@@ -2,7 +2,7 @@
 
 import React from 'react'
 import ProfileSettingsForm from './ProfileSettingsForm'
-import { isAllowedToViewPage } from '@/app/(auth)/pageAuth';
+import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth'
 
 const page = async () => {
   const { session } = await isAllowedToViewPage('private');

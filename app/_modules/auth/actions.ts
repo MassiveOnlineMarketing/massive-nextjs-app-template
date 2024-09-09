@@ -14,7 +14,7 @@ import { newPasswordSchema, newPasswordController } from "@/src/interface-adapte
 import { newVerificationController } from "@/src/interface-adapters/controllers/auth/new-verification.controller";
 import { resetController } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
-import { auth, signOut } from "../api/auth/[...nextauth]/_nextAuth";
+import { auth, signOut } from "@/app/api/auth/[...nextauth]/_nextAuth";
 import { ExtendedUser } from "@/next-auth";
 
 export const logout = async () => {

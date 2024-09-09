@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { logout } from "../actions";
+import { logout } from "@/app/_modules/auth/actions";
 
 
 function useLogout() {
