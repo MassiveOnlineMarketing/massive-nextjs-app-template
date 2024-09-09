@@ -14,6 +14,7 @@ export interface ITokenRepository {
    * @param token - The verification token.
    * @param expires - The expiration date of the token.
    * @param userId - The ID of the user associated with the token.
+   * @throws {DatabaseOperationError} if the verification token is not created.
    * @returns A promise that resolves to the created verification token.
    */
   createVerificationToken(email: string, token: string, expires: Date, userId?: string): Promise<VerificationToken>;
@@ -21,6 +22,7 @@ export interface ITokenRepository {
   /**
    * Deletes a verification token.
    * @param id - The ID of the verification token to delete.
+   * @throws {DatabaseOperationError} if the verification token is not found.
    * @returns A promise that resolves when the token is deleted.
    */
   deleteVerificationToken(id: string): Promise<void>;

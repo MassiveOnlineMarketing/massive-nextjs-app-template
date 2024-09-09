@@ -5,6 +5,13 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/app/api/auth/[...nextauth]/_nextAuth";
 
 
+/**
+ * Sign in use case.
+ * 
+ * @param input - The input object containing email and password.
+ * @throws {AuthError} if the user does not exist.
+ * @returns A promise that resolves to an object with either a success or error message.
+ */
 export async function signInUseCase(input: { email: string, password: string }) {
   return startSpan({ name: "signIn Use Case", op: "function" }, async () => {
     const usersRepository = getInjection('IUsersRepository')
