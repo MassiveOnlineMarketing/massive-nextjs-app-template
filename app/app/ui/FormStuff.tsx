@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, FormControl, FormDescription, FormError, FormField, FormInputField, FormItem, FormLabel, FormMessage, FormSuccess, FormInputSelect, FormInputSelectTrigger, FormInputSelectValue, FormInputSelectContent, FormInputSelectItem } from '../settings/_components/form'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { z } from 'zod'
@@ -21,8 +21,16 @@ const FormStuff = () => {
     defaultValues: {
       test: ''
     },
-
   })
+
+  useEffect(() => {
+    // Set an error for the 'test' field
+    form.setError('test2', {
+      type: 'manual',
+      message: 'This is a custom error message',
+    });
+  }, [form.setError]);
+
   return (
     <div><h1 className='text-xl font-semibold mt-6 mb-2'>Form stuff</h1>
       <Form {...form}>

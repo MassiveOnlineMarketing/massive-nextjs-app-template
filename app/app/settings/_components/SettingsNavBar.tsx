@@ -12,6 +12,7 @@ import { getWebsiteWithLocationByUser } from '../actions';
 import { cn } from '@/app/_components/utils';
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import ThemeSwitcher from '@/app/_components/ui/ThemeSwitcher';
 
 type NavItem = {
   href: string,
@@ -58,6 +59,8 @@ const SettingsNavBar = () => {
 
   return (
     <div className='p-4'>
+      <ThemeSwitcher />
+
       <div className='pb-6'>
         <p className='text-slate-400 text-sm font-light pt-4 pb-1 px-3'>Account Settings</p>
         {navItems.map((item, index) => (
