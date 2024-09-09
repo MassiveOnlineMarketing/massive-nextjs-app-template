@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signUp } from "@/app/_modules/auth/actions";
-import { registerSchema } from "@/src/interface-adapters/controllers/auth/sign-up.controller";
 
+import { formInputSignUpSchema } from "@/src/entities/models/user";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
@@ -23,8 +23,8 @@ export const RegisterForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<z.infer<typeof formInputSignUpSchema>>({
+    resolver: zodResolver(formInputSignUpSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -32,7 +32,7 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = (values: z.infer<typeof formInputSignUpSchema>) => {
     setError("");
     setSuccess("");
 

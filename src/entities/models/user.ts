@@ -4,8 +4,12 @@ import { z } from "zod";
 // Core user schema (without website relation)
 export const selectUserCoreSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  email: z.string(),
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  email: z.string().email({
+    message: "Email is required",
+  }),
   emailVerified: z.date().nullable(),
   image: z.string().nullable(),
   password: z.string().nullable(),
@@ -32,4 +36,34 @@ export type User = z.infer<typeof userSchema>;
 
 
 
+
 // Back-end schema with relationships
+
+
+
+// Front-end schema
+export const formInputNewPasswordSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  password: true,
+});
+
+export const formInputResetAccountSchema = selectUserCoreSchema.pick({
+  email: true,
+});
+
+export const formInputSignInSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  email: true,
+  password: true,
+  // code: true,
+});
+
+export const formInputSignUpSchema = selectUserCoreSchema.extend({
+  password: z.string().min(6, { message: "Minimum of 6 characters required" }),
+}).pick({
+  email: true,
+  name: true,
+  password: true,
+});

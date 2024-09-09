@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
 import { signIn } from "@/app/_modules/auth/actions";
-import { loginSchema } from "@/src/interface-adapters/controllers/auth/sign-in.controller";
 
+import { formInputSignInSchema } from "@/src/entities/models/user";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
@@ -25,15 +25,15 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof formInputSignInSchema>>({
+    resolver: zodResolver(formInputSignInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formInputSignInSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {

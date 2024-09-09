@@ -1,28 +1,26 @@
 import { startSpan } from "@sentry/nextjs";
 import { InputParseError } from "@/src/entities/errors/common";
-import { signUpUseCase } from "@/src/application/use-cases/auth/sign-up.use-case";
+
 import { z } from "zod";
+import { formInputSignUpSchema } from "@/src/entities/models/user";
 
-export const registerSchema = z.object({
-  email: z.string().email({
-    message: "Email is required",
-  }),
-  password: z.string().min(6, {
-    message: "Minimum 6 characters required",
-  }),
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
-});
+import { signUpUseCase } from "@/src/application/use-cases/auth/sign-up.use-case";
 
-export async function signUpController(formData: z.infer<typeof registerSchema>) {
+/**
+ * Sign up controller function.
+ * 
+ * @param formData - The form data for signing up.
+ * @throws {InputParseError} If the form data is invalid.
+ * @returns A promise that resolves to the result of the sign up use case.
+ */
+export async function signUpController(formData: z.infer<typeof formInputSignUpSchema>) {
   return await startSpan({ name: "signUp Controller" }, async () => {
-  const { data, error: inputParseError } = registerSchema.safeParse(formData);
+    const { data, error: inputParseError } = formInputSignUpSchema.safeParse(formData);
 
-  if (inputParseError) {
-    throw new InputParseError("Invalid data", { cause: inputParseError });
-  }
+    if (inputParseError) {
+      throw new InputParseError("Invalid data", { cause: inputParseError });
+    }
 
-  return await signUpUseCase(data);
-})
+    return await signUpUseCase(data);
+  })
 }

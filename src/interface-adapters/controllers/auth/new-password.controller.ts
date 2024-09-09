@@ -1,15 +1,21 @@
 import { startSpan } from "@sentry/nextjs";
-import { newPasswordUseCase } from "@/src/application/use-cases/auth/new-password.use-case";
 import { InputParseError } from "@/src/entities/errors/common";
+
+import { newPasswordUseCase } from "@/src/application/use-cases/auth/new-password.use-case";
+
 import { z } from "zod";
+import { formInputNewPasswordSchema } from "@/src/entities/models/user";
 
-export const newPasswordSchema = z.object({
-  password: z.string().min(6, {
-    message: "Minimum of 6 characters required",
-  }),
-});
-
-export async function newPasswordController(formData: z.infer<typeof newPasswordSchema>, token?: string | null
+/**
+ * Handles the logic for the newPasswordController function.
+ *
+ * @param formData - The form data for the new password.
+ * @param token - The token for the new password.
+ * @throws Error if the token is invalid.
+ * @throws InputParseError if the form data is invalid.
+ * @returns The new password.
+ */
+export async function newPasswordController(formData: z.infer<typeof formInputNewPasswordSchema>, token?: string | null
 ) {
   return await startSpan({ name: "newPassword Controller" }, async () => {
 
@@ -17,7 +23,7 @@ export async function newPasswordController(formData: z.infer<typeof newPassword
       throw new Error("Invalid token");
     }
 
-    const { data, error: inputParseError } = newPasswordSchema.safeParse(formData);
+    const { data, error: inputParseError } = formInputNewPasswordSchema.safeParse(formData);
 
     if (inputParseError) {
       throw new InputParseError("Invalid data");
