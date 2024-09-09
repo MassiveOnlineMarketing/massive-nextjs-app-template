@@ -12,12 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formInputUpdateWebsiteSchema } from '@/src/entities/models/website';
 import { deleteWebsite, updateWebsite } from '../../actions';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../_components/form/SettingsForm';
-import { FormInputField } from '../../_components/form/SettingsFromInput';
-import { FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../../_components/SettingsFormInputs';
-// TODO: also add in settings form
-import { FormError } from '@/app/(auth)/_forms/form-error';
-import { FormSuccess } from '@/app/(auth)/_forms/form-success';
+import { Form, FormControl, FormError, FormSuccess, FormField, FormItem, FormLabel, FormMessage, FormInputField, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../../_components/form';
 
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../../_components/SettingsCard';

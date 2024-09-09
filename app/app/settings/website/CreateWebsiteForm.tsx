@@ -12,12 +12,7 @@ import { PythonApiSite } from './[id]/UpdateWebsiteFrom';
 import { formInputCreateWebsiteSchema } from '@/src/entities/models/website';
 import { createWebsite } from '../actions';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../_components/form/SettingsForm';
-import { FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../_components/SettingsFormInputs';
-import { InputFieldApp } from '@/app/_components/ui/inputFields';
-// TODO: also add in settings form
-import { FormError } from '@/app/(auth)/_forms/form-error';
-import { FormSuccess } from '@/app/(auth)/_forms/form-success';
+import { Form, FormControl, FormError, FormSuccess, FormField, FormItem, FormLabel, FormMessage, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue, FormInputField } from '../_components/form';
 
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../_components/SettingsCard';
@@ -92,7 +87,7 @@ const CreateWebsiteForm = () => {
                 <FormItem>
                   <FormLabel>Website project name</FormLabel>
                   <FormControl>
-                    <InputFieldApp
+                    <FormInputField
                       {...field}
                       disabled={isPending}
                       type="name"
@@ -109,7 +104,7 @@ const CreateWebsiteForm = () => {
                 <FormItem>
                   <FormLabel>Domain url</FormLabel>
                   <FormControl>
-                    <InputFieldApp
+                    <FormInputField
                       {...field}
                       disabled={isPending}
                       type="name"
