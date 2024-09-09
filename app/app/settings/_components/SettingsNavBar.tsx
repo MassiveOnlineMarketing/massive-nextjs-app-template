@@ -1,15 +1,17 @@
 'use client';
 
-import { cn } from '@/app/_components/utils';
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-import { UserCircleIcon } from '@heroicons/react/20/solid';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import React, { useEffect } from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
-import { getWebsiteWithLocation, getWebsiteWithLocationByUser } from '../actions';
-import { useCurrentUser } from '@/app/(auth)/_hooks/user-current-user';
 
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
+
+import { getWebsiteWithLocationByUser } from '../actions';
+
+import { cn } from '@/app/_components/utils';
+import { UserCircleIcon } from '@heroicons/react/20/solid';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type NavItem = {
   href: string,
