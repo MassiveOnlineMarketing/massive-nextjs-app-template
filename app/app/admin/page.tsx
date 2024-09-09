@@ -1,4 +1,4 @@
-import { isAllowedToViewPage } from '@/app/(auth)/pageAuth';
+import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth';
 import React from 'react'
 
 const page = async () => {

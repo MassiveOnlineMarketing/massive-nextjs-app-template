@@ -3,9 +3,9 @@
 import React from 'react'
 import Link from 'next/link'
 
-import LogoutButton from '@/app/(auth)/_components/logout-button'
+import LogoutButton from '@/app/_modules/auth/components/logout-button'
 import ClientPage from './ClientPage'
-import { isAllowedToViewPage } from '@/app/(auth)/pageAuth'
+import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth'
  
 const page = async () => {
   const session = await isAllowedToViewPage('private');

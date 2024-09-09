@@ -1,7 +1,7 @@
 'use server';
 
 import { headers } from "next/headers";
-import { auth } from "../api/auth/[...nextauth]/_nextAuth";
+import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
 import { redirect } from "next/navigation";
 
 type PageType = "private" | "admin";

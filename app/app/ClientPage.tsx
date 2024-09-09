@@ -1,6 +1,6 @@
 'use client';
 
-import { useCurrentUser } from '@/app/(auth)/_hooks/user-current-user';
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { getSession, useSession } from 'next-auth/react'
 import React from 'react'
 
