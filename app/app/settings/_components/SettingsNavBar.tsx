@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
-import { getWebsiteWithLocationByUser } from '../actions';
+import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 
 import { cn } from '@/app/_components/utils';
 import { UserCircleIcon } from '@heroicons/react/20/solid';

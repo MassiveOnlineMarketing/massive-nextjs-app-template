@@ -13,7 +13,7 @@ const BreadCrumbsSettings = ({
   breadCrumbs?: BreadCrumbItem[];
 }) => {
 
-  console.log('breadCrumbs', breadCrumbs)
+  // console.log('breadCrumbs', breadCrumbs)
 
   // console.log('path', path)
   // console.log('secondPath', secondPath)

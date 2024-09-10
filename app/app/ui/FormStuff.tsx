@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import { Form, FormControl, FormDescription, FormError, FormField, FormInputField, FormItem, FormLabel, FormMessage, FormSuccess, FormInputSelect, FormInputSelectTrigger, FormInputSelectValue, FormInputSelectContent, FormInputSelectItem } from '../settings/_components/form'
+import { Form, FormControl, FormDescription, FormError, FormField, FormInputField, FormItem, FormLabel, FormMessage, FormSuccess, FormInputSelect, FormInputSelectTrigger, FormInputSelectValue, FormInputSelectContent, FormInputSelectItem } from '../../_modules/settings/components/form'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'

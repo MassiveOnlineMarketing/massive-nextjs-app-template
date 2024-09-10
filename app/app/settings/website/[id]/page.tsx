@@ -3,8 +3,8 @@
 import React from 'react'
 import Link from 'next/link';
 
-import UpdateWebsiteForm from './UpdateWebsiteFrom';
-import { getWebsiteWithLocation } from '../../actions';
+import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
+import { getWebsiteWithLocation } from '@/app/_actions/website.actions';
 
 const page = async ({
   params: { id }

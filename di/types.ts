@@ -5,6 +5,7 @@ import { ITokenService } from "@/src/application/services/token.service.interfac
 import { ITokenRepository } from "@/src/application/repositories/token.repository.interface";
 import { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
 import { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
+import { ILocationRepository } from "@/src/application/repositories/location.repository.interface";
 
 export const DI_SYMBOLS = {
   // Services
@@ -16,6 +17,7 @@ export const DI_SYMBOLS = {
   IUsersRepository: Symbol.for("IUsersRepository"),
   ITokenRepository: Symbol.for("ITokenRepository"),
   IWebsiteRepository: Symbol.for("IWebsiteRepository"),
+  ILocationRepository: Symbol.for("ILocationRepository"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -28,4 +30,5 @@ export interface DI_RETURN_TYPES {
   IUsersRepository: IUsersRepository;
   ITokenRepository: ITokenRepository;
   IWebsiteRepository: IWebsiteRepository;
+  ILocationRepository: ILocationRepository;
 }

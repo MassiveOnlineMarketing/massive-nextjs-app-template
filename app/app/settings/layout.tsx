@@ -34,16 +34,16 @@ export default function Layout(
   const [breadCrumbs, setBreadCrumbs] = useState<BreadCrumbItem[]>([])
 
   useEffect(() => {
-    console.log('useEffect path', pathname)
+    // console.log('useEffect path', pathname)
 
     const pageTTitle = getPageTitle(lastPath, secondToLastPath, websitesStore)
     const breadCrumbs = generateBreadCrumbs2(pathSegments, pageTTitle)
-    console.log('pageTTitle', pageTTitle)
-    console.log('generateBreadCrumbs', breadCrumbs)
+    // console.log('pageTTitle', pageTTitle)
+    // console.log('generateBreadCrumbs', breadCrumbs)
     setPageTitle(pageTTitle)
     setBreadCrumbs(breadCrumbs)
 
-    console.log('pathSegments', pathSegments)
+    // console.log('pathSegments', pathSegments)
 
 
     // setBreadCrumbs(newBreadCrumb)
@@ -63,7 +63,7 @@ export default function Layout(
 
 function getPageTitle(path: string, secondToLastPath: string, websitesStore: WebsiteWithLocation[] | undefined): string {
   if (path.length === UUID_LENGTH) {
-    console.log('secondToLastPath', secondToLastPath);
+    // console.log('secondToLastPath', secondToLastPath);
 
     // Set location as page title
     if (secondToLastPath === 'location') {

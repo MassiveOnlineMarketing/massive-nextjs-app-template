@@ -102,6 +102,27 @@ export class WebsiteRepository implements IWebsiteRepository {
     );
   }
 
+  async getByUserId(userId: string): Promise<Website[] | null> {
+    return await startSpan(
+      { name: "WebsiteRepository > getByUserId" },
+      async () => {
+        try {
+          const user = await db.user.findUnique({
+            where: { id: userId },
+            include: {
+              website: true,
+            },
+          });
+
+          return user?.website ?? null;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
   async getByIdWithLocation(id: string): Promise<WebsiteWithLocation | null> {
     return await startSpan(
       { name: "WebsiteRepository > getByIdWithLocation" },

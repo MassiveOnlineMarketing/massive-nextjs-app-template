@@ -8,6 +8,7 @@ import { TokenRepositoryModule, TokenServiceModule } from "./modules/token.modul
 import { EmailServiceModule } from "./modules/email.module";
 import { AuthenticationServiceModule } from "./modules/authentication.module";
 import { WebsiteRepositoryModule } from "./modules/website.module";
+import { LocationRepositoryModule } from "./modules/location.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -20,6 +21,7 @@ export const initializeContainer = () => {
   ApplicationContainer.load(TokenRepositoryModule);
   ApplicationContainer.load(EmailServiceModule);  
   ApplicationContainer.load(WebsiteRepositoryModule);
+  ApplicationContainer.load(LocationRepositoryModule);
 };
 
 export const destroyContainer = () => {
@@ -29,6 +31,7 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(TokenRepositoryModule);
   ApplicationContainer.unload(EmailServiceModule);
   ApplicationContainer.unload(WebsiteRepositoryModule);
+  ApplicationContainer.unload(LocationRepositoryModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent, CardHeader } from '../settings/_components/SettingsCard'
+import { Card, CardContent, CardHeader } from '../../_modules/settings/components/SettingsCard'
 
 const UiCard = () => {
   return (

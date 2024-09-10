@@ -12,10 +12,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { updateUserDetails, UpdateUserDetailsResponse } from '@/app/_modules/auth/actions';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormSuccess, FormError, FormInputField } from '../_components/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormSuccess, FormError, FormInputField } from '../../../_modules/settings/components/form';
 
 import { Button } from '@/app/_components/ui/button';
-import { Card, CardContent, CardHeader } from '../_components/SettingsCard'
+import { Card, CardContent, CardHeader } from '../../../_modules/settings/components/SettingsCard'
 import { LockClosedIcon, UserCircleIcon } from '@heroicons/react/20/solid';
 
 
