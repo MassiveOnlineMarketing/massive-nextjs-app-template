@@ -89,7 +89,28 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "modal-opacity-in": "modalOpacityIn 0.5s ease forwards",
         "modal-opacity-out": "modalOpacityOut 0.5s ease forwards",
-      }
+      },
+      borderRadius: {
+        'lg': '0.625rem'
+      },
+      spacing: {
+        '0-5': '2px',
+        '1-5': '6px',
+        '2-5': '10px',
+        '3-5': '14px',
+      },
+      margin:{
+        '0-5': '2px',
+        '1-5': '6px',
+        '2-5': '10px',
+        '3-5': '14px',
+      },
+      padding: {
+        '0-5': '2px',
+        '1-5': '6px',
+        '2-5': '10px',
+        '3-5': '14px',
+      },
     },
   },
   plugins: [],

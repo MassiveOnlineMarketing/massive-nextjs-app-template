@@ -28,7 +28,7 @@ export function Toaster() {
       }) {
         return (
           <Toast key={id} {...props}>
-            <div className="flex gap-[6px]">
+            <div className="flex gap-1.5">
               {icon === "success" && (
                 <>
                   <CheckCircleIcon className="h-5 w-5 text-green-600" />

@@ -31,7 +31,7 @@ const page = async ({
   return (
     <div className='flex gap-4'>
       <div className='max-w-[918px] w-full theme-bg-w border theme-b-p rounded-xl p-6'>
-        <div className='pb-3 flex flex-col gap-[6px]'>
+        <div className='pb-3 flex flex-col gap-1.5'>
           <p className='text-xl font-medium theme-t-p'>Website</p>
           <p className='text-sm theme-t-t'>Stel je website en locatie settings bij voor de Keyword Tracker</p>
         </div>

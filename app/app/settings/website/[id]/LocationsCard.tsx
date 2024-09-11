@@ -74,9 +74,9 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
 
               <div className='ml-auto my-auto'>
                 {loc.keywordTrackerToolId ? (
-                  <div className='flex gap-2 items-center px-4 py-[6px]'><div className='w-[6px] h-[6px] rounded-full bg-green-500 border border-green-200'></div><p className='text-green-500'>Active</p></div>
+                  <div className='flex gap-2 items-center px-4 py-1.5'><div className='w-1.5 h-1.5 rounded-full bg-green-500 border border-green-200'></div><p className='text-green-500'>Active</p></div>
                 ) : (
-                  <div className='flex gap-2 items-center px-4 py-[6px]'><div className='w-[6px] h-[6px] rounded-full bg-yellow-500 border border-yellow-200'></div><p className='text-yellow-500'>Semi</p></div>
+                  <div className='flex gap-2 items-center px-4 py-1.5'><div className='w-1.5 h-1.5 rounded-full bg-yellow-500 border border-yellow-200'></div><p className='text-yellow-500'>Semi</p></div>
                 )}
               </div>
             </Link>
@@ -89,8 +89,8 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
 
 const Card = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='w-[400px] theme-bg-w border theme-b-p rounded-[10px]'>
-      <div className='flex items-center gap-[6px] p-6 theme-t-p border-b theme-b-p'>
+    <div className='w-[400px] theme-bg-w border theme-b-p rounded-lg'>
+      <div className='flex items-center gap-1.5 p-6 theme-t-p border-b theme-b-p'>
         <MapPinIcon className='w-4 h-4' />
         <p>Locations</p>
       </div>

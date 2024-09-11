@@ -43,7 +43,7 @@ const LocationDetails = ({
         <p>Location Details</p>
         <div className='flex items-center gap-3'>
           {/* // TODO: add as coppy button in the Card */}
-          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-[6px] h-fit text-slate-500 border border-light-stroke rounded-[10px]  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
+          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-1.5 h-fit text-slate-500 border border-light-stroke rounded-lg  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
           {/* // TODO: add as delete button in the Card */}
           <DeleteLocationButton locationId={defaultLocation.id} />
         </div>

@@ -178,7 +178,7 @@ export {
   name="gscUrl"
   render={({ field }) => (
     <FormItem>
-      <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
+      <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
       <FormInputSelect onValueChange={field.onChange} defaultValue={field.value}>
         <FormControl>
           <FormInputSelectTrigger>

@@ -79,7 +79,7 @@ const CreateWebsiteForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className='mx-6 mb-5'>
-          <CardHeader className='flex flex-row items-center gap-[6px]'>
+          <CardHeader className='flex flex-row items-center gap-1.5'>
             <GlobeAltIcon className='w-4 h-4' />
             <p className='font-medium'>Enter your website details</p>
           </CardHeader>
@@ -191,7 +191,7 @@ const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsoleProp
       name="gscUrl"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
+          <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
           <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
             <FormControl>
               <FormInputSelectTrigger disabled={isPending}>

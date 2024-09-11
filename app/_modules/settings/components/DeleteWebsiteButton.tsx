@@ -47,7 +47,7 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild disabled={isPending}>
-        <button className='px-4 py-[6px] h-fit text-red-500 border border-red-500 rounded-[10px]'><TrashIcon className='w-4 h-4' /></button>
+        <button className='px-4 py-1.5 h-fit text-red-500 border border-red-500 rounded-lg'><TrashIcon className='w-4 h-4' /></button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

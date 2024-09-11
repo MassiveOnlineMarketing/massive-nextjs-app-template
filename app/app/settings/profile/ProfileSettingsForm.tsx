@@ -79,7 +79,7 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
 
         <Card className='mx-6 mb-5'>
-          <CardHeader className='flex flex-row items-center gap-[6px]'>
+          <CardHeader className='flex flex-row items-center gap-1.5'>
             <UserCircleIcon className='w-4 h-4' />
             <p className='font-medium'>Profile</p>
           </CardHeader>
@@ -124,7 +124,7 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
         {/* Profile */}
         {user.loginProvider === "credentials" && (
           <Card className='mx-6'>
-            <CardHeader className='flex flex-row items-center gap-[6px]'>
+            <CardHeader className='flex flex-row items-center gap-1.5'>
               <LockClosedIcon className='w-4 h-4 text-p-800' />
               <p className='font-medium text-p-800'>Password</p>
             </CardHeader>

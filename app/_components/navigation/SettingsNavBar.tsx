@@ -55,7 +55,7 @@ const SettingsSideBar = () => {
       <div>
         <div className='flex justify-between items-center'>
           <button
-            className='flex items-center gap-[6px]'
+            className='flex items-center gap-1.5'
             onClick={() => setWebsitesListExpanded(!websitesListExpanded)}
           >
             <div className={websitesListExpanded ? 'rotate-90' : ''}>
@@ -64,7 +64,7 @@ const SettingsSideBar = () => {
             <p className='text-slate-500 text-sm '>
               Websites
               {websiteStore && websiteStore.length > 0 && (
-                <span className='text-[#94A3B8] text-[12px] ml-1'>({websiteStore.length})</span>
+                <span className='text-[#94A3B8] text-xs ml-1'>({websiteStore.length})</span>
               )}
             </p>
           </button>

@@ -40,9 +40,9 @@ const page = async ({
   return (
     <>
       <div className='max-w-[918px] theme-bg-w border theme-b-p rounded-xl'>
-        <div className='px-6 pt-6 pb-3 flex flex-col gap-[6px]'>
+        <div className='px-6 pt-6 pb-3 flex flex-col gap-1.5'>
           <p className='text-xl font-medium theme-t-p'>Location settings</p>
-          <div className="text-base-500 flex items-center gap-[6px]">
+          <div className="text-base-500 flex items-center gap-1.5">
             <MapPinIcon className='w-4 h-4 text-p-500' />
             <p>{capitalizeFirstLetter(websiteName!)} {country} {location?.replace(/,/g, ', ')}</p>
           </div>

@@ -80,7 +80,7 @@ const GoogleLocationsDropdown: React.FC<SearchProps<SearchItem>> = ({ items, dis
         {({ index, style }) => (
           <div
             style={style}
-            className='px-2 py-[6px] flex items-center cursor-pointer'
+            className='px-2 py-1.5 flex items-center cursor-pointer'
             onClick={() => handleItemClick(filteredItems[index])}
           >
             <p className='text-xs font-bold'>{filteredItems[index]['countryCode']}</p>
