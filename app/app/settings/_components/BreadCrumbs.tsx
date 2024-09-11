@@ -4,7 +4,7 @@ import Link from "next/link";
 import BackAndForwardButtons from "./BackAndForwardButtons";
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { BreadCrumbItem } from "../layout";
+import { BreadCrumbItem } from "../POEPlayout";
 
 
 const BreadCrumbsSettings = ({

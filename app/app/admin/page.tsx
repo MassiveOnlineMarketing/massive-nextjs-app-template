@@ -2,8 +2,8 @@ import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth';
 import React from 'react'
 
 const page = async () => {
-  const { notAllowedPage, session  } = await isAllowedToViewPage('admin');
-  if (notAllowedPage) return notAllowedPage;
+  // const { notAllowedPage, session  } = await isAllowedToViewPage('admin');
+  // if (notAllowedPage) return notAllowedPage;
 
 
   return (

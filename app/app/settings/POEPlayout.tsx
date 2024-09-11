@@ -52,8 +52,6 @@ export default function Layout(
 
   return (
     <>
-      <BreadCrumbsSettings breadCrumbs={breadCrumbs} />
-      <PageTitle path={pageTitle} />
       <div className='max-w-[918px] mx-auto py-5'>
         {children}
       </div>
