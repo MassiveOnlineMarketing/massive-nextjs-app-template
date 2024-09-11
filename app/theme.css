@@ -24,6 +24,7 @@
     before:absolute 
     before:w-full
     before:h-full 
+    before:pointer-events-none
 
     after:border-base-100 
     after:border-4 
@@ -33,6 +34,7 @@
     after:w-full
     after:h-full 
     after:box-content 
+    after:pointer-events-none
 
     /* group-hover:after:border-4   */
     /* group-hover:after:-top-1 1/4 van border */

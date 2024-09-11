@@ -7,7 +7,7 @@ import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 
-import Topbar from '@/app/_components/navigation/Topbar'
+import Topbar from '@/app/_components/topbar/Topbar'
 import SettingsSideBar from '@/app/_components/navigation/SettingsNavBar'
 
 export default function Layout(
@@ -46,7 +46,7 @@ export default function Layout(
           <Topbar />
         </div>
         {/* Calc height needs to be the height of the top bar above */}
-        <div className='h-[calc(100vh-70px)]'>
+        <div className='h-[calc(100vh-80px)]'>
           {children}
         </div>
       </div>
