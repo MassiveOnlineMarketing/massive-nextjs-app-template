@@ -124,7 +124,7 @@ const CreateWebsiteForm = () => {
           </CardContent>
         </Card>
 
-        <div className='px-6 flex'>
+        <div className='px-6 mb-6 flex'>
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button

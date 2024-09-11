@@ -54,7 +54,7 @@ function DeleteLocationButton({ locationId }: { locationId: string }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            location. All data associated to it's connected tools will be removed from our servers.
+            location. All data associated to it&apos;s connected tools will be removed from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -1,0 +1,42 @@
+@tailwind components;
+
+@layer components{
+  .theme-t-p { @apply text-theme-light-text-primary dark:text-theme-night-text-primary }
+  .theme-t-s { @apply text-theme-light-text-secondary dark:text-theme-night-text-secondary }
+  .theme-t-t { @apply text-theme-light-text-tertiary dark:text-theme-night-text-tertiary }
+  .theme-t-n { @apply text-theme-light-text-notes dark:text-theme-night-text-notes }
+
+  .theme-bg-p { @apply bg-theme-light-background-primary dark:bg-theme-night-background-primary }
+  .theme-bg-s { @apply bg-theme-light-background-secondary dark:bg-theme-night-background-secondary }
+  .theme-bg-w { @apply bg-white dark:bg-base-950 }
+
+  .theme-b-p { @apply border-theme-light-stroke dark:border-theme-night-stroke }
+  .molecule{
+    @apply 
+    relative
+    /* Specify the rounded, before:rounded and after:rounded in the inline styles */
+    bg-white
+    dark:bg-base-950
+
+    before:border-theme-light-stroke
+    before:dark:border-theme-night-stroke
+    before:border
+    before:absolute 
+    before:w-full
+    before:h-full 
+
+    after:border-base-100 
+    after:border-4 
+    after:-top-1 /* 1/4 van border*/
+    after:-left-1 
+    after:absolute 
+    after:w-full
+    after:h-full 
+    after:box-content 
+
+    /* group-hover:after:border-4   */
+    /* group-hover:after:-top-1 1/4 van border */
+    /* group-hover:after:-left-1  */
+  }
+}
+  

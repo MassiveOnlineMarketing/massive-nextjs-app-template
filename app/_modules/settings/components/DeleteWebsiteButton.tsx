@@ -54,7 +54,7 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            website and it's locations. All data associated to it's connected tools will be removed from our servers.
+            website and it&apos;s locations. All data associated to it&apos;s connected tools will be removed from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

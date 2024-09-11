@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '../../settings/components/Setting
 
 const UpdateGoogleKeywordTrackerToolFrom = () => {
   return (
-    <Card className='mb-6'>
+    <Card className='mb-6 mx-6'>
       <CardHeader className='flex justify-between'>
         <p>Google Keyword Tracker Tool</p> <p className='text-green-500'>Active</p>
       </CardHeader>

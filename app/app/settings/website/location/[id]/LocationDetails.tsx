@@ -34,22 +34,23 @@ const LocationDetails = ({
   const country = countries.find(country => country.countryCode === defaultLocation.country);
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
+  console.log('defaultLocation', defaultLocation) 
 
 
   return (
-    <Card className='mb-6'>
+    <Card className='mx-6 mb-6'>
       <CardHeader className='flex justify-between items-center py-3'>
         <p>Location Details</p>
         <div className='flex items-center gap-3'>
           {/* // TODO: add as coppy button in the Card */}
-          <Link href={`/app/settings/website/location/${defaultLocation.id}`} className='px-4 py-[6px] h-fit text-slate-500 border border-light-stroke rounded-[10px]  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
+          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-[6px] h-fit text-slate-500 border border-light-stroke rounded-[10px]  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
           {/* // TODO: add as delete button in the Card */}
           <DeleteLocationButton locationId={defaultLocation.id} />
         </div>
       </CardHeader>
       <CardContent className='grid grid-cols-2 gap-3'>
 
-        <div>
+        <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Website</Label>
           <Button
             variant="outline"
@@ -64,7 +65,7 @@ const LocationDetails = ({
           </Button>
         </div>
 
-        <div>
+        <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Language</Label>
           <Button
             variant="outline"
@@ -79,7 +80,7 @@ const LocationDetails = ({
           </Button>
         </div>
 
-        <div>
+        <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
           <Button
             variant="outline"
@@ -99,7 +100,7 @@ const LocationDetails = ({
           </Button>
         </div>
 
-        <div>
+        <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Country</Label>
           <Button
             variant="outline"

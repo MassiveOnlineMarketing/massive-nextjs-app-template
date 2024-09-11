@@ -12,13 +12,13 @@ const page = async () => {
   const res = await getWebsitesByUser(session.user.id)
 
   return (
-    <>
+    <div className='max-w-[918px] theme-bg-w border theme-b-p rounded-xl'>
       <div className='px-6 pt-6 pb-3 flex flex-col gap-[6px]'>
-        <p className='text-xl font-medium text-p-800'>Add a location</p>
-        <p>What location will you be using to power up your website?</p>
+        <p className='text-xl font-medium theme-t-p'>Add a location</p>
+        <p className='text-sm theme-t-t'>What location will you be using to power up your website?</p>
       </div>
-      <CreateLocationForm location={undefined} usersWebsites={res.websites}/>
-    </>
+      <CreateLocationForm location={undefined} usersWebsites={res.websites} />
+    </div>
   )
 }
 

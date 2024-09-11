@@ -10,7 +10,7 @@ import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 import Topbar from '@/app/_components/navigation/Topbar'
 import SettingsSideBar from '@/app/_components/navigation/SettingsNavBar'
 
-export default function layout(
+export default function Layout(
   { children }: { children: React.ReactNode }
 ) {
 
@@ -37,7 +37,9 @@ export default function layout(
 
   return (
     <>
-      <SettingsSideBar />
+      <div className='mt-[68px]'>
+        <SettingsSideBar />
+      </div>
 
       <div className='px-3 w-full'>
         <div className='py-4'>

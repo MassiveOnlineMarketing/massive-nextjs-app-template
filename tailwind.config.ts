@@ -11,44 +11,50 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'p-25': '#F8F8FF',
-        'p-50': '#E9EAFF',
-        'p-100': '#DADCFF',
-        'p-200': '#B4B9FF',
-        'p-300': '#9C97FF',
-        'p-400': '#907EFE',
-        'p-500': '#7857FE',
-        'p-600': '#6947DB',
-        'p-700': '#422693',
-        'p-800': '#201755',
-        'p-900': '#170E31',
-        'p-1000': '#0A0118',
-        'p-1100': '#070114',
+        // Primary/ brand colors
+        'base-50': '#F8F8FF',
+        'base-100': '#F2F3FF',
+        'base-200': '#DFE5FA',
+        'base-300': '#B4B9FF',
+        'base-400': '#907EFE',
+        'base-500': '#7857FE',
+        'base-600': '#6947DB',
+        'base-700': '#422693',
+        'base-800': '#2C3462',
+        'base-900': '#170E31',
+        'base-950': '#070114',
 
-        'p-1200': '#04010D',
 
-        //* Light Mode Colors
+        //* Light mode 
         // Text
-        'light-text-dark': '#201755',
-        'light-text-light': '#475569',
+        'theme-light-text-primary':         '#2C3462', // base-800
+        'theme-light-text-secondary':       '#475569', // slate-600
+        'theme-light-text-tertiary':        '#64748B', // slate-500
+        'theme-light-text-notes':           '#94A3B8', // slate-400
 
         // Background
-
+        'theme-light-background-primary':   '#F2F3FF', // base-100
+        'theme-light-background-secondary': '#F8F8FF', // base-50
 
         // Stroke
-        'light-stroke': '#DFE5FA',
+        'theme-light-stroke':                '#DFE5FA', // base-200
 
 
-        //* Dark Mode Colors
+        //* Night mode
         // Text
-        "dark-text-dark": 'rgba(223,229,250,0.35)',
-        "dark-text-light": 'rgba(223,229,250,0.90)',
+        'theme-night-text-primary':          'rgba(223,229,250,0.90)',
+        'theme-night-text-secondary':        'rgba(223,229,250,0.75)',
+        'theme-night-text-tertiary':         'rgba(223,229,250,0.35)',
+        'theme-night-text-notes':            'rgba(223,229,250,0.5)',
 
         // Background
-        "dark-bg-light": 'rgba(223,229,250,0.02)',
-
+        'theme-night-background-primary':    'rgba(223,229,250,0.02)',
+        'theme-night-background-secondary':  'rgba(223,229,250,0.02)',
+        
         // Stroke
-        "dark-stroke": 'rgba(223,229,250,0.09)',
+        'theme-night-stroke':                'rgba(223,229,250,0.09)',
+
+
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

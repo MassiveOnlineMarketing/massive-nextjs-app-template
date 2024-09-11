@@ -94,7 +94,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onFormSubmit)}>
-        <Card className='mx-6 mb-5'>
+        <Card className='mb-6'>
           <CardHeader className='flex flex-row items-center justify-between'>
             <div className='flex flex-row items-center gap-[6px] text-p-800'>
               <GlobeAltIcon className='w-4 h-4 ' />
@@ -144,15 +144,31 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
           </CardContent>
         </Card>
 
-        <div className='px-6 flex'>
-          <FormError message={error} />
-          <FormSuccess message={success} />
+        <FormError message={error} />
+        <FormSuccess message={success} />
+
+        <div className='flex ml-auto'>
+          <Button
+            disabled={isPending}
+            onClick={() => form.reset({
+              id: defaultValues.id,
+              websiteName: defaultValues.websiteName,
+              domainUrl: defaultValues.domainUrl,
+              gscUrl: defaultValues.gscUrl || undefined,
+            })}
+            type="reset"
+            size='default'
+            variant='outline'
+            className='ml-auto'
+          >
+            Cancel
+          </Button>
           <Button
             disabled={isPending}
             type="submit"
             size='default'
             variant='outline'
-            className='ml-auto'
+            className='ml-2'
           >
             {isPending ? "Updating..." : "Update"}
           </Button>
@@ -170,7 +186,7 @@ interface GoogleSearchConsolePropertyInputSelectorProps {
   isPending: boolean;
 }
 // ! if updating this component, make sure to also update the CreateWebsiteForm component
-const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsolePropertyInputSelectorProps>  = ({ hasAcces, isLoading, sites, form, isPending }) => {
+const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsolePropertyInputSelectorProps> = ({ hasAcces, isLoading, sites, form, isPending }) => {
 
   if (!hasAcces) {
     return (
@@ -211,7 +227,7 @@ const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsoleProp
       name="gscUrl"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
+          <FormLabel className='flex items-center gap-[6px]'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-base-500' /></FormLabel>
           <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
             <FormControl>
               <FormInputSelectTrigger disabled={isPending}>

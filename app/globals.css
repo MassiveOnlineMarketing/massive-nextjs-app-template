@@ -4,6 +4,7 @@
 
 
 
+
 /* Target the scrollbar track */
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px; /* Default width of the scrollbar */
@@ -11,7 +12,7 @@
 
 /* Scrollbar track */
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-p-25 dark:bg-p-1100
+  @apply bg-base-50 dark:bg-base-950
    /* Track color */
 }
 

@@ -83,7 +83,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card className='mb-5 mx-6'>
+        <Card className='mx-6 mb-6'>
           <CardHeader className='flex flex-row items-center gap-[6px]'>
             <MapPinIcon className='w-4 h-4 text-p-800' />
             <p>Location Details</p>
@@ -204,14 +204,14 @@ const CreateLocationForm = ({ location, usersWebsites }: {
               )}
             />
 
-            <div>
+            <div className='flex flex-col'>
               <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className={cn("w-[412px] justify-between items-center ")}
+                    className={cn("w-[412px] justify-between items-center mt-1")}
                   >
                     {location?.location ? (
                       <>
@@ -304,14 +304,16 @@ const CreateLocationForm = ({ location, usersWebsites }: {
           </CardContent>
         </Card>
 
-        <div className='mx-6 flex'>
+        <div className='flex mx-6 mb-6'>
           <Button
             type="submit"
             disabled={isPending}
             className="ml-auto"
             variant="outline"
             size="default"
-          >submit</Button>
+          >
+            Create
+          </Button>
         </div>
       </form>
     </Form>

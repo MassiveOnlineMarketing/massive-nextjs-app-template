@@ -85,6 +85,7 @@ export async function deleteLocation(id: string): Promise<{ deletedLocation?: Lo
       }
       try {
         const deletedLocation = await deleteLocationController(id);
+        revalidatePath(`/app/settings/website/${deletedLocation.websiteId}`);
         return { deletedLocation };
       } catch (error) {
         if (error instanceof NotFoundError) {

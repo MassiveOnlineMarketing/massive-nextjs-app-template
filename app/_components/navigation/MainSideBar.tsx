@@ -8,7 +8,7 @@ const MainSideBar = () => {
   const websites = useWebsiteDetailsStore((state) => state.websites)
 
   return (
-    <div className='min-w-[150px]  bg-green-50'>
+    <div className='min-w-[150px] h-full '>
       {websites?.map((website) => {
         return (
           <div key={website.id}>

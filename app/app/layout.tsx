@@ -7,10 +7,19 @@ export default function layout(
 ) {
   return (
     <Providers>
-      <div className='flex min-h-screen bg-p-25 dark:bg-p-1100'>
-        <MainSideBar />
+      {/* TODO: FIX? RIGHT BG clolro */}
+      <div className='relative flex min-h-screen bg-base-50 dark:bg-base-950'>
+        <div className='h-[68px] pt-4 pl-2 pb-2 absolute top-0 left-4 flex items-center gap-[10px]'>
+          <div className='w-[52px] h-[52px] theme-bg-w molecule rounded-[10px] before:rounded-[10px] after:rounded-[10px]'></div>
+          <p>Massive</p>
+        </div>
+
+        <div className='mt-[68px]'>
+          <MainSideBar />
+        </div>
 
         {children}
+      
       </div>
     </Providers>
   )

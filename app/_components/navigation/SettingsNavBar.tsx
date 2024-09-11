@@ -36,7 +36,7 @@ const SettingsSideBar = () => {
   }
 
   return (
-    <div className='p-4 w-[300px] bg-red-50'>
+    <div className='p-4 w-[300px] h-full'>
       <ThemeSwitcher />
 
       <div className='pb-6'>

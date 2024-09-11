@@ -13,6 +13,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 import UiCard from './UiCard'
 import KwDetailCard from './KwDetailCard'
+import Theme from './Theme'
+import Tiers from './Tiers'
 
 const Page = () => {
   const { toast } = useToast()
@@ -307,6 +309,15 @@ const Page = () => {
           <KwDetailCard />
         </div>
       </div>
+
+      <div className='p-6'>
+        <Theme />
+      </div>
+
+      <div className='p-6'>
+        <Tiers />
+      </div>
+
     </div >
   )
 }

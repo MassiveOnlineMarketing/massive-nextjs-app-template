@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from "@/app/_utils/stringUtils"
 import UpdateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/UpdateGoogleKeywordTrackerToolFrom"
 import LocationDetails from "./LocationDetails"
 import { MapPinIcon } from "@heroicons/react/20/solid"
+import Tiers from "../../../../ui/Tiers"
 
 const page = async ({
   params: { id }
@@ -28,7 +29,7 @@ const page = async ({
 
   const websiteRes = await getWebsitesByUser(session.user.id)
 
-  
+
   const website = websiteRes.websites?.find(website => website.id === res.location?.websiteId)
 
   const websiteName = website?.websiteName
@@ -38,17 +39,19 @@ const page = async ({
 
   return (
     <>
-      <div className='px-6 pt-6 pb-3 flex flex-col gap-[6px]'>
-        <p className='text-xl font-medium text-p-800'>Location Settings</p>
-        <div className="text-p-500 flex items-center gap-[6px]">
-          <MapPinIcon className='w-4 h-4 text-p-500' />
-          <p>{capitalizeFirstLetter(websiteName!)} {country} {location?.replace(/,/g, ', ')}</p>
+      <div className='max-w-[918px] theme-bg-w border theme-b-p rounded-xl'>
+        <div className='px-6 pt-6 pb-3 flex flex-col gap-[6px]'>
+          <p className='text-xl font-medium theme-t-p'>Location settings</p>
+          <div className="text-base-500 flex items-center gap-[6px]">
+            <MapPinIcon className='w-4 h-4 text-p-500' />
+            <p>{capitalizeFirstLetter(websiteName!)} {country} {location?.replace(/,/g, ', ')}</p>
+          </div>
         </div>
-      </div>
 
-      <div className="px-6 pt-3">
-        <LocationDetails defaultLocation={res.location} usersWebsites={websiteRes.websites}/>
-        <UpdateGoogleKeywordTrackerToolFrom />
+        <div>
+          <LocationDetails defaultLocation={res.location} usersWebsites={websiteRes.websites} />
+          <UpdateGoogleKeywordTrackerToolFrom />
+        </div>
       </div>
     </>
   )

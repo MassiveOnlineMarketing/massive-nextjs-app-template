@@ -80,8 +80,8 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
 
         <Card className='mx-6 mb-5'>
           <CardHeader className='flex flex-row items-center gap-[6px]'>
-            <UserCircleIcon className='w-4 h-4 text-p-800' />
-            <p className='font-medium text-p-800'>Profile</p>
+            <UserCircleIcon className='w-4 h-4' />
+            <p className='font-medium'>Profile</p>
           </CardHeader>
           <CardContent className='grid grid-cols-2 gap-3'>
             <FormField
@@ -209,7 +209,7 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
             variant='outline'
             className='ml-auto'
           >
-            reset
+            Cancel
           </Button>
           <Button
             disabled={isPending}
@@ -218,7 +218,7 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
             variant='outline'
             className='ml-2'
           >
-            {isPending ? "Saving..." : "Save Changes"}  
+            {isPending ? "Saving..." : "Save"}  
           </Button>
         </div>
 
