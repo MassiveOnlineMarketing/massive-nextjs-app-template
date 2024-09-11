@@ -59,6 +59,30 @@ export class LocationRepository implements ILocationRepository {
     )
   }
 
+  async delete(id: string): Promise<Location> {
+    return await startSpan(
+      { name: "LocationRepository > delete" },
+      async () => {
+        try {
+          const deleted = await db.location.delete({
+            where: {
+              id,
+            },
+          });
+
+          if (deleted) {
+            return deleted;
+          } else {
+            throw new DatabaseOperationError("Location not deleted");
+          }
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    )
+  }
+
   async getById(id: string): Promise<Location | null> {
     return await startSpan(
       { name: "LocationRepository > getById" },

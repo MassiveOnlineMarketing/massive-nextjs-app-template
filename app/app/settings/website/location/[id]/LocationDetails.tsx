@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader } from '@/app/_modules/settings/component
 import { Button } from '@/app/_components/ui/button'
 
 import { ClipboardDocumentIcon, TrashIcon } from '@heroicons/react/20/solid'
+import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
 
 
 const LocationDetails = ({
@@ -33,6 +34,8 @@ const LocationDetails = ({
   const country = countries.find(country => country.countryCode === defaultLocation.country);
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
+
+
   return (
     <Card className='mb-6'>
       <CardHeader className='flex justify-between items-center py-3'>
@@ -41,7 +44,7 @@ const LocationDetails = ({
           {/* // TODO: add as coppy button in the Card */}
           <Link href={`/app/settings/website/location/${defaultLocation.id}`} className='px-4 py-[6px] h-fit text-slate-500 border border-light-stroke rounded-[10px]  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
           {/* // TODO: add as delete button in the Card */}
-          <button className='px-4 py-[6px] h-fit text-red-500 border border-red-500 rounded-[10px]'><TrashIcon className='w-4 h-4' /></button>
+          <DeleteLocationButton locationId={defaultLocation.id} />
         </div>
       </CardHeader>
       <CardContent className='grid grid-cols-2 gap-3'>

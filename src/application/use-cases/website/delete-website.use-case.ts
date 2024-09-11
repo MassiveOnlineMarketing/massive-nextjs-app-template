@@ -8,6 +8,15 @@ import { User } from "@/src/entities/models/user";
 import { Website } from "@/src/entities/models/website";
 
 
+/**
+ * Deletes a website.
+ * 
+ * @param id - The ID of the website to be deleted.
+ * @param user - The user performing the deletion.
+ * @throws {NotFoundError} If the website with the given ID is not found.
+ * @throws {ForbiddenError} If the user does not have permission to delete the website.
+ * @returns A promise that resolves to the deleted website.
+ */
 export async function deleteWebsiteUseCase(id: string, user: User): Promise<Website> {
   return await startSpan({ name: "deleteWebsite Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");

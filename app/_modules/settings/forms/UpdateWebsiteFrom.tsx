@@ -2,23 +2,24 @@
 
 import React, { useState, useTransition } from 'react'
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 import { z } from 'zod';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { formInputUpdateWebsiteSchema } from '@/src/entities/models/website';
-import { deleteWebsite, updateWebsite } from '@/app/_actions/website.actions';
+import { updateWebsite } from '@/app/_actions/website.actions';
 
 import { Form, FormControl, FormError, FormSuccess, FormField, FormItem, FormLabel, FormMessage, FormInputField, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../components/form';
 
+import DeleteWebsiteButton from '../components/DeleteWebsiteButton';
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../components/SettingsCard';
 
-import { InformationCircleIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 type PythonApiSite = {
   permissionLevel: string;
@@ -33,7 +34,6 @@ type DefaultValues = {
 }
 
 const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) => {
-  const router = useRouter()
   // TODO: search console access, also check ui styles
   const HAS_ACCESS = true
 
@@ -61,7 +61,6 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const removeWebsiteFromStore = useWebsiteDetailsStore(state => state.deleteWebsite);
   const updateWebsiteInStore = useWebsiteDetailsStore(state => state.updateWebsite);
 
   const form = useForm<z.infer<typeof formInputUpdateWebsiteSchema>>({
@@ -92,26 +91,6 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
     })
   }
 
-  const onDelete = async () => {
-    setError("");
-    setSuccess("");
-
-    startTransition(async () => {
-      const res = await deleteWebsite(defaultValues.id);
-
-      if (res.error) {
-        setError(res.error);
-      }
-
-      if (res.deletedWebsite) {
-        // TODO: Toast notification
-        // TODO: redirect to websites page
-        removeWebsiteFromStore(res.deletedWebsite.id);
-        router.push('/app/settings/website')
-      }
-    })
-  }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onFormSubmit)}>
@@ -122,7 +101,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
               <p className='font-medium'>Website Settings</p>
             </div>
             {/* // TODO: add as delete button in the Card */}
-            <button onClick={onDelete} type='button' className='px-4 py-[6px] h-fit text-red-500 border border-red-500 rounded-[10px]'><TrashIcon className='w-4 h-4' /></button>
+            <DeleteWebsiteButton websiteId={defaultValues.id} />
           </CardHeader>
           <CardContent className='space-y-3'>
             <FormField

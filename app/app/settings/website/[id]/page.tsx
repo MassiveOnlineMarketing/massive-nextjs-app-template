@@ -30,9 +30,25 @@ const page = async ({
   }
 
   return (
-    <>
-      <UpdateWebsiteForm defaultValues={defaultValues} />
-      <div className='mx-6 border-t mt-10 pt-6'>
+    <div className='flex gap-4'>
+      <div className='max-w-[918px] w-full bg-white'>
+        <div className='p-6 flex flex-col gap-1'>
+          <p className='text-xl font-medium text-p-800'>Website</p>
+          <p>Stel je website en locatie settings bij voor de Keyword Tracker</p>
+        </div>
+        <UpdateWebsiteForm defaultValues={defaultValues} />
+      </div>
+
+      <div className=' bg-white border-light-stroke p-6'>
+        locations
+      </div>
+    </div>
+  )
+}
+
+export default page
+
+      {/* <div className='mx-6 border-t mt-10 pt-6'>
         <div className='flex justify-between'>
           <h1>Locations</h1>
           <p>Add</p>
@@ -46,9 +62,4 @@ const page = async ({
           </Link>
         ))}
       </div>
-      <pre className='mt-10'>{JSON.stringify(website, null, 2)}</pre>
-    </>
-  )
-}
-
-export default page
+      <pre className='mt-10'>{JSON.stringify(website, null, 2)}</pre> */}

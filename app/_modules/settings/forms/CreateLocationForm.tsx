@@ -25,6 +25,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/app/_components/ui/po
 import { Button } from '@/app/_components/ui/button'
 
 import { MapPinIcon } from '@heroicons/react/20/solid'
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
 
 const CreateLocationForm = ({ location, usersWebsites }: {
   location: Location | undefined, usersWebsites: Website[] | undefined;
@@ -35,11 +36,12 @@ const CreateLocationForm = ({ location, usersWebsites }: {
   const [isPending, startTransition] = useTransition();
   const [selectedLocationDisplayTitle, setSelectedLocationDisplayTitle] = useState<LocationLocationOptions | null>(null);
 
-  const languages = useMemo(() => LOCATION_LANGUAGE_OPTIONS, [LOCATION_LANGUAGE_OPTIONS]);
-  const countries = useMemo(() => LOCATION_COUNTRY_OPTIONS, [LOCATION_COUNTRY_OPTIONS]);
-  const locations = useMemo(() => LOCATION_LOCATION_OPTIONS, [LOCATION_LOCATION_OPTIONS]);
-  const displayLocations = useMemo(() => LOCATION_LOCATION_OPTIONS.filter((location) => location.targetType !== 'Country'), [LOCATION_LOCATION_OPTIONS]);
+  const languages = useMemo(() => LOCATION_LANGUAGE_OPTIONS, []);
+  const countries = useMemo(() => LOCATION_COUNTRY_OPTIONS, []);
+  const locations = useMemo(() => LOCATION_LOCATION_OPTIONS, []);
+  const displayLocations = useMemo(() => LOCATION_LOCATION_OPTIONS.filter((location) => location.targetType !== 'Country'), []);
 
+  const addLocation = useWebsiteDetailsStore(state => state.addLocation)
 
   const form = useForm<z.infer<typeof formInputCreateLocationSchema>>({
     resolver: zodResolver(formInputCreateLocationSchema),
@@ -72,9 +74,10 @@ const CreateLocationForm = ({ location, usersWebsites }: {
 
       if (res.createdLocation) {
         setSuccess('Location created successfully');
+        console.log('created location', res.createdLocation)
+        addLocation(res.createdLocation);
         form.reset();
       }
-      // res checks
     })
   }
   return (

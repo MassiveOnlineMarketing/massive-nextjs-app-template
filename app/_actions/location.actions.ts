@@ -1,6 +1,8 @@
 'use server';
 
 import { captureException, withServerActionInstrumentation } from "@sentry/nextjs";
+import { revalidatePath } from "next/cache";
+import { auth } from "../api/auth/[...nextauth]/_nextAuth";
 
 import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth";
 import { DatabaseOperationError, InputParseError, NotFoundError, ValidationError } from "@/src/entities/errors/common";
@@ -10,9 +12,8 @@ import { Location, formInputCreateLocationSchema, formInputUpdateLocationSchema 
 
 import { createLocationController } from "@/src/interface-adapters/controllers/location/create-location.controller";
 import { updateLocationController } from "@/src/interface-adapters/controllers/location/update-location.controller";
-import { auth } from "../api/auth/[...nextauth]/_nextAuth";
+import { deleteLocationController } from "@/src/interface-adapters/controllers/location/delete-location.controller";
 import { getLocationController } from "@/src/interface-adapters/controllers/location/get-location.controller";
-import { revalidatePath } from "next/cache";
 
 
 
@@ -72,6 +73,37 @@ export async function updateLocation(formData: z.infer<typeof formInputUpdateLoc
     }
   )
 }
+
+export async function deleteLocation(id: string): Promise<{ deletedLocation?: Location, error?: string }> {
+  return await withServerActionInstrumentation(
+    'deleteLocation',
+    { recordResponse: true },
+    async () => {
+      const session = await auth();
+      if (!session) {
+        return { error: "Must be logged in to delete a location" };
+      }
+      try {
+        const deletedLocation = await deleteLocationController(id);
+        return { deletedLocation };
+      } catch (error) {
+        if (error instanceof NotFoundError) {
+          return { error: "Location not found" };
+        } else if (error instanceof ForbiddenError){
+          return { error: "User does not own this website location" };
+        } else if (error instanceof UnauthenticatedError) {
+          return { error: "Must be logged in to delete a location" };
+        } else if (error instanceof DatabaseOperationError) {
+          return { error: "Error deleting location" };
+        }
+        console.log('deleteLocation error: ', error)
+        captureException(error);
+        return { error: "An error happened. The developers have been notified. Please try again later." };
+      }
+    }
+  );
+}
+
 
 export async function getLocation(id: string): Promise<{ location?: Location, error?: string }> {
   return await withServerActionInstrumentation(

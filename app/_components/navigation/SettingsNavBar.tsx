@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
-import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
-
 import { cn } from '@/app/_components/utils';
-import { UserCircleIcon } from '@heroicons/react/20/solid';
-import { LinkIcon } from '@heroicons/react/24/outline';
 import ThemeSwitcher from '@/app/_components/ui/ThemeSwitcher';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon } from '@heroicons/react/20/solid';
 
 type NavItem = {
   href: string,
@@ -20,29 +18,9 @@ type NavItem = {
   icon: React.ElementType
 }
 
-const SettingsNavBar = () => {
+const SettingsSideBar = () => {
   const router = useRouter()
   const websiteStore = useWebsiteDetailsStore(state => state.websites)
-  const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
-  const user = useCurrentUser()
-
-  useEffect(() => {
-    console.log('websiteStore', websiteStore)
-    const fetchWebsites = async () => {
-      if (!user) return
-      const res = await getWebsiteWithLocationByUser(user.id)
-      console.log('fetch initial websiteStore', res)
-      if (res.error) {
-        console.log('error', res.error)
-      }
-
-      if (res.website) {
-        setInitialWebsiteDetails(res.website)
-      }
-    }
-
-    fetchWebsites()
-  }, [])
 
   const navItems = [
     { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon },
@@ -58,7 +36,7 @@ const SettingsNavBar = () => {
   }
 
   return (
-    <div className='p-4'>
+    <div className='p-4 w-[300px] bg-red-50'>
       <ThemeSwitcher />
 
       <div className='pb-6'>
@@ -138,4 +116,4 @@ const Svg = () => {
   )
 }
 
-export default SettingsNavBar
+export default SettingsSideBar
