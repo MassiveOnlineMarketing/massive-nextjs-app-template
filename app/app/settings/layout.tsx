@@ -46,7 +46,7 @@ export default function Layout(
           <Topbar />
         </div>
         {/* Calc height needs to be the height of the top bar above */}
-        <div className='h-[calc(100vh-85px)]'>
+        <div className='h-[calc(100vh-92px)]'>
           {children}
         </div>
       </div>

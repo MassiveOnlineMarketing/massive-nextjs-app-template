@@ -12,7 +12,7 @@ export default function layout(
 
       <div className='h-fit w-full bg-white dark:bg-p-1100 rounded-t-xl border border-light-stroke dark:border-dark-stroke'>
         {/* Calc height needs to be the height of the top bar above */}
-        <div className='h-[calc(100vh-85px)] custom-scrollbar -mr-3 pr-[3px]'>
+        <div className='h-[calc(100vh-79px)] custom-scrollbar -mr-3 pr-[3px]'>
           {children}
         </div>
       </div>

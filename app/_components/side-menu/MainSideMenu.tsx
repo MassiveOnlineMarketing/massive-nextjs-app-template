@@ -10,8 +10,10 @@ const MainSideMenu = () => {
   const websites = useWebsiteDetailsStore((state) => state.websites)
 
   return (
-    <div className='w-[64px] flex flex-col items-center h-full ml-[18px] mr-[10px] mb-4 group hover:w-[328px] hover:block'>
-      <WebsiteSelectionButton websites={websites} />
+    <div className='w-[64px] flex flex-col items-center h-full pl-[18px] pr-[10px] pb-4 group hover:w-[328px] hover:block'>
+      <div className='py-4'>
+        <WebsiteSelectionButton websites={websites} />
+      </div>
       <NavLabel>label</NavLabel>
       <NavItem>1</NavItem>
 

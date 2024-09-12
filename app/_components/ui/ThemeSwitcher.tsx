@@ -20,7 +20,7 @@ const ThemeSwitcher = () => {
   }
 
   return (
-    <button onClick={handleTheme}>
+    <button onClick={handleTheme} className="text-nowrap">
       {theme === "dark" ? "Light Mode" : "Dark Mode"}
     </button>
   );  
