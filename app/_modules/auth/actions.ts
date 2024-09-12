@@ -14,7 +14,7 @@ import { newPasswordController } from "@/src/interface-adapters/controllers/auth
 import { newVerificationController } from "@/src/interface-adapters/controllers/auth/new-verification.controller";
 import { resetController } from "@/src/interface-adapters/controllers/auth/reset.controller";
 
-import { auth, signOut } from "@/app/api/auth/[...nextauth]/_nextAuth";
+import { auth, signOut } from "@/app/_modules/auth/_nextAuth";
 import { ExtendedUser } from "@/next-auth";
 import { formInputSignUpSchema, formInputSignInSchema, formInputNewPasswordSchema } from "@/src/entities/models/user";
 
