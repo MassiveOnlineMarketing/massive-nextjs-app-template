@@ -2,7 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { getInjection } from "@/di/container";
 
 import { AuthError } from "next-auth";
-import { signIn } from "@/app/api/auth/[...nextauth]/_nextAuth";
+import { signIn } from "@/app/_modules/auth/_nextAuth";
 
 
 /**

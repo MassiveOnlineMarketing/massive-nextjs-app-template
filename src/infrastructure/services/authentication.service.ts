@@ -9,7 +9,7 @@ import { Session } from "next-auth";
 import { ExtendedUser } from "@/next-auth";
 import { User } from "@/src/entities/models/user";
 
-import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
+import { auth } from "@/app/_modules/auth/_nextAuth";
 
 import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
 import type { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
