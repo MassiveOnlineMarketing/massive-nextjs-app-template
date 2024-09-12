@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth"
+import { auth } from "@/app/_modules/auth/_nextAuth"
 
 import { getLocation } from "@/app/_actions/location.actions"
 import { getWebsitesByUser } from "@/app/_actions/website.actions"
@@ -10,7 +10,6 @@ import { capitalizeFirstLetter } from "@/app/_utils/stringUtils"
 import UpdateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/UpdateGoogleKeywordTrackerToolFrom"
 import LocationDetails from "./LocationDetails"
 import { MapPinIcon } from "@heroicons/react/20/solid"
-import Tiers from "../../../../ui/Tiers"
 
 const page = async ({
   params: { id }
