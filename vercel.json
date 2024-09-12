@@ -1,0 +1,6 @@
+{
+    "build": {
+      "cache": true,
+      "timeout": 600
+    }
+  }
