@@ -2,7 +2,7 @@
 
 import { captureException, withServerActionInstrumentation } from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
-import { auth } from "../api/auth/[...nextauth]/_nextAuth";
+import { auth } from "@/app/_modules/auth/_nextAuth";
 
 import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth";
 import { DatabaseOperationError, InputParseError, NotFoundError, ValidationError } from "@/src/entities/errors/common";

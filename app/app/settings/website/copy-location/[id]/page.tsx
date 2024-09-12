@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth"
+import { auth } from "@/app/_modules/auth/_nextAuth"
 
 import { getLocation } from "@/app/_actions/location.actions"
 import { getWebsitesByUser } from "@/app/_actions/website.actions"

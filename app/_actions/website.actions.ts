@@ -14,7 +14,7 @@ import { updateWebsiteController } from "@/src/interface-adapters/controllers/we
 import { deleteWebsiteController } from "@/src/interface-adapters/controllers/website/delete-website.controller";
 import { getWebsiteWithLocationController } from "@/src/interface-adapters/controllers/website/get-website-with-location.controller";
 
-import { auth } from "@/app/api/auth/[...nextauth]/_nextAuth";
+import { auth } from "@/app/_modules/auth/_nextAuth";
 import { getWebsiteWithLocationByUserController } from "@/src/interface-adapters/controllers/website/get-website-with-location-by-user.controller";
 import { getWebsitesByUserController } from "@/src/interface-adapters/controllers/website/get-websites-by-user.controller";
 

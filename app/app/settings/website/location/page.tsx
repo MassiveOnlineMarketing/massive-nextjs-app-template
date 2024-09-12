@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { auth } from '@/app/api/auth/[...nextauth]/_nextAuth';
+import { auth } from '@/app/_modules/auth/_nextAuth';
 import { getWebsitesByUser } from '@/app/_actions/website.actions';
 
 import CreateLocationForm from '@/app/_modules/settings/forms/CreateLocationForm';
