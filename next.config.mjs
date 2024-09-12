@@ -3,9 +3,6 @@ import webpack from "webpack";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   webpack: (config, { isServer }) => {
     // Add @svgr/webpack loader for SVG files
     config.module.rules.push({
