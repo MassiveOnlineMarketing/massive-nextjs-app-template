@@ -2,14 +2,16 @@
 
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import React from 'react'
+import WebsiteSelectionButton from './WebsiteSelectionButton';
 
-const MainSideBar = () => {
+const MainSideMenu = () => {
 
   const websites = useWebsiteDetailsStore((state) => state.websites)
 
   return (
-    <div className='min-w-[150px] h-full '>
-      {websites?.map((website) => {
+    <div className='min-w-[328px] h-full pl-[18px] pr-[10px] pb-4'>
+      <WebsiteSelectionButton websites={websites} />
+      {/* {websites?.map((website) => {
         return (
           <div key={website.id}>
             <p className='text-sm'>Website: </p>
@@ -24,9 +26,9 @@ const MainSideBar = () => {
             })}
           </div>
         )
-      })}
+      })} */}
     </div>
   )
 }
 
-export default MainSideBar
+export default MainSideMenu

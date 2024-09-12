@@ -41,12 +41,12 @@ export default function Layout(
         <SettingsSideBar />
       </div>
 
-      <div className='px-3 w-full'>
+      <div className='pr-3 w-full'>
         <div className='py-4'>
           <Topbar />
         </div>
         {/* Calc height needs to be the height of the top bar above */}
-        <div className='h-[calc(100vh-80px)]'>
+        <div className='h-[calc(100vh-85px)]'>
           {children}
         </div>
       </div>
