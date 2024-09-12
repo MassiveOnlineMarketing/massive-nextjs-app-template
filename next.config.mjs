@@ -1,11 +1,9 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import webpack from "webpack";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-      ignoreDuringBuilds: true,
-  },
   webpack: (config, { isServer }) => {
     // Add @svgr/webpack loader for SVG files
     config.module.rules.push({
@@ -31,6 +29,13 @@ const nextConfig = {
       errorDetails: true,
       logging: "verbose",
     };
+
+    // Add BundleAnalyzerPlugin if ANALYZE environment variable is set
+    if (process.env.ANALYZE && !config.plugins.some(plugin => plugin instanceof BundleAnalyzerPlugin)) {
+      config.plugins.push(new BundleAnalyzerPlugin({
+        analyzerPort: 8889
+      }));
+    }
 
     return config;
   },

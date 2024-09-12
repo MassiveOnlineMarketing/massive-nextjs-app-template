@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "NODE_OPTIONS='--max_old_space_size=4096' next build",
     "start": "next start",
+    "analyze": "ANALYZE=true npm run build",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
@@ -66,6 +67,7 @@
     "prisma": "^5.16.1",
     "tailwindcss": "^3.4.10",
     "typescript": "^5",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

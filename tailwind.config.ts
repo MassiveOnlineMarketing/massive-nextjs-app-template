@@ -89,6 +89,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "modal-opacity-in": "modalOpacityIn 0.5s ease forwards",
         "modal-opacity-out": "modalOpacityOut 0.5s ease forwards",
+        'pulse-fast': 'pulse 0.2s linear infinite',
       },
       borderRadius: {
         'lg': '0.625rem'
