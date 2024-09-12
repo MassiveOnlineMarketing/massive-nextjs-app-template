@@ -4,6 +4,7 @@ import { MapPinIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import React from 'react'
 
+
 const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
 
   if (!website.location || website.location.length === 0) {
@@ -14,44 +15,7 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
     )
   }
 
-  // Step 1: Sort the locations
-  const sortedLocations = website.location.sort((a, b) => {
-    if (a.country > b.country) {
-      return 1;
-    }
-    if (a.country < b.country) {
-      return -1;
-    }
-
-    // If countries are the same, sort by location
-    if (a.location === null && b.location === null) {
-      return 0;
-    }
-    if (a.location === null) {
-      return -1;
-    }
-    if (b.location === null) {
-      return 1;
-    }
-    if (a.location > b.location) {
-      return 1;
-    }
-    if (a.location < b.location) {
-      return -1;
-    }
-    return 0;
-  });
-
-  // Step 2: Group by country, put locations in an array under the country key
-  const groupedByCountry = sortedLocations.reduce((acc, loc) => {
-    const country = loc.country || 'Unknown';
-    if (!acc[country]) {
-      acc[country] = [];
-    }
-    acc[country].push(loc);
-    return acc;
-  }, {} as Record<string, typeof website.location>);
-
+  const groupedByCountry = sortAndGroupWebsiteWithLocations(website) || {};
 
   return (
     <Card>
@@ -99,6 +63,53 @@ const Card = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   )
+}
+
+
+function sortAndGroupWebsiteWithLocations(website: WebsiteWithLocation | undefined) {
+  if (!website?.location) {
+    return;
+  }
+
+  // Step 1: Sort the locations
+  const sortedLocations = website.location.sort((a, b) => {
+    if (a.country > b.country) {
+      return 1;
+    }
+    if (a.country < b.country) {
+      return -1;
+    }
+
+    // If countries are the same, sort by location
+    if (a.location === null && b.location === null) {
+      return 0;
+    }
+    if (a.location === null) {
+      return -1;
+    }
+    if (b.location === null) {
+      return 1;
+    }
+    if (a.location > b.location) {
+      return 1;
+    }
+    if (a.location < b.location) {
+      return -1;
+    }
+    return 0;
+  });
+
+  // Step 2: Group by country, put locations in an array under the country key
+  const groupedByCountry = sortedLocations.reduce((acc, loc) => {
+    const country = loc.country || 'Unknown';
+    if (!acc[country]) {
+      acc[country] = [];
+    }
+    acc[country].push(loc);
+    return acc;
+  }, {} as Record<string, typeof website.location>);
+
+  return groupedByCountry;
 }
 
 export default LocationsCard
