@@ -8,7 +8,7 @@ import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 
 import Topbar from '@/app/_components/topbar/Topbar'
-import SettingsSideBar from '@/app/_components/navigation/SettingsNavBar'
+import SettingsSideMenu from '@/app/_components/side-menu/SettingsSideMenu'
 
 export default function Layout(
   { children }: { children: React.ReactNode }
@@ -38,7 +38,7 @@ export default function Layout(
   return (
     <>
       <div className='mt-[68px]'>
-        <SettingsSideBar />
+        <SettingsSideMenu />
       </div>
 
       <div className='pr-3 w-full'>

@@ -59,9 +59,9 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className='cursor-pointer w-full molecule my-4 flex items-center rounded-lg before:rounded-lg after:rounded-lg before:top-0 before:left-0 '>
-          <div className='w-12 h-12 m-2 rounded-[8px] bg-green-50'></div>
-          <p>test</p>
+        <div className='cursor-pointer group-hover:w-full w-fit molecule my-4 flex items-center rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
+          <div className='w-12 h-12 m-1 group-hover:m-2 rounded-[8px] bg-green-50'></div>
+          <p className='group-hover:block hidden'>test</p>
         </div>
       </PopoverTrigger>
       <PopoverContent className='w-[500px] h-[200px] translate-x-4 theme-bg-w grid grid-cols-2 gap-2'>

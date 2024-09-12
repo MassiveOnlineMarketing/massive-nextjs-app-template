@@ -10,8 +10,11 @@ const MainSideMenu = () => {
   const websites = useWebsiteDetailsStore((state) => state.websites)
 
   return (
-    <div className='min-w-[328px] h-full pl-[18px] pr-[10px] pb-4'>
+    <div className='w-[64px] flex flex-col items-center h-full ml-[18px] mr-[10px] mb-4 group hover:w-[328px] hover:block'>
       <WebsiteSelectionButton websites={websites} />
+      <NavLabel>label</NavLabel>
+      <NavItem>1</NavItem>
+
       {/* {websites?.map((website) => {
         return (
           <div key={website.id}>
@@ -29,6 +32,19 @@ const MainSideMenu = () => {
         )
       })} */}
     </div>
+  )
+}
+
+
+const NavLabel = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <p className='text-xs'>{children}</p>
+  )
+}
+
+const NavItem = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className='w-[52px] h-[52px] bg-green-50 rounded-lg'>{children}</div>
   )
 }
 
