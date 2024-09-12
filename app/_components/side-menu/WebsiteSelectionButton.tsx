@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Website, WebsiteWithLocation } from '@/src/entities/models/website'
+import { WebsiteWithLocation } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location';
 
 

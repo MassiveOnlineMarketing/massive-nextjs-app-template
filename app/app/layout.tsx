@@ -1,6 +1,6 @@
 import React from 'react'
 import Providers from './providers'
-import MainSideMenu from '../_components/navigation/MainSideMenu'
+import MainSideMenu from '@/app/_components/side-menu/MainSideMenu'
 
 export default function layout(
   { children }: { children: React.ReactNode }
