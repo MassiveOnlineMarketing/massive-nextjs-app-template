@@ -108,22 +108,22 @@ model Location {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  website                   Website                    @relation(fields: [websiteId], references: [id], onDelete: Cascade)
-  googleKeywordTrackerTool  GoogleKeywordTrackerTool?
-  googleLocationTrackerTool GoogleLocationTrackerTool?
+  website                  Website                   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  googleKeywordTrackerTool GoogleKeywordTrackerTool?
 }
 
 // Google Keyword Tracker
 model GoogleKeywordTrackerTool {
-  id         String                        @id @default(cuid())
-  locationId String                        @unique
-  active     Boolean                       @default(true)
-  refresh    DayOfWeek[]
-  keywords   GoogleKeywordTrackerKeyword[]
-  // keyword    GoogleSearchKeyword[]
+  id          String                             @id @default(cuid())
+  locationId  String                             @unique
+  active      Boolean                            @default(true)
+  refresh     DayOfWeek[]
+  keywords    GoogleKeywordTrackerKeyword[]
+  stats       GoogleKeywordTrackerProjectStats[]
+  competitors GoogleKeywordTrackerCompetitor[]
 
-  // results    GoogleSearchProjectResult[]
-  // competitor GoogleSearchCompetitor[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
 }
@@ -134,23 +134,101 @@ model GoogleKeywordTrackerKeyword {
   keyword                    String
   createdAt                  DateTime @default(now())
 
-  googleKeywordTrackerTool GoogleKeywordTrackerTool @relation(fields: [googleKeywordTrackerToolId], references: [id], onDelete: Cascade)
-  // googleSerpResult   GoogleSearchSerpResult[]
-  // result             GoogleSearchResult[]
-  // tags               GoogleSearchKeywordTag[]
-  // keywordMetrics     GoogleAdsKeywordMetrics[]
+  googleKeywordTrackerTool GoogleKeywordTrackerTool         @relation(fields: [googleKeywordTrackerToolId], references: [id], onDelete: Cascade)
+  result                   GoogleKeywordTrackerResult[]
+  googleSerpResult         GoogleSerpResult[]
+  tags                     GoogleKeywordTrackerKeywordTag[]
+  GoogleAdsKeywordMetrics  GoogleAdsKeywordMetrics[]
 }
 
-// Google Location Tracker
-model GoogleLocationTrackerTool {
-  id         String      @id @default(cuid())
-  locationId String      @unique
-  active     Boolean     @default(true)
-  refresh    DayOfWeek[]
-  // keyword    GoogleSearchKeyword[]
+model GoogleKeywordTrackerProjectStats {
+  id                         String   @id @default(cuid())
+  googleKeywordTrackerToolId String
+  improved                   Int
+  worsened                   Int
+  total                      Int
+  topThree                   Int
+  topTen                     Int
+  topHundred                 Int
+  noChange                   Int
+  notFound                   Int
+  averagePosition            Int
+  createdAt                  DateTime @default(now())
 
-  // results    GoogleSearchProjectResult[]
-  // competitor GoogleSearchCompetitor[]
+  GoogleKeywordTrackerTool GoogleKeywordTrackerTool[]
+}
 
-  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+model GoogleKeywordTrackerResult {
+  id              String   @id @default(cuid())
+  keywordId       String
+  keywordName     String
+  position        Int?
+  url             String?
+  metaTitle       String?
+  metaDescription String?
+  firstPosition   Int?
+  bestPosition    Int?
+  latestChange    Int?
+  createdAt       DateTime @default(now())
+
+  relatedSearches Json?
+  peopleAlsoAsk   Json?
+  sitelinks       Json?
+
+  keyword GoogleKeywordTrackerKeyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+}
+
+model GoogleKeywordTrackerKeywordTag {
+  id       String                        @id @default(cuid())
+  name     String                        @unique
+  keywords GoogleKeywordTrackerKeyword[]
+}
+
+model GoogleKeywordTrackerCompetitor {
+  id                     String                                 @id @default(cuid())
+  googleSearchCampaignId String
+  domainUrl              String
+  createdAt              DateTime                               @default(now())
+  results                GoogleKeywordTrackerCompetitorResult[]
+
+  googleSearchCampaign GoogleKeywordTrackerTool @relation(fields: [googleSearchCampaignId], references: [id], onDelete: Cascade)
+}
+
+model GoogleKeywordTrackerCompetitorResult {
+  id                       String   @id @default(cuid())
+  googleSearchCompetitorId String
+  keywordId                String
+  position                 Int?
+  url                      String?
+  metaTitle                String?
+  metaDescription          String?
+  createdAt                DateTime @default(now())
+  googleSearchCampaignId   String
+
+  googleSearchCompetitor GoogleKeywordTrackerCompetitor @relation(fields: [googleSearchCompetitorId], references: [id], onDelete: Cascade)
+}
+
+model GoogleSerpResult {
+  id              String   @id @default(cuid())
+  keywordId       String
+  position        Int
+  url             String
+  metaTitle       String
+  metaDescription String
+  createdAt       DateTime @default(now())
+
+  keyword GoogleKeywordTrackerKeyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+}
+
+model GoogleAdsKeywordMetrics {
+  id                    String   @id @default(cuid())
+  googleSearchKeywordId String
+  avgMonthlySearches    String?
+  competition           String?
+  competitionIndex      String?
+  highTopOfPageBid      String?
+  lowTopOfPageBid       String?
+  createdAt             DateTime @default(now())
+
+  googleSearchKeyword GoogleKeywordTrackerKeyword @relation(fields: [googleSearchKeywordId], references: [id], onDelete: Cascade)
 }
