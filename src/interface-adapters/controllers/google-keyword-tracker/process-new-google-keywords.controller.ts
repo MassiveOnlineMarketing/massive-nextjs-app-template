@@ -1,14 +1,17 @@
 import { getInjection } from "@/di/container";
-import { processNewGoogleKeywordUseCase } from "@/src/application/use-cases/process-keywords/process-new-google-keywords.use-case";
-import { splitAndTrimKeywords } from "@/src/utils/string.utils";
-import { InputParseError } from "@/src/entities/errors/common";
 import { startSpan } from "@sentry/nextjs";
+
+import { InputParseError } from "@/src/entities/errors/common";
+
+import { processNewGoogleKeywordUseCase } from "@/src/application/use-cases/process-keywords/process-new-google-keywords.use-case";
+
+import { splitAndTrimKeywords } from "@/src/utils/string.utils";
 
 export async function processNewGoogleKeywordsController(
   keywordsSting: string,
   googleKeywordTrackerToolId: string
 ) {
-  return startSpan(
+  return await startSpan(
     { name: "processNewGoogleKeywords Controller" },
     async () => {
       const authenticationService = getInjection("IAuthenticationService");

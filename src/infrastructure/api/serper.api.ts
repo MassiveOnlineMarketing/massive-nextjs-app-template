@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import { captureException, startSpan } from "@sentry/nextjs";
 import axios from "axios";
 
 import { ISerperApi } from "@/src/application/api/serper.api.interface";
@@ -16,39 +17,51 @@ export class SerperApi implements ISerperApi {
     location: string | null,
     numberOfResults: number = 100
   ): Promise<SuccessfulSerpApiFetches[] | undefined> {
-    console.log("🟡 Fetching SERP data");
+    return await startSpan({ name: "SerperApi > fetchSerpData" }, async () => {
+      console.log("🟡 Fetching SERP data");
 
-    console.log("Keywords: ", keywords, "Country: ", country, "Language: ", language, "Location: ", location);
+      console.log(
+        " Keywords:",
+        keywords,
+        " Country:",
+        country,
+        " Language:",
+        language,
+        " Location:",
+        location
+      );
 
-    const data = JSON.stringify(
-      keywords.map((keyword) => ({
-        q: keyword.keyword,
-        location: location ?? undefined,
-        gl: country,
-        hl: language,
-        autrocorrect: false,
-        num: numberOfResults,
-      }))
-    );
+      const data = JSON.stringify(
+        keywords.map((keyword) => ({
+          q: keyword.keyword,
+          location: location ?? undefined,
+          gl: country,
+          hl: language,
+          autrocorrect: false,
+          num: numberOfResults,
+        }))
+      );
 
-    const config = {
-      method: "post",
-      url: "https://google.serper.dev/search",
-      headers: {
-        "X-API-KEY": process.env.SERPER_API_KEY,
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
+      const config = {
+        method: "post",
+        url: "https://google.serper.dev/search",
+        headers: {
+          "X-API-KEY": process.env.SERPER_API_KEY,
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
 
-    try {
-      const response = await axios(config);
-      // console.log("Response: ", response.data);
+      try {
+        const response = await axios(config);
+        // console.log("Response: ", response.data);
 
-      return mapSerperApiResponse(response.data, keywords);
-    } catch (error) {
-      console.error("🔴 Error fetching SERP data: ", error);
-    }
+        return mapSerperApiResponse(response.data, keywords);
+      } catch (error) {
+        console.error("🔴 Error fetching SERP data: ", error);
+        captureException(error);
+        return
+      }
+    });
   }
 }
-

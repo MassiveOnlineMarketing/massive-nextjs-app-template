@@ -1,4 +1,5 @@
 import { getInjection } from "@/di/container";
+import { startSpan } from "@sentry/nextjs";
 
 import {
   DatabaseOperationError,
@@ -9,7 +10,6 @@ import { InsufficientCreditsError } from "@/src/entities/errors/credits";
 import { User } from "@/src/entities/models/user";
 
 import { SerpResultMapper } from "@/src/interface-adapters/mappers/serp-result.mapper";
-import { startSpan } from "@sentry/nextjs";
 
 const BATCH_SIZE = 99;
 function delay(ms: number) {
