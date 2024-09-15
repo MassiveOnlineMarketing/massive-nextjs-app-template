@@ -3,6 +3,7 @@
 import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { getSession, useSession } from 'next-auth/react'
 import React from 'react'
+import { useKeywordOpperations } from '../_modules/google-keyword-tracker/hooks/useKeywordOpperations';
 
 const ClientPage = () => {
   const { update } = useSession()
@@ -38,11 +39,14 @@ const ClientPage = () => {
   }
 
 
+  const { addNewGoogleKeyword } = useKeywordOpperations()
+
   return (
     <div>
       <button onClick={handleUpdateSession}>update session</button>
       <button onClick={handleClick}>getSession</button>
       <button onClick={handleSecondClick}>update user</button>
+      <button onClick={addNewGoogleKeyword}>process new google keywords</button>
     </div>
   )
 }

@@ -10,6 +10,10 @@ import { AuthenticationServiceModule } from "./modules/authentication.module";
 import { WebsiteRepositoryModule } from "./modules/website.module";
 import { LocationRepositoryModule } from "./modules/location.module";
 
+import { ProcessGoogleKeywordServiceModule } from "./modules/process-google-keywords.module";
+import { GoogleKeywordTrackerRepositoryModule } from "./modules/google-keyword-tracker.module";
+import { SerperApiModule } from "./modules/serper.module";
+
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
 });
@@ -22,6 +26,9 @@ export const initializeContainer = () => {
   ApplicationContainer.load(EmailServiceModule);  
   ApplicationContainer.load(WebsiteRepositoryModule);
   ApplicationContainer.load(LocationRepositoryModule);
+  ApplicationContainer.load(ProcessGoogleKeywordServiceModule);
+  ApplicationContainer.load(GoogleKeywordTrackerRepositoryModule);
+  ApplicationContainer.load(SerperApiModule);
 };
 
 export const destroyContainer = () => {
@@ -32,6 +39,9 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(EmailServiceModule);
   ApplicationContainer.unload(WebsiteRepositoryModule);
   ApplicationContainer.unload(LocationRepositoryModule);
+  ApplicationContainer.unload(ProcessGoogleKeywordServiceModule);
+  ApplicationContainer.unload(GoogleKeywordTrackerRepositoryModule);
+  ApplicationContainer.unload(SerperApiModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

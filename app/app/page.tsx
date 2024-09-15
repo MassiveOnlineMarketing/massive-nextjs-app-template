@@ -13,7 +13,7 @@ const page = async () => {
 
   return (
     <div>
-      <Dialog open={true}>
+      {/* <Dialog open={true}>
         <DialogContent className='w-[1000px] h-[400px] bg-red-500 animate-pulse-fast flex items-center justify-center'>
           <div className='flex flex-col gap-10 justify-center text-center'>
             <div className='animate-spin'>
@@ -24,7 +24,7 @@ const page = async () => {
             </div>
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
 
       <LogoutButton />

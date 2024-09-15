@@ -6,7 +6,7 @@ export default function layout(
 ) {
   return (
     <div className='px-3 w-full'>
-      <div className='py-4'>
+      <div className='py-4 overflow-hidden'>
         <Topbar />
       </div>
 

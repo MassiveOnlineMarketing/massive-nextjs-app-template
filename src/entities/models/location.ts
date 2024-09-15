@@ -1,6 +1,3 @@
-import { LOCATION_COUNTRY_OPTIONS, LocationCountryOption } from "@/src/constants/locationCountries";
-import { LOCATION_LANGUAGE_OPTIONS, LocationLanguageOption } from "@/src/constants/locationLanguages";
-import { LOCATION_LOCATION_OPTIONS, LocationLocationOptions } from "@/src/constants/locationLocations";
 import { z } from "zod";
 
 export const selectLocationSchema = z.object({

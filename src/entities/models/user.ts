@@ -16,6 +16,7 @@ export const selectUserCoreSchema = z.object({
   password: z.string().nullable(),
   role: z.nativeEnum(UserRole),
   loginProvider: z.string().nullable(),
+  credits: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -30,6 +31,7 @@ export const userSchema = selectUserCoreSchema.pick({
   password: true,
   role: true,
   loginProvider: true,
+  credits: true,
   createdAt: true,
   updatedAt: true,
 });

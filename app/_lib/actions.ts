@@ -24,7 +24,7 @@ const getWebsiteWithLocation = () => {
       location: {
         select: {
           googleKeywordTrackerTool: true,
-          googleLocationTrackerTool: true,
+          website: true
         }
       }
     }

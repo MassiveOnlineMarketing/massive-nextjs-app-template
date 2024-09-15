@@ -3,13 +3,14 @@ import { getInjection } from "@/di/container";
 
 import { ExtendedUser } from "@/next-auth";
 import { Website } from "@/src/entities/models/website";
+import { User } from "@/src/entities/models/user";
 
 export async function createWebsiteUseCase(input: {
   websiteName: string,
   domainUrl: string,
   gscUrl?: string | null,
 },
-  user: ExtendedUser
+  user: User
 ): Promise<Website> {
   return startSpan({ name: "createWebsite Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");

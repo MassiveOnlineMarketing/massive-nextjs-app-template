@@ -26,7 +26,8 @@ export class MockUsersRepository implements IUsersRepository {
         role: "USER",
         loginProvider: 'credentials',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        credits: 10
       },
       {
         id: "2",
@@ -38,7 +39,8 @@ export class MockUsersRepository implements IUsersRepository {
         role: "ADMIN",
         loginProvider: 'credentials',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        credits: 10
       }
     ];
 
@@ -63,12 +65,24 @@ export class MockUsersRepository implements IUsersRepository {
       role: "USER",
       loginProvider: 'credentials',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      credits: 10
     };
 
     this._users.push(user);
 
     return user;
+  }
+
+
+  async deductCredits(userId: string, credits: number): Promise<void> {
+    await this._initialized;
+    const user = this._users.find(user => user.id === userId);
+    if (user) {
+      user.credits -= credits;
+    } else {
+      throw new Error('User not found');
+    }
   }
 
   async getByEmail(email: string): Promise<User | null> {

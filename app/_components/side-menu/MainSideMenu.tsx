@@ -1,11 +1,33 @@
 'use client';
 
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-import React from 'react'
+import React, { useEffect } from 'react'
 import WebsiteSelectionButton from './WebsiteSelectionButton';
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
+import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 
 
 const MainSideMenu = () => {
+  const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
+  const user = useCurrentUser()
+
+  useEffect(() => {
+    const fetchWebsites = async () => {
+      if (!user) return
+      const res = await getWebsiteWithLocationByUser(user.id)
+      console.log('fetch initial websiteStore', res)
+      if (res.error) {
+        console.log('error', res.error)
+      }
+
+      if (res.website || res.error === 'Must be logged in to get a website') {
+        console.log('settings initial websites details', res.website)
+        setInitialWebsiteDetails(res.website || [])
+      }
+    }
+
+    fetchWebsites()
+  }, [])
 
   const websites = useWebsiteDetailsStore((state) => state.websites)
 

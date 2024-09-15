@@ -8,8 +8,13 @@ import { getWebsitesByUser } from "@/app/_actions/website.actions"
 import { capitalizeFirstLetter } from "@/app/_utils/stringUtils"
 
 import UpdateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/UpdateGoogleKeywordTrackerToolFrom"
+import CreateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/CreateGoogleKeywordTrackerToolFrom"
 import LocationDetails from "./LocationDetails"
+
+
+
 import { MapPinIcon } from "@heroicons/react/20/solid"
+
 
 const page = async ({
   params: { id }
@@ -49,6 +54,9 @@ const page = async ({
 
         <div>
           <LocationDetails defaultLocation={res.location} usersWebsites={websiteRes.websites} />
+
+          <CreateGoogleKeywordTrackerToolFrom locationId={res.location.id} />
+
           <UpdateGoogleKeywordTrackerToolFrom />
         </div>
       </div>

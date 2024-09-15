@@ -14,27 +14,6 @@ export default function Layout(
   { children }: { children: React.ReactNode }
 ) {
 
-  const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
-  const user = useCurrentUser()
-
-  useEffect(() => {
-    const fetchWebsites = async () => {
-      if (!user) return
-      const res = await getWebsiteWithLocationByUser(user.id)
-      console.log('fetch initial websiteStore', res)
-      if (res.error) {
-        console.log('error', res.error)
-      }
-
-      if (res.website) {
-        console.log('settings initial websites details', res.website)
-        setInitialWebsiteDetails(res.website)
-      }
-    }
-
-    fetchWebsites()
-  }, [])
-
   return (
     <>
       <div className='mt-[68px]'>
@@ -46,7 +25,7 @@ export default function Layout(
           <Topbar />
         </div>
         {/* Calc height needs to be the height of the top bar above */}
-        <div className='h-[calc(100vh-92px)]'>
+        <div className='h-[calc(100vh-79px)] overflow-y-auto custom-scrollbar -mr-3 pr-[3px]'>
           {children}
         </div>
       </div>
