@@ -7,6 +7,14 @@ import { InputParseError } from "@/src/entities/errors/common";
 import { formInputUpdateLocationSchema } from "@/src/entities/models/location";
 import { z } from "zod";
 
+/**
+ * Controller function to handle the update location request.
+ * 
+ * @param formData - The data submitted from the form, inferred from the formInputUpdateLocationSchema.
+ * @returns The updated location data.
+ * @throws {InputParseError} If the form data is invalid.
+ * 
+ */
 export async function updateLocationController(formData: z.infer<typeof formInputUpdateLocationSchema>){
   return startSpan({ name: "updateLocation Controller" }, async () => {
     const authenticationService = getInjection("IAuthenticationService");

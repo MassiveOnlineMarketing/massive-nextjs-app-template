@@ -10,6 +10,7 @@ import { afterEach, beforeEach, expect, it } from "vitest";
 import { MockAuthenticationService } from "@/src/infrastructure/services/authentication.service.mock";
 import { MockUsersRepository } from "@/src/infrastructure/repositories/users.repository.mock";
 import { MockWebsiteRepository } from "@/src/infrastructure/repositories/website.repository.mock";
+import { MockLocationRepository } from "@/src/infrastructure/repositories/location.repository.mock";
 
 beforeEach(() => {
   initializeContainer();
@@ -28,4 +29,7 @@ it("should use Mock versions of repos and services", async () => {
 
   const websiteRepository = getInjection("IWebsiteRepository");
   expect(websiteRepository).toBeInstanceOf(MockWebsiteRepository);
+
+  const locationRepository = getInjection("ILocationRepository");
+  expect(locationRepository).toBeInstanceOf(MockLocationRepository);
 });

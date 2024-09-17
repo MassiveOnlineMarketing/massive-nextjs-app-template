@@ -8,6 +8,15 @@ import { Location } from "@/src/entities/models/location";
 import { User } from "@/src/entities/models/user";
 
 
+/**
+ * Retrieves a location by its ID and ensures the user has access to it.
+ *
+ * @param id - The ID of the location to retrieve.
+ * @param user - The user attempting to retrieve the location.
+ * @returns A promise that resolves to the location if found and accessible by the user.
+ * @throws {NotFoundError} If the location or associated website is not found.
+ * @throws {ForbiddenError} If the user does not own the website associated with the location.
+ */
 export async function getLocationUseCase(id: string, user: User): Promise<Location> {
   return await startSpan(
     { name: "getLocation Use Case" },

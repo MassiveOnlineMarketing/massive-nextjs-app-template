@@ -8,6 +8,21 @@ import { Location } from "@/src/entities/models/location";
 import { User } from "@/src/entities/models/user";
 
 
+/**
+ * Creates a new location for a given website.
+ *
+ * @param input - The input data for creating the location.
+ * @param input.websiteId - The ID of the website to which the location belongs.
+ * @param input.language - The language of the location.
+ * @param input.languageCode - The language code of the location.
+ * @param input.country - The country of the location.
+ * @param input.location - The name of the location (can be null).
+ * @param input.locationCode - The code of the location.
+ * @param user - The user attempting to create the location.
+ * @returns A promise that resolves to the created location.
+ * @throws {NotFoundError} - If the website is not found.
+ * @throws {ForbiddenError} - If the user does not own the website.
+ */
 export async function createLocationUseCase(input: {
   websiteId: string,
   language: string,
