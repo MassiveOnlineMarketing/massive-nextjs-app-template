@@ -22,6 +22,8 @@ export function getWebsiteWithLocationByUserUseCase(userId: string, user: User):
 
     const websites = await websiteRepository.getByUserIdWithLocation(userId);
 
+    console.log('wensote',websites);
+
     if (!websites) {
       throw new NotFoundError("Website not found");
     }

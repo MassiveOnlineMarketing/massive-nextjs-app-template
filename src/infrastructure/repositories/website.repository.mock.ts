@@ -19,6 +19,26 @@ export class MockWebsiteRepository implements IWebsiteRepository {
           createdAt: new Date(),
           updatedAt: new Date(),
           location: null
+        },
+        {
+          id: '2',
+          userId: '1',
+          websiteName: 'Test website 2',
+          domainUrl: 'test2.com',
+          gscUrl: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          location: null
+        },
+        {
+          id: '3',
+          userId: '2',
+          websiteName: 'Test website 3',
+          domainUrl: 'test3.com',
+          gscUrl: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          location: null
         }
       ];
     }
@@ -84,7 +104,7 @@ export class MockWebsiteRepository implements IWebsiteRepository {
       if (!id) {
         return null;
       }
-      return this._websites.find((w) => w.location?.some(loc => loc.id === id)) ?? null;
+      return this._websites.find((w) => w.id === id) ?? null;
     }
 
     async getByUserIdWithLocation(userId: string): Promise<WebsiteWithLocation[] | null> {

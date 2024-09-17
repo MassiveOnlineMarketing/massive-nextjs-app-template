@@ -4,10 +4,19 @@ import { startSpan } from "@sentry/nextjs";
 import { ForbiddenError } from "@/src/entities/errors/auth";
 import { NotFoundError } from "@/src/entities/errors/common";
 
-import { ExtendedUser } from "@/next-auth";
 import { WebsiteWithLocation } from "@/src/entities/models/website";
+import { User } from "@/src/entities/models/user";
 
-export async function getWebsiteWithLocationUseCase(id: string, user: ExtendedUser): Promise<WebsiteWithLocation> {
+/**
+ * Retrieves a website with its location based on the provided ID and user.
+ * 
+ * @param id - The ID of the website to retrieve.
+ * @param user - The user object representing the user making the request.
+ * @returns A promise that resolves to the website with its location.
+ * @throws {NotFoundError} If the website with the provided ID is not found.
+ * @throws {ForbiddenError} If the user does not have permission to access the website.
+ */
+export async function getWebsiteWithLocationUseCase(id: string, user: User): Promise<WebsiteWithLocation> {
   return await startSpan({ name: "getWebsiteWithLocation Use Case", op: "function" }, async () => {
     const websiteRepository = getInjection("IWebsiteRepository");
 

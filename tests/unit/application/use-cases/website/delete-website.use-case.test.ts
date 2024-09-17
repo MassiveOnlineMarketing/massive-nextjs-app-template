@@ -28,7 +28,7 @@ it("deletes website", async () => {
     location: null,
     createdAt: expect.any(Date),
     updatedAt: expect.any(Date)
-  })
+    })
 })
 
 
@@ -43,7 +43,8 @@ it("throws forbidden error when user is not owner of website", async () => {
     password: null,
     loginProvider: 'credentials ',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    credits: 10
   }
   expect(
     deleteWebsiteUseCase("1", user)
@@ -63,10 +64,11 @@ it("throws not found error when website is not found", async () => {
     password: null,
     loginProvider: 'credentials ',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    credits: 10
   }
   expect(
-    deleteWebsiteUseCase("2", user)
+    deleteWebsiteUseCase("2000", user)
   ).rejects.toBeInstanceOf(
     NotFoundError
   );
