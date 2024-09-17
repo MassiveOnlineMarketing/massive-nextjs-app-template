@@ -48,7 +48,7 @@ export async function updateUserDetails(formData: z.infer<typeof updateUserDetai
         } else if (error instanceof AuthenticationError) {
           return { error: "Email does not exist!" };
         }
-        console.log('error', error)
+        console.error('error', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }

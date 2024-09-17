@@ -34,9 +34,6 @@ const LocationDetails = ({
   const country = countries.find(country => country.countryCode === defaultLocation.country);
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
-  console.log('defaultLocation', defaultLocation) 
-
-
   return (
     <Card className='mx-6 mb-6'>
       <CardHeader className='flex justify-between items-center py-3'>

@@ -5,34 +5,183 @@ import { captureException, startSpan } from "@sentry/nextjs";
 import { IGoogleKeywordTrackerRepository } from "@/src/application/repositories/google-keyword-tracker.repository.interface";
 
 import {
-  SerpApiPeopleAsloAsk,
-  SerpApiRelatedSearches,
-  SiteLinks,
-} from "@/src/application/api/serper.api.types";
-
-import {
   GoogleKeywordTracker,
+  GoogleKeywordTrackerInsert,
+  GoogleKeywordTrackerStatus,
+  GoogleKeywordTrackerUpdate,
   GoogleKeywordTrackerWithCompetitors,
   GoogleKeywordTrackerWithCompetitorsWebsiteAndLocation,
   GoogleKeywordTrackerWithWebsite,
 } from "@/src/entities/models/google-keyword-tracker";
-import { GoogleKeywordTrackerKeyword } from "@/src/entities/models/google-keyword-tracker/keyword";
-import { GoogleKeywordTrackerResult } from "@/src/entities/models/google-keyword-tracker/result";
 
 @injectable()
 export class GoogleKeywordTrackerRepository
   implements IGoogleKeywordTrackerRepository
 {
-  async insert(inputSchema: any): Promise<any> {
-    throw new Error("Method not implemented.");
+  async insert(
+    inputSchema: GoogleKeywordTrackerInsert
+  ): Promise<GoogleKeywordTracker> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerRepository > insert",
+      },
+      async () => {
+        try {
+          const googleKeywordTracker = await db.googleKeywordTrackerTool.create(
+            {
+              data: {
+                ...inputSchema,
+              },
+            }
+          );
+
+          // Attach the keyword tracker to the location
+          await db.location.update({
+            where: {
+              id: inputSchema.locationId,
+            },
+            data: {
+              keywordTrackerToolId: googleKeywordTracker.id,
+            },
+          });
+
+          return googleKeywordTracker;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
   }
 
-  async update(updateSchema: any): Promise<any> {
-    throw new Error("Method not implemented.");
+  async update(
+    updateSchema: GoogleKeywordTrackerUpdate,
+    id: string
+  ): Promise<GoogleKeywordTracker> {
+    return await startSpan(
+      { name: "GoogleKeywordTrackerRepository > update" },
+      async () => {
+        try {
+          const updatedGoogleKeywordTracker =
+            await db.googleKeywordTrackerTool.update({
+              where: {
+                id,
+              },
+              data: {
+                ...updateSchema,
+              },
+            });
+
+          return updatedGoogleKeywordTracker;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
   }
 
-  async delete(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<GoogleKeywordTracker> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerRepository > delete",
+      },
+      async () => {
+        try {
+          const deletedGoogleKeywordTracker =
+            await db.googleKeywordTrackerTool.delete({
+              where: {
+                id,
+              },
+            });
+
+          return deletedGoogleKeywordTracker;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async addCompetitors(
+    googleKeywordTrackerId: string,
+    competitors: string[]
+  ): Promise<any> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerRepository > addCompetitors",
+      },
+      async () => {
+        try {
+          const competitorObjects = competitors.map((competitor) => ({
+            domainUrl: competitor,
+            googleKeywordTrackerToolId: googleKeywordTrackerId,
+          }));
+
+          const createdCompetitors =
+            await db.googleKeywordTrackerCompetitor.createManyAndReturn({
+              data: competitorObjects,
+            });
+
+          return createdCompetitors;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async removeCompetitors(competitorIds: string[]): Promise<any> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerRepository > removeCompetitors",
+      },
+      async () => {
+        try {
+          const deletedCompetitors =
+            await db.googleKeywordTrackerCompetitor.deleteMany({
+              where: {
+                id: {
+                  in: competitorIds,
+                },
+              },
+            });
+
+          return deletedCompetitors;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async updateStatus(id: string, status: GoogleKeywordTrackerStatus): Promise<GoogleKeywordTracker> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerRepository > updateStatus",
+      },
+      async () => {
+        try {
+          const updatedGoogleKeywordTracker =
+            await db.googleKeywordTrackerTool.update({
+              where: {
+                id,
+              },
+              data: {
+                status,
+              },
+            });
+
+          return updatedGoogleKeywordTracker;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
   }
 
   async findById(id: string): Promise<GoogleKeywordTracker | null> {
@@ -102,6 +251,12 @@ export class GoogleKeywordTrackerRepository
               },
               include: {
                 competitors: true,
+                // Get the count of keywords, used in the updateGoogleKeywordsToTracker action to display the current count of keywords, not added to schema
+                _count: {
+                  select: {
+                    keywords: true,
+                  },
+                },
               },
             });
 
@@ -163,106 +318,6 @@ export class GoogleKeywordTrackerRepository
             });
 
           return googleKeywordTracker;
-        } catch (error) {
-          captureException(error);
-          throw error;
-        }
-      }
-    );
-  }
-
-  async findKeywordsByToolId(
-    googleKeywordTrackerId: string
-  ): Promise<GoogleKeywordTrackerKeyword[]> {
-    return await startSpan(
-      {
-        name: "GoogleKeywordTrackerRepository > findKeywordsByToolId",
-      },
-      async () => {
-        try {
-          const keywords = await db.googleKeywordTrackerKeyword.findMany({
-            where: {
-              googleKeywordTrackerToolId: googleKeywordTrackerId,
-            },
-          });
-
-          return keywords;
-        } catch (error) {
-          captureException(error);
-          throw error;
-        }
-      }
-    );
-  }
-
-  async findLatestResultsByKeywordIds(
-    keywordIds: string[]
-  ): Promise<GoogleKeywordTrackerResult[]> {
-    return await startSpan(
-      {
-        name: "GoogleKeywordTrackerRepository > findLatestResultsByKeywordIds",
-      },
-      async () => {
-        try {
-          const results = await db.googleKeywordTrackerResult.findMany({
-            where: {
-              keywordId: {
-                in: keywordIds,
-              },
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-          });
-
-          const formattedResults = results.map((result) => ({
-            ...result,
-            relatedSearches:
-              typeof result.relatedSearches === "string"
-                ? (JSON.parse(
-                    result.relatedSearches
-                  ) as SerpApiRelatedSearches[])
-                : null,
-            peopleAlsoAsk:
-              typeof result.peopleAlsoAsk === "string"
-                ? (JSON.parse(result.peopleAlsoAsk) as SerpApiPeopleAsloAsk[])
-                : null,
-            siteLinks:
-              typeof result.siteLinks === "string"
-                ? (JSON.parse(result.siteLinks) as SiteLinks[])
-                : null,
-          }));
-
-          return formattedResults;
-        } catch (error) {
-          captureException(error);
-          throw error;
-        }
-      }
-    );
-  }
-
-  async addKeywords(
-    googleKeywordTrackerId: string,
-    keywords: string[]
-  ): Promise<GoogleKeywordTrackerKeyword[]> {
-    return await startSpan(
-      {
-        name: "GoogleKeywordTrackerRepository > addKeywords",
-      },
-      async () => {
-        try {
-          const keywordObjects = keywords.map((keyword) => ({
-            keyword,
-            googleKeywordTrackerToolId: googleKeywordTrackerId,
-          }));
-
-          const createdKeywords =
-            await db.googleKeywordTrackerKeyword.createManyAndReturn({
-              data: keywordObjects,
-            });
-
-          return createdKeywords;
         } catch (error) {
           captureException(error);
           throw error;

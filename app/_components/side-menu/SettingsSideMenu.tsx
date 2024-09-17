@@ -76,7 +76,6 @@ const WebsiteList = ({ websiteStore }: { websiteStore: WebsiteWithLocation[] | u
   const [websitesListExpanded, setWebsitesListExpanded] = React.useState(false)
 
   const handleAddWebsite = () => {
-    console.log('add website')
     router.push('/app/settings/website')
   }
 

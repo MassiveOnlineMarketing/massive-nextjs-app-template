@@ -10,7 +10,7 @@ import { captureException } from "@sentry/nextjs";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  console.log("data on serp route", data);
+  console.log("Data on serp route", data);
 
   const { keywordsString, googleKeywordTrackerToolId } = data;
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         headers: { "Content-Type": "application/json" },
       });
     }
-    console.log("createWebsite error: ", error);
+    console.error("createWebsite error: ", error);
     captureException(error);
     return new Response(
       JSON.stringify({

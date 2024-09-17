@@ -46,7 +46,7 @@ const ClientPage = () => {
       <button onClick={handleUpdateSession}>update session</button>
       <button onClick={handleClick}>getSession</button>
       <button onClick={handleSecondClick}>update user</button>
-      <button onClick={addNewGoogleKeyword}>process new google keywords</button>
+      <button onClick={() => addNewGoogleKeyword( "baristart\nEureka mignon\nEureka mignon specialita\n\nRocket appartamento" , 'cm10ys4200000q48b5bvyzw2a')}>process new google keywords</button>
     </div>
   )
 }

@@ -224,7 +224,7 @@ model GoogleKeywordTrackerSerpResult {
   position        Int
   url             String
   metaTitle       String
-  metaDescription String
+  metaDescription String?
   createdAt       DateTime @default(now())
 
   keyword GoogleKeywordTrackerKeyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)

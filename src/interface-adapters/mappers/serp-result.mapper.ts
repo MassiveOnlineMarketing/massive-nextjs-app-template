@@ -1,3 +1,5 @@
+import { startSpan } from "@sentry/nextjs";
+
 import {
   SerperApiSerpResult,
   SerpApiPeopleAsloAsk,
@@ -12,7 +14,6 @@ import {
 } from "@/src/entities/models/google-keyword-tracker/result";
 import { GoogleKeywordTrackerCompetitorResultInsert } from "@/src/entities/models/google-keyword-tracker/competitor-result";
 import { GoogleKeywordTrackerSerpResultInsert } from "@/src/entities/models/google-keyword-tracker/serp-result";
-import { startSpan } from "@sentry/nextjs";
 
 export class SerpResultMapper {
   // Mapping SERP result to User Serp Result DTO
@@ -46,11 +47,11 @@ export class SerpResultMapper {
           keywordName: keyword.keyword,
           position: serp.position,
           url: serp.link,
-          metaTitle: serp.title,
-          metaDescription: serp.snippet,
-          relatedSearches: relatedSearches || null,
-          peopleAlsoAsk: peopleAlsoAsk || null,
-          siteLinks: serp.sitelinks || null,
+          metaTitle: serp.title ?? null,
+          metaDescription: serp.snippet ?? null,
+          relatedSearches: relatedSearches ?? null,
+          peopleAlsoAsk: peopleAlsoAsk ?? null,
+          siteLinks: serp.sitelinks ?? null,
         };
       }
     );
@@ -152,8 +153,8 @@ export class SerpResultMapper {
           keywordId: keyword.id,
           position: result.position,
           url: result.link,
-          metaTitle: result.title,
-          metaDescription: result.snippet,
+          metaTitle: result.title ?? null,
+          metaDescription: result.snippet ?? null,
         }));
       }
     );

@@ -4,6 +4,7 @@ import { GoogleKeywordTrackerCompetitor, selectGoogleKeywordTrackerCompetitorCor
 import { Location } from "./location";
 
 export type DayOfWeek = "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
+export type GoogleKeywordTrackerStatus = "ACTIVE" | "PAUSED" | "PENDING";
 
 export const DAYS_OF_WEEK: {value: DayOfWeek; label: string}[] = [
     { value: "MONDAY", label: "Monday" },
@@ -58,14 +59,32 @@ const insertGoogleKeywordTrackerSchema = selectGoogleKeywordTrackerCoreSchema.pi
 });
 export type GoogleKeywordTrackerInsert = z.infer<typeof insertGoogleKeywordTrackerSchema>;
 
+const updateGoogleKeywordTrackerSchema = selectGoogleKeywordTrackerCoreSchema.pick({
+    refresh: true,
+});
+export type GoogleKeywordTrackerUpdate = z.infer<typeof updateGoogleKeywordTrackerSchema>;
 
 // Fort-end form input schema
 export const formInputCreateGoogleKeywordTrackerSchema = selectGoogleKeywordTrackerCoreSchema.extend({
-    competitors: z.array(z.string()).optional(),
     keywords: z.string().optional(),
+    addCompetitors: z.array(z.string()).optional(),
 }).pick({
     locationId: true,
+    websiteId: true,
     refresh: true,
-    competitors: true,
+    addCompetitors: true,
     keywords: true,
 });
+
+export const formInputUpdateGoogleKeywordTrackerSchema = selectGoogleKeywordTrackerCoreSchema.extend({ 
+    addCompetitors: z.array(z.string()).optional(),
+    removeCompetitors: z.array(selectGoogleKeywordTrackerCompetitorCoreSchema).nullable(),
+    keywords: z.string().optional()
+}).pick({
+    id: true,
+    refresh: true,
+    addCompetitors: true,
+    removeCompetitors: true,
+    keywords: true,
+});
+

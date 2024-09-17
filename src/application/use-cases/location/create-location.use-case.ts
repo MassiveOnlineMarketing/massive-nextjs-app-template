@@ -16,7 +16,7 @@ export async function createLocationUseCase(input: {
   location: string | null,
   locationCode: string,
 }, user: User): Promise<Location> {
-  return startSpan({ name: "createLocation Use Case", op: "function" }, async () => {
+  return await startSpan({ name: "createLocation Use Case", op: "function" }, async () => {
     const locationRepository = getInjection("ILocationRepository");
     const websiteRepository = getInjection("IWebsiteRepository");
 

@@ -5,24 +5,22 @@ import { useToast } from "@/app/_components/ui/toast/use-toast";
 export function useKeywordOpperations() {
   const { toast } = useToast();
 
-  async function addNewGoogleKeyword() {
-    const keywordString =
-      "baristart\nEureka mignon\nEureka mignon specialita\n\nRocket appartamento";
 
+  
+  async function addNewGoogleKeyword(keywordsString: string, googleKeywordTrackerToolId: string) {
     const res = await fetch("/api/serp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        keywordsString: keywordString,
-        googleKeywordTrackerToolId: "cm10ys4200000q48b5bvyzw2a",
+        keywordsString,
+        googleKeywordTrackerToolId
       }),
     });
 
     const status = res.status;
     const data = await res.json();
-    console.log("data use test", data);
 
     if (status === 200) {
       // TODO: Deduct display credits
@@ -30,11 +28,10 @@ export function useKeywordOpperations() {
       
       toast({
         title: "Keywords added",
-        // description: "Google keywords added successfully",
         variant: "success",
       })
 
-      return;
+      return { success: true };
     }
 
     toast({
@@ -42,6 +39,8 @@ export function useKeywordOpperations() {
       description: data.message,
       variant: "destructive",
     })
+
+    return { success: false };
   }
 
   return { addNewGoogleKeyword };

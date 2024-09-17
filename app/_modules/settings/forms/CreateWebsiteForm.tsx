@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useTransition } from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { z } from 'zod';
 import { useForm, UseFormReturn } from 'react-hook-form';
@@ -10,8 +11,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formInputCreateWebsiteSchema } from '@/src/entities/models/website';
 import { createWebsite } from '@/app/_actions/website.actions';
 
-import { Form, FormControl, FormError, FormSuccess, FormField, FormItem, FormLabel, FormMessage, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue, FormInputField } from '../components/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue, FormInputField } from '../components/form';
 
+import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../components/SettingsCard';
 
@@ -44,10 +46,10 @@ const CreateWebsiteForm = () => {
     }
   ]
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formInputCreateWebsiteSchema>>({
     resolver: zodResolver(formInputCreateWebsiteSchema),
   });
@@ -55,22 +57,21 @@ const CreateWebsiteForm = () => {
   const addWebsiteToStore = useWebsiteDetailsStore(state => state.addWebsite);
 
   const onSubmit = async (values: z.infer<typeof formInputCreateWebsiteSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
-
       const res = await createWebsite(values);
-      console.log('res', res)
 
       if (res.error) {
-        setError(res.error);
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        })
       }
 
       if (res.createdWebsite) {
-        setSuccess("Website created successfully");
         addWebsiteToStore(res.createdWebsite);
         form.reset();
+        router.push(`/app/settings/website/${res.createdWebsite.id}`);
       }
     })
   }
@@ -125,8 +126,6 @@ const CreateWebsiteForm = () => {
         </Card>
 
         <div className='px-6 mb-6 flex'>
-          <FormError message={error} />
-          <FormSuccess message={success} />
           <Button
             disabled={isPending}
             type="submit"

@@ -19,6 +19,7 @@ import {
 } from "@/app/_components/ui/alert-dialog"
 
 import { TrashIcon } from '@heroicons/react/20/solid'
+import { useToast } from '@/app/_components/ui/toast/use-toast';
 
 
 function DeleteLocationButton({ locationId }: { locationId: string }) {
@@ -26,13 +27,18 @@ function DeleteLocationButton({ locationId }: { locationId: string }) {
   const deleteLocationFromStore = useWebsiteDetailsStore(state => state.deleteLocation)
   const [isPending, startTransition] = useTransition()
 
+  const { toast } = useToast();
+
   const handleDeleteLocation = async () => {
     startTransition(async () => {
       const res = await deleteLocation(locationId)
-      console.log('res LocationDetails.tsx > deleteLocation', res)
 
-      // TODO: throw error/ toast
       if (res.error) {
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        })
         console.error(res.error)
         return
       }

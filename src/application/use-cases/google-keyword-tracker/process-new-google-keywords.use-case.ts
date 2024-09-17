@@ -32,6 +32,7 @@ export async function processNewGoogleKeywordUseCase(
         "IProcessGoogleKeywordsService"
       );
       const usersRepository = getInjection("IUsersRepository");
+      const googleKeywordTrackerKeywordsRepository = getInjection('IGoogleKeywordTrackerKeywordsRepository');
 
       //Check if user has enough credits
       if (user.credits < keywords.length) {
@@ -40,7 +41,7 @@ export async function processNewGoogleKeywordUseCase(
 
       // Create keywords
       const googleKeywordTrackerKeywords =
-        await googleKeywordTrackerRepository.addKeywords(
+        await googleKeywordTrackerKeywordsRepository.insertMany(
           googleKeywordTrackerToolId,
           keywords
         );

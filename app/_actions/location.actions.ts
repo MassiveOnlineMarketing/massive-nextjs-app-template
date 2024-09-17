@@ -35,7 +35,7 @@ export async function createLocation(formData: z.infer<typeof formInputCreateLoc
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error creating location" };
         }
-        console.log('createLocation error: ', error)
+        console.error('createLocation error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -66,7 +66,7 @@ export async function updateLocation(formData: z.infer<typeof formInputUpdateLoc
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error updating location" };
         }
-        console.log('updateLocation error: ', error)
+        console.error('updateLocation error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -97,7 +97,7 @@ export async function deleteLocation(id: string): Promise<{ deletedLocation?: Lo
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error deleting location" };
         }
-        console.log('deleteLocation error: ', error)
+        console.error('deleteLocation error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -128,7 +128,7 @@ export async function getLocation(id: string): Promise<{ location?: Location, er
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error getting location" };
         }
-        console.log('getLocation error: ', error)
+        console.error('getLocation error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }

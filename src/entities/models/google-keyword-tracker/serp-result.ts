@@ -6,7 +6,7 @@ export const selectGoogleKeywordTrackerSerpResultCoreSchema = z.object({
     position: z.number(),
     url: z.string(),
     metaTitle: z.string(),
-    metaDescription: z.string(),
+    metaDescription: z.string().nullable(),
     createdAt: z.date(),
 })
 

@@ -10,6 +10,7 @@ import { IUsersRepository } from "@/src/application/repositories/users.repositor
 import { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
 import { ILocationRepository } from "@/src/application/repositories/location.repository.interface";
 import { IGoogleKeywordTrackerRepository } from "@/src/application/repositories/google-keyword-tracker.repository.interface";
+import { IGoogleKeywordTrackerKeywordsRepository } from "@/src/application/repositories/google-keyword-tracker-keywords.repository.interface";
 
 // Api
 import { ISerperApi } from "@/src/application/api/serper.api.interface";
@@ -27,6 +28,7 @@ export const DI_SYMBOLS = {
   IWebsiteRepository: Symbol.for("IWebsiteRepository"),
   ILocationRepository: Symbol.for("ILocationRepository"),
   IGoogleKeywordTrackerRepository: Symbol.for("IGoogleLKeywordTrackerRepository"),
+  IGoogleKeywordTrackerKeywordsRepository: Symbol.for("IGoogleKeywordTrackerKeywordsRepository"),
 
   // Api
   ISerperApi: Symbol.for("ISerperApi"),
@@ -45,6 +47,7 @@ export interface DI_RETURN_TYPES {
   IWebsiteRepository: IWebsiteRepository;
   ILocationRepository: ILocationRepository;
   IGoogleKeywordTrackerRepository: IGoogleKeywordTrackerRepository;
+  IGoogleKeywordTrackerKeywordsRepository: IGoogleKeywordTrackerKeywordsRepository;
 
   // Api
   ISerperApi: ISerperApi;

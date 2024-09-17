@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useTransition, useMemo, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -18,6 +19,7 @@ import { Label } from '@/app/_components/ui/label'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../components/form'
 import GoogleLocationsDropdown from '../components/form/GoogleLocationsDropdown'
 
+import { useToast } from '@/app/_components/ui/toast/use-toast'
 import { cn } from '@/app/_components/utils'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/app/_components/ui/command'
 import { Card, CardContent, CardHeader } from '../components/SettingsCard'
@@ -30,9 +32,6 @@ import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
 const CreateLocationForm = ({ location, usersWebsites }: {
   location: Location | undefined, usersWebsites: Website[] | undefined;
 }) => {
-
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [selectedLocationDisplayTitle, setSelectedLocationDisplayTitle] = useState<LocationLocationOptions | null>(null);
 
@@ -43,6 +42,8 @@ const CreateLocationForm = ({ location, usersWebsites }: {
 
   const addLocation = useWebsiteDetailsStore(state => state.addLocation)
 
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formInputCreateLocationSchema>>({
     resolver: zodResolver(formInputCreateLocationSchema),
     defaultValues: {
@@ -53,33 +54,31 @@ const CreateLocationForm = ({ location, usersWebsites }: {
     }
   });
 
-  console.log('location', location)
-  
   useEffect(() => {
     setSelectedLocationDisplayTitle(displayLocations.find(l => l.canonicalName.toString() === location?.location) || null);
   }, [])
 
-
   const onSubmit = async (values: z.infer<typeof formInputCreateLocationSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
-      console.log('values', values)
+      console.log('formValues', values)
       const res = await createLocation(values);
 
       if (res.error) {
-        setError(res.error);
+        toast({
+          title: 'Error creating location',
+          description: res.error,
+          variant: 'destructive',
+        })
       }
 
       if (res.createdLocation) {
-        setSuccess('Location created successfully');
-        console.log('created location', res.createdLocation)
         addLocation(res.createdLocation);
         form.reset();
+        router.push(`/app/settings/website/location/${res.createdLocation.id}`);
       }
     })
   }
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -283,7 +282,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                                 value={country}
                                 key={country.googleId}
                                 onSelect={() => {
-                                  form.setValue("country", country); 
+                                  form.setValue("country", country);
                                 }}
                               >
                                 {country.name}

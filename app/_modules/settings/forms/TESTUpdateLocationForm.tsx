@@ -66,7 +66,7 @@ const UpdateLocationForm = ({
     setSuccess("");
 
     startTransition(async () => {
-      console.log('values: ', values)
+      console.log('formValues: ', values)
       const res = await updateLocation(values);
 
       if (res.error) {

@@ -36,7 +36,7 @@ export async function createWebsite(formData: z.infer<typeof formInputCreateWebs
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error creating website" };
         }
-        console.log('createWebsite error: ', error)
+        console.error('createWebsite error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -63,7 +63,7 @@ export async function updateWebsite(formData: z.infer<typeof formInputUpdateWebs
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error updating website" };
         }
-        console.log('updateWebsite error: ', error)
+        console.error('updateWebsite error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -76,9 +76,6 @@ export async function deleteWebsite(id: string): Promise<{ deletedWebsite?: Webs
     'deleteWebsite',
     { recordResponse: true },
     async () => {
-
-      console.log('deleteWebsite id: ', id)
-
       const session = await auth();
       if (!session?.user || !session?.user.id) {
         return { error: "Must be logged in to delete a website" };
@@ -97,7 +94,7 @@ export async function deleteWebsite(id: string): Promise<{ deletedWebsite?: Webs
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error deleting website" };
         }
-        console.log('deleteWebsite error: ', error)
+        console.error('deleteWebsite error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -135,7 +132,7 @@ export async function getWebsitesByUser(userId: string): Promise<{ websites?: We
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error getting websites" };
         }
-        console.log('getWebsitesByUser error: ', error)
+        console.error('getWebsitesByUser error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -173,7 +170,7 @@ export async function getWebsiteWithLocationByUser(userId: string): Promise<{ we
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error getting website" };
         }
-        console.log('getWebsiteWithLocationByUser error: ', error)
+        console.error('getWebsiteWithLocationByUser error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }
@@ -205,7 +202,7 @@ export async function getWebsiteWithLocation(id: string): Promise<{ website?: We
         } else if (error instanceof DatabaseOperationError) {
           return { error: "Error getting website" };
         }
-        console.log('getWebsiteWithLocation error: ', error)
+        console.error('getWebsiteWithLocation error: ', error)
         captureException(error);
         return { error: "An error happened. The developers have been notified. Please try again later." };
       }

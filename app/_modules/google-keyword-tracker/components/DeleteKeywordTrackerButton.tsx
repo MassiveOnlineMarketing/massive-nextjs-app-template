@@ -2,9 +2,7 @@
 
 import React from 'react'
 
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import { useTransition } from 'react';
-import { deleteWebsite } from '@/app/_actions/website.actions';
 
 import {
   AlertDialog,
@@ -20,17 +18,19 @@ import {
 
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { useToast } from '@/app/_components/ui/toast/use-toast';
+import { deleteGoogleKeywordTracker } from '../../actions/google-keyword-tracker.actions';
+import { useRouter } from 'next/navigation';
 
 
-function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
-
-  const deleteWebsiteFromStore = useWebsiteDetailsStore(state => state.deleteWebsite)
+function DeleteKeywordTrackerButton({ KeywordTrackerId }: { KeywordTrackerId: string }) {
   const [isPending, startTransition] = useTransition()
-  const { toast } = useToast();
 
-  const handleDeleteLocation = async () => {
+  const { toast } = useToast();
+  const router = useRouter()
+
+  const handleDeleteKeywordTracker = async () => {
     startTransition(async () => {
-      const res = await deleteWebsite(websiteId)
+      const res = await deleteGoogleKeywordTracker(KeywordTrackerId)
 
       if (res.error) {
         toast({
@@ -42,16 +42,21 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
         return
       }
 
-      if (res.deletedWebsite) {
-        deleteWebsiteFromStore(res.deletedWebsite.id)
-        // TODO: Route user to settings page?
+      if (res.googleKeywordTracker) {
+        toast({
+          title: "Success",
+          description: "Keyword Tracker deleted successfully",
+          variant: "success",
+        })
+
+        router.refresh()
       }
     })
   }
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild disabled={isPending}>
+      <AlertDialogTrigger asChild disabled={isPending} >
         <button className='px-4 py-1.5 h-fit text-red-500 border border-red-500 rounded-lg'><TrashIcon className='w-4 h-4' /></button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -59,16 +64,16 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            website and it&apos;s locations. All data associated to it&apos;s connected tools will be removed from our servers.
+            KeywordTracker. All data associated to it&apos;s connected tools will be removed from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDeleteLocation}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleDeleteKeywordTracker}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   )
 }
 
-export default DeleteWebsiteButton
+export default DeleteKeywordTrackerButton

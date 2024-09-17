@@ -54,7 +54,6 @@ export class SerperApi implements ISerperApi {
 
       try {
         const response = await axios(config);
-        // console.log("Response: ", response.data);
 
         return mapSerperApiResponse(response.data, keywords);
       } catch (error) {
