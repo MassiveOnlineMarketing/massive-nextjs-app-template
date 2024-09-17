@@ -8,7 +8,7 @@ interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
   groupedLocations: Record<string, Location[]>;
 }
 
-const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undefined }> = ({ websites }) => {
+const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | undefined }> = ({ websites }) => {
   const [hoveredWebsiteId, setHoveredWebsiteId] = useState<string | null>(null);
   const [websitesWithGroupedLocations, setWebsitesWithGroupedLocations] = useState<WebsiteWithGroupedLocations[]>([]);
 
@@ -59,9 +59,9 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className='cursor-pointer w-full molecule flex items-center rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
-          <div className='w-12 h-12 m-2 rounded-[8px] bg-green-50'></div>
-          <p className='block'>test</p>
+        <div className='cursor-pointer group-hover/side-bar:w-full w-fit flex items-center transition-all duration-300       molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
+          <div className='w-12 h-12 m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50'></div>
+          <p className='group-hover/side-bar:block hidden'>test</p>
         </div>
       </PopoverTrigger>
       <PopoverContent className='w-[500px] h-[200px] translate-x-4 theme-bg-w grid grid-cols-2 gap-2'>
@@ -94,4 +94,4 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
   );
 };
 
-export default WebsiteSelectionButton;
+export default WebsiteSelectionButtonHover;
