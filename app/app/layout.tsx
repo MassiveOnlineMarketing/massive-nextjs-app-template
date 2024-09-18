@@ -12,7 +12,7 @@ export default function layout(
       <div className='flex min-w-screen min-h-screen overflow-y-hidden overflow-x-auto bg-base-50 dark:bg-base-950'>
 
         <MainSideMenu />
-        <UitgeklaptMainSideMenu />
+        {/* <UitgeklaptMainSideMenu /> */}
 
         {children}
 

@@ -69,8 +69,6 @@ const MainSideMenu = () => {
 
   return (
     <div className='w-[80px] flex flex-col h-screen pl-[18px] pr-[10px] pb-4 group/side-bar hover/side-bar:w-[328px] transition-width duration-300 '>
-
-
       <div className='w-full h-[76px] flex'>
         <LogoWithHover />
       </div>

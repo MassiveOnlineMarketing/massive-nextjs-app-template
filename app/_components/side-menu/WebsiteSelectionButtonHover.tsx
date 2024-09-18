@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { WebsiteWithLocation } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '../ui/command';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { getFaviconUrl } from '@/app/_utils/imageUtils';
+import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
+
 
 
 interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
@@ -9,7 +14,6 @@ interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
 }
 
 const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | undefined }> = ({ websites }) => {
-  const [hoveredWebsiteId, setHoveredWebsiteId] = useState<string | null>(null);
   const [websitesWithGroupedLocations, setWebsitesWithGroupedLocations] = useState<WebsiteWithGroupedLocations[]>([]);
 
   useEffect(() => {
@@ -54,43 +58,72 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
     setWebsitesWithGroupedLocations(transformedWebsites);
   }, [websites]);
 
-  const hoveredWebsite = websitesWithGroupedLocations.find((website) => website.id === hoveredWebsiteId);
+  console.log('websitesWithGroupedLocations', websitesWithGroupedLocations);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <div className='cursor-pointer group-hover/side-bar:w-full w-fit flex items-center transition-all duration-300       molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
-          <div className='w-12 h-12 m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50'></div>
-          <p className='group-hover/side-bar:block hidden'>test</p>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div className='cursor-pointer w-fit flex items-center      molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
+          <div className='w-[42px] h-[42px] m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50'></div>
+          <p className='w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300 '>test</p>
         </div>
-      </PopoverTrigger>
-      <PopoverContent className='w-[500px] h-[200px] translate-x-4 theme-bg-w grid grid-cols-2 gap-2'>
-        <div>
-          {websitesWithGroupedLocations.map((website) => (
-            <div
-              key={website.id}
-              onMouseEnter={() => setHoveredWebsiteId(website.id)}
-              className="cursor-pointer hover:bg-gray-200"
-            >
-              <h2 className="">{website.websiteName}</h2>
-            </div>
-          ))}
-        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='w-[350px]'>
+        <DropdownMenuLabel>Websites</DropdownMenuLabel>
 
-        {hoveredWebsite && (
-          <div className='overflow-y-auto'>
-            {Object.entries(hoveredWebsite.groupedLocations).map(([country, locations]) => (
-              <div key={country}>
-                <p>{country}</p>
-                {locations.map((location) => (
-                  <p key={location.id} className='ml-1'>{location.location?.split(',')[0]}</p>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
-      </PopoverContent>
-    </Popover>
+        {websitesWithGroupedLocations?.map((website) => (
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger className='flex gap-2 items-center'>
+              <img src={getFaviconUrl(website.domainUrl)} width={16} height={16} alt='favicon' className='w-4 h-4' />
+              {website.websiteName}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+
+              <DropdownMenuSubContent>
+                <Command>
+                  <CommandInput placeholder='Search locations...' />
+                  <CommandList>
+                    <CommandGroup className='p-0'>
+                      <DropdownMenuLabel>Locations</DropdownMenuLabel>
+                      {Object.entries(website.groupedLocations).map(([country, locations]) => (
+                        <div key={country}>
+                          {locations.map((l) => (
+                            <CommandItem key={l.id}>
+                              {l.location ? (
+                                website.websiteName + ' ' + country + ' ' + l.location.split(',')[0]
+                              ) : (
+                                website.websiteName + ' ' + country + ' ' +'Country'
+                              )}
+                            </CommandItem>
+                          ))}
+                        </div>
+                      ))}
+                    </CommandGroup>
+                    <CommandEmpty>No locations found</CommandEmpty>
+                  </CommandList>
+                  <CommandSeparator />
+                </Command>
+                  <DropdownMenuItem className='flex gap-2 items-center theme-t-t'>
+                    <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
+                    Add new location
+                    <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
+                  </DropdownMenuItem>
+              </DropdownMenuSubContent>
+
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        ))}
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem className='flex gap-2 items-center theme-t-t'>
+          <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
+          Add new website
+          <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+
+    </DropdownMenu >
   );
 };
 
