@@ -21,7 +21,7 @@ type NavigationItem = {
   active: boolean;
 }
 
-const MainSideMenu = () => {
+const UitgeklaptMainSideMenu = () => {
   const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
   const [navigation, setNavigation] = React.useState<NavigationItem[]>([
     { label: 'Home', icon: Squares2X2Icon, link: '/app', active: false },
@@ -68,21 +68,19 @@ const MainSideMenu = () => {
 
 
   return (
-    <div className='w-[80px] flex flex-col h-screen pl-[18px] pr-[10px] pb-4 group/side-bar hover/side-bar:w-[328px] transition-width duration-300 '>
+    <div className='w-[328px] flex flex-col h-screen pl-[18px] pr-[10px] pb-4'>
+      <div className='h-full pl-[18px] pr-[10px] pb-4 w-[328px]'>
+        <Logo />
+        <div className='py-3'>
+          <WebsiteSelectionButton websites={websites} />
+        </div>
 
-
-      <div className='w-full h-[76px] flex'>
-        <LogoWithHover />
-      </div>
-      <div className='h-[88px] flex items-center' >
-        <WebsiteSelectionButtonHover websites={websites} />
-      </div>
-
-      <div className='flex flex-col'>
-        <NavLabelWithHover>Main Menu</NavLabelWithHover>
-        {navigation.map((item, index) => (
-          <NavItemWithHover key={index} item={item} />
-        ))}
+        <div>
+          <NavLabel>Main Menu</NavLabel>
+          {navigation.map((item, index) => (
+            <NavItem key={index} item={item} />
+          ))}
+        </div>
       </div>
 
       <div className='mt-auto'>
@@ -93,54 +91,51 @@ const MainSideMenu = () => {
 }
 
 
-// Group hover nav
+// Uitgeklapte nav
 
-const NavLabelWithHover = ({ children }: { children: React.ReactNode }) => {
+const NavLabel = ({ children }: { children: React.ReactNode }) => {
   return (
-    <p className='text-xs text-nowrap group-hover/side-bar:theme-t-n px-3 py-1 text-base-50 w-0 group-hover/side-bar:w-[244px]'>{children}</p>
+    <p className='text-xs theme-t-n px-3 py-1'>{children}</p>
   )
 }
 
-const NavItemWithHover = ({ item }: { item: NavigationItem }) => {
+const NavItem = ({ item }: { item: NavigationItem }) => {
   return (
     <Link
       href={item.link}
       className={cn(
-        'h-[52px] w-full  flex items-center ',
-        item.active ? 'theme-bg-w group-hover/side-bar:rounded-none ' : '',
-        item.active ? 'group-hover/side-bar:border-x theme-b-p ' : '',
-        item.active ? 'group-hover/side-bar:before:border-0 group-hover/side-bar:after:border-0 molecule rounded-[8px] before:rounded-[8px] after:rounded-[12px] before:left-0 before:top-0' : ''
+        'h-[52px] p-3 flex gap-2 items-center',
+        item.active ? 'theme-bg-w border-x theme-b-p ' : ''
       )}>
-      <div className='min-w-[50px] min-h-[50px]  flex items-center justify-center p-3'>
-        <item.icon
-          className={cn(
-            'w-6 h-6 ',
-            item.active ? 'text-base-500' : 'theme-t-n'
-          )} />
-      </div>
+      <item.icon
+        className={cn(
+          'w-6 h-6 ',
+          item.active ? 'text-base-500' : 'theme-t-n'
+        )} />
       <p
         className={cn(
-          'text-nowrap',
-          'w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300',
-          item.active ? 'theme-t-p' : 'theme-t-n',
+          item.active ? 'theme-t-p' : 'theme-t-n'
         )}
       >{item.label}</p>
     </Link >
   )
 }
 
-
-const LogoWithHover = () => {
+const Logo = () => {
   return (
-    <div className='mt-auto mb-2 flex items-center gap-2.5'>
-      <div className='w-[52px] h-[52px] theme-bg-w flex items-center justify-center  molecule rounded-lg before:rounded-lg after:rounded-[14px]'>
-        <div className='w-[26px]'>
-          <MassiveLogoColor />
+    <div className='h-[76px] flex'>
+      <div className='mt-auto ml-2 mb-2 flex items-center gap-2.5'>
+        <div className='w-[52px] h-[52px] theme-bg-w flex items-center justify-center  molecule rounded-lg before:rounded-lg after:rounded-[14px]'>
+          <div className='w-[26px]'>
+            <MassiveLogoColor />
+          </div>
         </div>
+        <div><MassiveTextDash /></div>
       </div>
-      <div className='w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300'><MassiveTextDash /></div>
     </div>
   )
 }
 
-export default MainSideMenu
+
+
+export default UitgeklaptMainSideMenu

@@ -112,6 +112,9 @@ module.exports = {
         '2-5': '10px',
         '3-5': '14px',
       },
+      transitionProperty: {
+        'width': 'width',
+      },
     },
   },
   plugins: [],
