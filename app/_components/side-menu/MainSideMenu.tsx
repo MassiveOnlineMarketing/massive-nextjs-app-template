@@ -109,7 +109,7 @@ const NavItemWithHover = ({ item }: { item: NavigationItem }) => {
         item.active ? 'group-hover/side-bar:border-x theme-b-p ' : '',
         item.active ? 'group-hover/side-bar:before:border-0 group-hover/side-bar:after:border-0 molecule rounded-[8px] before:rounded-[8px] after:rounded-[12px] before:left-0 before:top-0' : ''
       )}>
-      <div className='min-w-[50px] min-h-[50px]  flex items-center justify-center p-3'>
+      <div className='min-w-[52px] min-h-[52px]  flex items-center justify-center p-3'>
         <item.icon
           className={cn(
             'w-6 h-6 ',

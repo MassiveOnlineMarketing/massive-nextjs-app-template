@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import { Location } from "@/src/entities/models/location";
 import { WebsiteWithLocation } from "@/src/entities/models/website";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getFaviconUrl } from "../_utils/imageUtils";
 
 export type WebsiteDetailsActions = {
   initialteWebsiteDetails: (website: WebsiteWithLocation[]) => void;
@@ -12,21 +13,30 @@ export type WebsiteDetailsActions = {
   updateWebsite: (website: WebsiteWithLocation) => void;
   addLocation: (location: Location) => void;
   deleteLocation: (id: string) => void;
+
+  setSelectedWebsite: (id: string) => void;
+  setSelectedLocation: (id: string | undefined) => void;
 };
+
+interface WebsiteWithLocationDisplay extends WebsiteWithLocation {
+  faviconUrl: string;
+}
 
 export type WebsiteDetailsState = {
   websites: WebsiteWithLocation[] | undefined;
-  selectedWebsite: WebsiteWithLocation | undefined;
+  selectedWebsite: WebsiteWithLocationDisplay | undefined;
+  selectedLocation: Location | undefined;
 };
 
 export type WebsiteDetailsStore = WebsiteDetailsState & WebsiteDetailsActions;
 
-export const useWebsiteDetailsStore = create<WebsiteDetailsStore>() (
+export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
   persist(
     (set) => ({
       websites: undefined,
       selectedWebsite: undefined,
-    
+      selectedLocation: undefined,
+
       initialteWebsiteDetails: (website: WebsiteWithLocation[]) => {
         set({ websites: website });
       },
@@ -75,7 +85,9 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>() (
                 if (website.id === location.websiteId) {
                   return {
                     ...website,
-                    location: website.location ? [...website.location, location] : [location],
+                    location: website.location
+                      ? [...website.location, location]
+                      : [location],
                   };
                 }
                 return website;
@@ -102,7 +114,38 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>() (
           }
           return state;
         });
-      }
+      },
+      setSelectedWebsite(id) {
+        set((state) => {
+          if (state.websites) {
+            const web = state.websites.find((website) => website.id === id);
+            if (web) {
+              return {
+                selectedWebsite: {
+                  ...web,
+                  faviconUrl: getFaviconUrl(web?.domainUrl),
+                },
+              };
+            }
+          }
+          return state;
+        });
+      },
+      setSelectedLocation(id: string | undefined) {
+        set((state) => {
+          if (state.websites && state.selectedWebsite) {
+            return {
+              selectedLocation: state.selectedWebsite.location?.find(
+                (loc) => loc.id === id
+              ),
+            };
+          }
+          return {
+            ...state,
+            selectedLocation: undefined,
+          };
+        });
+      },
     }),
     {
       name: "website-details-store",

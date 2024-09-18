@@ -1,20 +1,31 @@
+'use client';
+
 import React, { useEffect, useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import Link from 'next/link';
+
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
+
 import { WebsiteWithLocation } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location';
+
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '../ui/command';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '../ui/dropdown-menu';
+
 import { getFaviconUrl } from '@/app/_utils/imageUtils';
 import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { BoxIcon } from '@radix-ui/react-icons';
 
 
 
 interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
   groupedLocations: Record<string, Location[]>;
+  faviconUrl: string;
 }
 
 const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | undefined }> = ({ websites }) => {
   const [websitesWithGroupedLocations, setWebsitesWithGroupedLocations] = useState<WebsiteWithGroupedLocations[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!websites) {
@@ -26,6 +37,7 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
         return {
           ...website,
           groupedLocations: {},
+          faviconUrl: getFaviconUrl(website.domainUrl),
         };
       }
 
@@ -52,34 +64,99 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
       return {
         ...website,
         groupedLocations: groupedByCountry,
+        faviconUrl: getFaviconUrl(website.domainUrl),
       };
     });
 
     setWebsitesWithGroupedLocations(transformedWebsites);
   }, [websites]);
 
-  console.log('websitesWithGroupedLocations', websitesWithGroupedLocations);
+  const { selectedWebsite, selectedLocation, setSelectedWebsite, setSelectedLocation } = useWebsiteDetailsStore(state => ({
+    selectedWebsite: state.selectedWebsite,
+    selectedLocation: state.selectedLocation,
+    setSelectedWebsite: state.setSelectedWebsite,
+    setSelectedLocation: state.setSelectedLocation,
+  }));
+
+  const handleWebsiteSelect = (website: WebsiteWithGroupedLocations) => {
+    setSelectedWebsite(website.id);
+    const firstCountryKey = Object.keys(website.groupedLocations)[0];
+    const firstLocationArray = website.groupedLocations[firstCountryKey];
+
+    if (firstLocationArray && firstLocationArray.length > 0 && firstLocationArray[0].id) {
+      setSelectedLocation(firstLocationArray[0].id);
+    } else {
+      setSelectedLocation(undefined);
+    }
+
+    setOpen(false);
+  }
+
+  const handleLocationSelect = (location: Location) => {
+    setSelectedWebsite(location.websiteId);
+    setSelectedLocation(location.id);
+    setOpen(false);
+  }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <div className='cursor-pointer w-fit flex items-center      molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
-          <div className='w-[42px] h-[42px] m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50'></div>
-          <p className='w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300 '>test</p>
+          
+          {/* Favicon box */}
+          <div className='w-[42px] h-[42px] m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50 flex items-center justify-center'>
+            {selectedWebsite ? (
+              <img src={selectedWebsite.faviconUrl} alt={`favicon ${selectedWebsite.websiteName}`} width={28} height={28} />
+            ): (
+              <BoxIcon className='h-[28px] w-[28px] theme-t-n' />
+              )}
+          </div>
+
+          {/* Website and location */}
+          <div className='w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300 flex items-center'>
+            <div>
+              {/* Website */}
+              <p className='text-nowrap theme-t-p'>
+                {selectedWebsite ? (
+                  selectedWebsite.websiteName
+                ) : (
+                  'No website selected'
+                )}
+              </p>
+              {/* Location */}
+              <p className='text-nowrap text-sm theme-t-n'>
+                {selectedLocation ? (
+                  selectedLocation?.location ? (
+                    selectedLocation.country + ', ' + selectedLocation.location.split(',')[0]
+                  ) : (
+                    selectedLocation.country + ', ' + 'Country'
+                  )
+                ) : (
+                  'No location selected'
+                )}
+              </p>
+            </div>
+
+            <ChevronUpDownIcon className='ml-auto h-5 w-5 theme-t-n mr-5' />
+          </div>
         </div>
       </DropdownMenuTrigger>
+
+
       <DropdownMenuContent className='w-[350px]'>
         <DropdownMenuLabel>Websites</DropdownMenuLabel>
 
         {websitesWithGroupedLocations?.map((website) => (
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className='flex gap-2 items-center'>
-              <img src={getFaviconUrl(website.domainUrl)} width={16} height={16} alt='favicon' className='w-4 h-4' />
+          <DropdownMenuSub key={website.id}>
+            {/* Website */}
+            <DropdownMenuSubTrigger onClick={() => handleWebsiteSelect(website)} className='flex gap-2 items-center'>
+              <img src={website.faviconUrl} width={16} height={16} alt='favicon' className='w-4 h-4' />
               {website.websiteName}
             </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
 
+            <DropdownMenuPortal>
               <DropdownMenuSubContent>
+                {/* Locations */}
                 <Command>
                   <CommandInput placeholder='Search locations...' />
                   <CommandList>
@@ -88,11 +165,14 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
                       {Object.entries(website.groupedLocations).map(([country, locations]) => (
                         <div key={country}>
                           {locations.map((l) => (
-                            <CommandItem key={l.id}>
+                            <CommandItem
+                              onSelect={() => handleLocationSelect(l)}
+                              key={l.id}
+                            >
                               {l.location ? (
                                 website.websiteName + ' ' + country + ' ' + l.location.split(',')[0]
                               ) : (
-                                website.websiteName + ' ' + country + ' ' +'Country'
+                                website.websiteName + ' ' + country + ' ' + 'Country'
                               )}
                             </CommandItem>
                           ))}
@@ -103,11 +183,13 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
                   </CommandList>
                   <CommandSeparator />
                 </Command>
-                  <DropdownMenuItem className='flex gap-2 items-center theme-t-t'>
-                    <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
-                    Add new location
-                    <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
-                  </DropdownMenuItem>
+
+                {/* Add Location */}
+                <Link onClick={() => setOpen(false)} href='/app/settings/website/location' className='rounded-sm px-2 py-1.5  flex gap-2 items-center text-sm theme-t-t hover:bg-base-50 dark:hover:bg-theme-night-background-secondary'>
+                  <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
+                  Add new location
+                  <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
+                </Link>
               </DropdownMenuSubContent>
 
             </DropdownMenuPortal>
@@ -116,11 +198,12 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className='flex gap-2 items-center theme-t-t'>
+        {/* Add Website */}
+        <Link onClick={() => setOpen(false)} href='/app/settings/website' className='rounded-sm px-2 py-1.5  flex gap-2 items-center text-sm theme-t-t hover:bg-base-50 dark:hover:bg-theme-night-background-secondary'>
           <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
           Add new website
           <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
-        </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
 
     </DropdownMenu >
