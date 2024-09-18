@@ -48,6 +48,7 @@ export const {
       // When adding new fields to the token/ session. Als add them the the extendedUser type in the root of the project.
       token.role = existingUser.role;
       token.loginProvider = existingUser.loginProvider;
+      token.credits = existingUser.credits;
 
       // * here we can update the token with the user name, also update in the database
       if (trigger === "update") {
@@ -76,6 +77,10 @@ export const {
 
       if (token.loginProvider && session.user) {
         session.user.loginProvider = token.loginProvider
+      }
+
+      if (token.credits && session.user) {
+        session.user.credits = token.credits
       }
 
       // * here we can set custom fields in the session

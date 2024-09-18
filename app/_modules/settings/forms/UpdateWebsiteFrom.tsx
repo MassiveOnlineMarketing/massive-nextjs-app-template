@@ -196,7 +196,7 @@ const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsoleProp
           <p className="text-gray-500 font-normal">
             Authenticate your{" "}
             <Link
-              href="/app/settings/integrations"
+              href="/app/integrations"
               className="text-p-500"
             >
               Search Console{" "}

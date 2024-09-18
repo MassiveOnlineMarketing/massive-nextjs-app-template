@@ -21,6 +21,15 @@ type NavigationItem = {
   active: boolean;
 }
 
+function isActive(href: string, pathname: string) {
+  // console.log('href', href)
+  // console.log('pathname', pathname)
+  return (
+    (href === "/app" && pathname === href) ||
+    (pathname.includes(href) && href !== "/app")
+  );
+};
+
 const MainSideMenu = () => {
   const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
   const [navigation, setNavigation] = React.useState<NavigationItem[]>([
@@ -57,11 +66,11 @@ const MainSideMenu = () => {
     console.log('pathname', pathname)
 
     setNavigation([
-      { label: 'Home', icon: Squares2X2Icon, link: '/app', active: pathname === '/app' },
+      { label: 'Home', icon: Squares2X2Icon, link: '/app', active: isActive('/app', pathname) },
       { label: 'Keyword Tracker', icon: ViewfinderCircleIcon, link: '/app/keyword-tracker', active: false },
-      { label: 'Settings', icon: Cog6ToothIcon, link: '/app/settings', active: pathname === '/app/settings' },
-      { label: 'Billing', icon: CreditCardIcon, link: '/app/settings/billing', active: pathname === '/app/settings/billing' },
-      { label: 'Integrations', icon: LinkIcon, link: '/app/settings/integrations', active: pathname === '/app/settings/integrations' },
+      { label: 'Settings', icon: Cog6ToothIcon, link: '/app/settings', active: isActive('/app/settings', pathname) },
+      { label: 'Billing', icon: CreditCardIcon, link: '/app/billing', active: isActive('/app/billing', pathname) },
+      { label: 'Integrations', icon: LinkIcon, link: '/app/integrations', active: isActive('/app/integrations', pathname) },
     ])
   }, [pathname])
 

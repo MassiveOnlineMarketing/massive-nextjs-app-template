@@ -24,7 +24,7 @@ const SettingsSideMenu = () => {
 
   const navItems = [
     { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon },
-    { href: '/app/settings/integrations', text: 'Integrations', icon: LinkIcon },
+    { href: '/app/integrations', text: 'Integrations', icon: LinkIcon },
   ]
 
 
