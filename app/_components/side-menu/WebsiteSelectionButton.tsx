@@ -110,6 +110,7 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
             isOpen ? 'm-2' : 'm-1',
           )}>
             {selectedWebsite ? (
+              // eslint-disable-next-line @next/next/no-img-element 
               <img src={selectedWebsite.faviconUrl} alt={`favicon ${selectedWebsite.websiteName}`} width={28} height={28} />
             ) : (
               <BoxIcon className='h-[28px] w-[28px] theme-t-n' />
@@ -157,6 +158,7 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
           <DropdownMenuSub key={website.id}>
             {/* Website */}
             <DropdownMenuSubTrigger onClick={() => handleWebsiteSelect(website)} className='flex gap-2 items-center'>
+              {/* eslint-disable-next-line @next/next/no-img-element  */}
               <img src={website.faviconUrl} width={16} height={16} alt='favicon' className='w-4 h-4' />
               {website.websiteName}
             </DropdownMenuSubTrigger>

@@ -17,6 +17,7 @@ const UserActionsDropdown = () => {
       <DropdownMenuTrigger className='px-1.5 flex gap-3 items-center'>
         <div className='w-9 h-9 molecule rounded-full before:rounded-full after:rounded-full before:left-0'>
           {user?.image ? (
+            // eslint-disable-next-line @next/next/no-img-element 
             <img src={user.image} alt='user' className='w-full h-full rounded-full' />
           ) : (
             <div className='w-full h-full flex items-center justify-center rounded-full '>

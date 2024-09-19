@@ -53,6 +53,7 @@ const MainSideMenu = () => {
     }
 
     fetchWebsites()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const websites = useWebsiteDetailsStore((state) => state.websites)
