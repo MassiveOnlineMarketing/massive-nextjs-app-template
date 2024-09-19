@@ -115,6 +115,10 @@ module.exports = {
       transitionProperty: {
         'width': 'width',
       },
+      boxShadow: {
+        "neon": "0 12px 13px rgba(120 87 254 / 0.06), 0 20px 35px rgba(120 87 254 / 0.10), 0 40px 60px rgba(120 87 254 / 0.12)",
+
+      },
     },
   },
   plugins: [],

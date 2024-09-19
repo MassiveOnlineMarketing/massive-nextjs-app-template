@@ -43,6 +43,12 @@ const Page = () => {
         <Button variant='secondary' size='lg'>Button</Button>
         <Button variant='secondary' size='icon'>Button</Button>
 
+        {/* Destructive */}
+        <Button variant='destructive' size='default'>Button</Button>
+        <Button variant='destructive' size='sm'>Button</Button>
+        <Button variant='destructive' size='lg'>Button</Button>
+        <Button variant='destructive' size='icon'>Button</Button>
+
         {/* Ghost */}
         <Button variant='ghost' size='default'>Button</Button>
         <Button variant='ghost' size='sm'>Button</Button>
