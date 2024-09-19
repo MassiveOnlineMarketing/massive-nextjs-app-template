@@ -42,12 +42,12 @@ const ClientPage = () => {
 
 
   const { addNewGoogleKeyword } = useKeywordOpperations()
-  const { refreshToken } = useGoogleToken('account')
+  const { refreshToken } = useGoogleToken('search-console')
 
   const handleFetchConnectedSites = async () => {
     // async getConnectedSites(refreshToken: string): Promise<PythonApiSite[] | null> {
       try {
-        const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/api/get_sites?refresh_token=1//05RrSrqDcLoqUCgYIARAAGAUSNwF-L9IrCtKpNa8XCg_vayjD5GiIghZqfSw8QynLZrRdfDq5Asvxz3jkUmYgccfzfNFxmfSI1R4`;
+        const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/api/get_sites?refresh_token=${refreshToken}`;
         // TODO: check of ook met react query kan
         const res = await axios(url);
         console.log(res.data.siteEntry);
