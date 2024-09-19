@@ -1,18 +1,19 @@
 'use client';
 
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-import React, { useEffect } from 'react'
-import WebsiteSelectionButton from './WebsiteSelectionButton';
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
-import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
-import WebsiteSelectionButtonHover from './WebsiteSelectionButtonHover';
-import { MassiveLogoColor, MassiveTextDash } from '@/assets/branding';
-import { CreditCardIcon, LinkIcon, Squares2X2Icon, ViewfinderCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import React, { useEffect } from 'react'
 import { usePathname } from 'next/navigation';
+
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
+
+import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
+
+import WebsiteSelectionButton from './WebsiteSelectionButton';
+
 import { cn } from '../utils';
-import { MainSideBarUserActions } from './MainSideBarUserActions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { CreditCardIcon, LinkIcon, Squares2X2Icon, ViewfinderCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid';
 
 
 type NavigationItem = {
@@ -21,15 +22,6 @@ type NavigationItem = {
   link: string;
   active: boolean;
 }
-
-function isActive(href: string, pathname: string) {
-  // console.log('href', href)
-  // console.log('pathname', pathname)
-  return (
-    (href === "/app" && pathname === href) ||
-    (pathname.includes(href) && href !== "/app")
-  );
-};
 
 const MainSideMenu = () => {
   const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
@@ -117,19 +109,16 @@ const MainSideMenu = () => {
     )}>
 
       <div className='h-[88px] flex items-center' >
-        <WebsiteSelectionButtonHover websites={websites} isOpen={secondarySidebarOpen} />
+        <WebsiteSelectionButton websites={websites} isOpen={secondarySidebarOpen} />
       </div>
 
       <div className='flex flex-col'>
-        <NavLabelWithHover isOpen={secondarySidebarOpen}>Main Menu</NavLabelWithHover>
+        <NavLabelWith isOpen={secondarySidebarOpen}>Main Menu</NavLabelWith>
         {navigation.map((item, index) => (
-          <NavItemWithHover key={index} item={item} isOpen={secondarySidebarOpen} />
+          <NavItemWith key={index} item={item} isOpen={secondarySidebarOpen} />
         ))}
       </div>
 
-      <div className='mt-auto'>
-        <MainSideBarUserActions />
-      </div>
 
       {/* Open en Close secondary sidebar */}
       <div className="absolute w-4 h-fit -right-1 top-1/2 -translate-y-1/2 z-50">
@@ -168,10 +157,14 @@ const MainSideMenu = () => {
   )
 }
 
+function isActive(href: string, pathname: string) {
+  return (
+    (href === "/app" && pathname === href) ||
+    (pathname.includes(href) && href !== "/app")
+  );
+};
 
-// Group hover nav
-
-const NavLabelWithHover = ({ children, isOpen }: { children: React.ReactNode, isOpen: boolean }) => {
+const NavLabelWith = ({ children, isOpen }: { children: React.ReactNode, isOpen: boolean }) => {
   return (
     <p className={cn(
       'text-xs text-nowrap  px-3 py-1 text-base-50',
@@ -180,7 +173,7 @@ const NavLabelWithHover = ({ children, isOpen }: { children: React.ReactNode, is
   )
 }
 
-const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }) => {
+const NavItemWith = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }) => {
   return (
     <Link
       href={item.link}
