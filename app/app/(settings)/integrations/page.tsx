@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader } from '@/app/_modules/settings/components/SettingsCard'
 import React from 'react'
+import GoogleIntegrations from './GoogleIntegrations'
 
 const page = () => {
   return (
@@ -8,12 +8,9 @@ const page = () => {
         <p className='text-xl font-medium theme-t-p'>Integrations</p>
         <p className='text-sm theme-t-t'>Manage your connected applications</p>
       </div>
-      <Card>
-        <CardHeader>Google Intergrations</CardHeader>
-        <CardContent>
-          content
-        </CardContent>
-      </Card>
+
+      <GoogleIntegrations />
+
     </div>
   )
 }
