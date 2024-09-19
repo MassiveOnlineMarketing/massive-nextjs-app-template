@@ -39,6 +39,9 @@ export const {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") {
         // Store the refresh token
+        console.log('SIGN IN CALLBACK')
+        console.log("account", account);
+        console.log("user", user);
         if (
           account?.provider === "google" &&
           account.refresh_token &&

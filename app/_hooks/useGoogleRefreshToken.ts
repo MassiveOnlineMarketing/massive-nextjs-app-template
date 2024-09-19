@@ -53,7 +53,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOption) => {
 
     const test = await signIn(
       'google',
-      { callbackUrl: '/app/settings/integrations' },
+      { callbackUrl: '/app/integrations' },
       {
         prompt: 'consent',
         scope: scopes,
