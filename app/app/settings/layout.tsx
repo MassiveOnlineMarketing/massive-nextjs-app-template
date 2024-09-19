@@ -1,13 +1,5 @@
-'use client';
+import React from 'react'
 
-import React, { useEffect } from 'react'
-
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-
-import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
-
-import Topbar from '@/app/_components/topbar/Topbar'
 import SettingsSideMenu from '@/app/_components/side-menu/SettingsSideMenu'
 
 export default function Layout(

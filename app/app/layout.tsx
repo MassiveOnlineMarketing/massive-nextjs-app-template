@@ -1,8 +1,8 @@
 import React from 'react'
 import Providers from './providers'
-import MainSideMenu from '@/app/_components/side-menu/MainSideMenu'
-import UitgeklaptMainSideMenu from '../_components/side-menu/UitgeklaptMainSideMenu'
+
 import Topbar from '../_components/topbar/Topbar'
+import MainSideMenu from '@/app/_components/side-menu/MainSideMenu'
 
 export default function layout(
   { children }: { children: React.ReactNode }
@@ -10,18 +10,12 @@ export default function layout(
   return (
     <Providers>
       {/* TODO: FIX? RIGHT BG clolro */}
-      <div className='flex min-w-screen min-h-screen overflow-y-hidden overflow-x-auto bg-base-50 dark:bg-base-950'>
+      <div className='min-w-screen min-h-screen overflow-y-hidden overflow-x-auto bg-base-50 dark:bg-base-950'>
+        <Topbar />
 
-        <MainSideMenu />
-        {/* <UitgeklaptMainSideMenu /> */}
-
-        <div className='w-full'>
-          <div className='py-4'>
-            <Topbar />
-          </div>
-          <div className='flex'>
+        <div className='flex h-[calc(100vh-79px)] w-full'>
+          <MainSideMenu />
           {children}
-          </div>
         </div>
 
       </div>

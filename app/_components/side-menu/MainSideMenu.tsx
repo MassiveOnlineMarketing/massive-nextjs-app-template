@@ -1,18 +1,19 @@
 'use client';
 
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-import React, { useEffect } from 'react'
-import WebsiteSelectionButton from './WebsiteSelectionButton';
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
-import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
-import WebsiteSelectionButtonHover from './WebsiteSelectionButtonHover';
-import { MassiveLogoColor, MassiveTextDash } from '@/assets/branding';
-import { CreditCardIcon, LinkIcon, Squares2X2Icon, ViewfinderCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import React, { useEffect } from 'react'
 import { usePathname } from 'next/navigation';
+
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
+
+import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
+
+import WebsiteSelectionButton from './WebsiteSelectionButton';
+
 import { cn } from '../utils';
-import { MainSideBarUserActions } from './MainSideBarUserActions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { CreditCardIcon, LinkIcon, Squares2X2Icon, ViewfinderCircleIcon, Cog6ToothIcon } from '@heroicons/react/20/solid';
 
 
 type NavigationItem = {
@@ -21,15 +22,6 @@ type NavigationItem = {
   link: string;
   active: boolean;
 }
-
-function isActive(href: string, pathname: string) {
-  // console.log('href', href)
-  // console.log('pathname', pathname)
-  return (
-    (href === "/app" && pathname === href) ||
-    (pathname.includes(href) && href !== "/app")
-  );
-};
 
 const MainSideMenu = () => {
   const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
@@ -110,34 +102,30 @@ const MainSideMenu = () => {
 
   return (
     <div className={cn(
-      'relative w-[80px] flex flex-col h-screen pl-[18px] pr-[10px] pb-4',
+      'group/openClose',
+      'relative w-[80px] flex flex-col h-full pl-[18px] pr-[10px] pb-4',
       'transition-width duration-300',
       secondarySidebarOpen ? 'w-[328px]' : 'w-[80px]',
     )}>
-      <div className='w-full h-[76px] flex'>
-        <LogoWithHover isOpen={secondarySidebarOpen} />
-      </div>
+
       <div className='h-[88px] flex items-center' >
-        <WebsiteSelectionButtonHover websites={websites} isOpen={secondarySidebarOpen} />
+        <WebsiteSelectionButton websites={websites} isOpen={secondarySidebarOpen} />
       </div>
 
       <div className='flex flex-col'>
-        <NavLabelWithHover isOpen={secondarySidebarOpen}>Main Menu</NavLabelWithHover>
+        <NavLabelWith isOpen={secondarySidebarOpen}>Main Menu</NavLabelWith>
         {navigation.map((item, index) => (
-          <NavItemWithHover key={index} item={item} isOpen={secondarySidebarOpen} />
+          <NavItemWith key={index} item={item} isOpen={secondarySidebarOpen} />
         ))}
       </div>
 
-      <div className='mt-auto'>
-        <MainSideBarUserActions />
-      </div>
 
       {/* Open en Close secondary sidebar */}
       <div className="absolute w-4 h-fit -right-1 top-1/2 -translate-y-1/2 z-50">
         <Tooltip>
           <TooltipTrigger className="w-8 h-[72px]">
             <div
-              className="flex h-[72px] w-8 items-center justify-center group "
+              className="h-[72px] w-8 items-center justify-center group hidden group-hover/openClose:flex "
               onClick={() => setSecondarySidebarOpen(!secondarySidebarOpen)}
             >
               <div className="flex h-6 w-6 flex-col items-center">
@@ -169,10 +157,14 @@ const MainSideMenu = () => {
   )
 }
 
+function isActive(href: string, pathname: string) {
+  return (
+    (href === "/app" && pathname === href) ||
+    (pathname.includes(href) && href !== "/app")
+  );
+};
 
-// Group hover nav
-
-const NavLabelWithHover = ({ children, isOpen }: { children: React.ReactNode, isOpen: boolean }) => {
+const NavLabelWith = ({ children, isOpen }: { children: React.ReactNode, isOpen: boolean }) => {
   return (
     <p className={cn(
       'text-xs text-nowrap  px-3 py-1 text-base-50',
@@ -181,7 +173,7 @@ const NavLabelWithHover = ({ children, isOpen }: { children: React.ReactNode, is
   )
 }
 
-const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }) => {
+const NavItemWith = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }) => {
   return (
     <Link
       href={item.link}
@@ -200,7 +192,7 @@ const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: bool
       </div>
       <p
         className={cn(
-          'text-nowrap overflow-hidden transition-width duration-300',
+          'text-nowrap overflow-hidden transition-width duration-300 underline:text-green-900',
           item.active ? 'theme-t-p' : 'theme-t-n',
           isOpen ? 'w-[244px]' : 'w-0',
         )}
@@ -209,23 +201,5 @@ const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: bool
   )
 }
 
-
-const LogoWithHover = ({ isOpen }: { isOpen: boolean }) => {
-  return (
-    <div className='mt-auto mb-2 flex items-center gap-2.5'>
-      <div className='w-[52px] h-[52px] theme-bg-w flex items-center justify-center  molecule rounded-lg before:rounded-lg after:rounded-[14px]'>
-        <div className='w-[26px]'>
-          <MassiveLogoColor />
-        </div>
-      </div>
-      <div className={cn(
-        'overflow-hidden transition-width duration-300',
-        isOpen ? 'w-[244px]' : 'w-0',
-      )}>
-        <MassiveTextDash />
-      </div>
-    </div>
-  )
-}
 
 export default MainSideMenu

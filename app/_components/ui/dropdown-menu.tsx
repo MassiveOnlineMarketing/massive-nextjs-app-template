@@ -4,6 +4,7 @@ import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { cn } from "../utils";
+import Link from "next/link";
 
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
@@ -121,6 +122,29 @@ const DropdownMenuItem = React.forwardRef<
 ));
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
 
+const DropdownMenuItemLink = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
+    inset?: boolean;
+    href: string;
+  }
+>(({ className, inset, href, ...props }, ref) => (
+  <Link href={href}>
+    <DropdownMenuPrimitive.Item
+      ref={ref}
+      className={cn(
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none",
+        // Background
+        'focus:bg-base-50 data-[state=open]:bg-base-50 dark:focus:bg-theme-night-background-secondary dark:data-[state=open]:bg-theme-night-background-secondary',
+        inset && "pl-8",
+        className,
+      )}
+      {...props}
+    />
+  </Link>
+));
+DropdownMenuItemLink.displayName = DropdownMenuPrimitive.Item.displayName;
+
 const DropdownMenuItemEmpty = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
@@ -228,6 +252,7 @@ export {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuItemLink,
   DropdownMenuItemEmpty,
   DropdownMenuCheckboxItem,
   DropdownMenuRadioItem,
