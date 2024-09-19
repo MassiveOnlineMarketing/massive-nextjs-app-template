@@ -24,12 +24,12 @@ const SettingsSideMenu = () => {
 
   const navItems = [
     { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon },
-    { href: '/app/settings/integrations', text: 'Integrations', icon: LinkIcon },
+    { href: '/app/integrations', text: 'Integrations', icon: LinkIcon },
   ]
 
 
   return (
-    <div className='p-4 w-[300px] h-full'>
+    <div className='p-4 w-[300px] min-w-[300px] h-full'>
       <div className='pb-6'>
         <NavLabel>Account Settings</NavLabel>
         {navItems.map((item, index) => (

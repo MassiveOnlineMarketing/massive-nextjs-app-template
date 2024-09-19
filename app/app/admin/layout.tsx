@@ -10,7 +10,7 @@ export default function layout(
         <Topbar />
       </div>
 
-      <div className='h-fit w-full bg-white dark:bg-p-1100 rounded-t-xl border border-light-stroke dark:border-dark-stroke'>
+      <div className='h-fit w-full theme-bg-w rounded-t-xl border border-light-stroke dark:border-dark-stroke'>
         {/* Calc height needs to be the height of the top bar above */}
         <div className='h-[calc(100vh-79px)] custom-scrollbar -mr-3 pr-[3px]'>
           {children}

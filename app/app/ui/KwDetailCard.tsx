@@ -9,7 +9,7 @@ const KwDetailCard = () => {
       <Card className='w-[600px]'>
         <CardTitle title='Keyword'>
           <TraficLight>
-            <div className='text-p-800 dark:text-dark-text-light font-semibold mr-3'>
+            <div className='theme-t-p font-semibold mr-3'>
               2nd
             </div>
             <TraficLightIndicator maxValue={10} currentValue={2} flip />

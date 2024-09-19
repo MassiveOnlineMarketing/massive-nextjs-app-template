@@ -83,8 +83,8 @@ const CreateLocationForm = ({ location, usersWebsites }: {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className='mx-6 mb-6'>
-          <CardHeader className='flex flex-row items-center gap-1.5'>
-            <MapPinIcon className='w-4 h-4 text-p-800' />
+          <CardHeader className='theme-t-p flex flex-row items-center gap-1.5'>
+            <MapPinIcon className='w-4 h-4' />
             <p>Location Details</p>
           </CardHeader>
           <CardContent className='grid grid-cols-2 gap-3'>

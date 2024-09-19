@@ -8,6 +8,7 @@ export type ExtendedUser = DefaultSession["user"] & {
   email: string;
 
   // Aditional fields
+  credits: number;
   role: UserRole;
   loginProvider: string | null;
 };

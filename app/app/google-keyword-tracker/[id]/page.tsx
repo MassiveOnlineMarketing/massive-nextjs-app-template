@@ -7,7 +7,7 @@ const page = async ({
   params: { id: string }
 }) => {
   return (
-    <div>page</div>
+    <div>{id}</div>
   )
 }
 
