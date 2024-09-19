@@ -12,7 +12,9 @@ import {
 import { GoogleKeywordTrackerKeyword } from "@/src/entities/models/google-keyword-tracker/keyword";
 import { GoogleKeywordTrackerResult } from "@/src/entities/models/google-keyword-tracker/result";
 import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
+import { injectable } from "inversify";
 
+@injectable()
 export class GoogleKeywordTrackerKeywordsRepository
   implements IGoogleKeywordTrackerKeywordsRepository
 {

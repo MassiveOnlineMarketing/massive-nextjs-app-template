@@ -33,8 +33,8 @@ module.exports = {
         'theme-light-text-notes':           '#94A3B8', // slate-400
 
         // Background
-        'theme-light-background-primary':   '#F2F3FF', // base-100
-        'theme-light-background-secondary': '#F8F8FF', // base-50
+        'theme-light-background-primary':   '#F8F8FF', // base-50
+        'theme-light-background-secondary': '#F2F3FF', // base-100
 
         // Stroke
         'theme-light-stroke':                '#DFE5FA', // base-200

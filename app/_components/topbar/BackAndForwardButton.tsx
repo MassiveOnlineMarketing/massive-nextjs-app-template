@@ -11,7 +11,7 @@ const BackAndForwardButtons = () => {
       <button onClick={() => router.back()} className="pl-1 py-1 pr-1.5">
         <ArrowLeftIcon className="theme-t-p w-8 h-8 p-1.5" />
       </button>
-      <button onClick={() => router.forward()} className="theme-bg-s pr-1 py-1 pl-1.5">
+      <button onClick={() => router.forward()} className="theme-bg-p pr-1 py-1 pl-1.5">
         <ArrowRightIcon className="theme-t-n w-8 h-8 p-1.5" />
       </button>
     </div>

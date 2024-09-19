@@ -18,8 +18,8 @@ const BreadCrumbs = () => {
 const HomeButton = () => {
 
   return(
-    <Link href='/app' className='theme-bg-s ml-1.5 my-1.5  py-1.5 px-4 rounded-[30px]'>
-      <HomeIcon className='w-5 h-5 theme-t-n' />
+    <Link href='/app' className='theme-bg-p ml-1.5 my-1.5  py-1.5 px-4 rounded-[30px] group/HomeIcon hover:theme-bg-p'>
+      <HomeIcon className='w-5 h-5 theme-t-n group-hover/HomeIcon:fill-slate-500'/>
     </Link>
   )
 }

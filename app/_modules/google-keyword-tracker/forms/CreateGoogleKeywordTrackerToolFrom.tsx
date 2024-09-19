@@ -149,7 +149,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
                         </div>
                         <div className='flex gap-3 pt-2 flex-wrap'>
                           {competitors.map((domain) => (
-                            <div key={domain} className='theme-bg-s w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-sm'>
+                            <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-sm'>
                               <button type='button' onClick={() => removeCompetitor(domain)} disabled={isPending}>
                                 <XMarkIcon className='w-5 h-5 theme-t-t' />
                               </button>
