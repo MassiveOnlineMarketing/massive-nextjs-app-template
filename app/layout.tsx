@@ -5,6 +5,9 @@ import "./theme.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "./_modules/auth/_nextAuth";
 
+import { db } from "@/prisma";
+import { UserAccountStoreProvider } from "./_providers/UserAccountStoreProvider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,10 +22,20 @@ export default async function RootLayout({
 }>) {
 
   const session = await auth();
+  const userId = session?.user.id
+
+  let account = null;
+  if (userId) {
+    account = await db.account.findFirst({
+      where: { userId },
+    });
+
+  }
 
   return (
     <html lang="en">
       <SessionProvider session={session}>
+      <UserAccountStoreProvider account={account} />
         <body className={inter.className}>{children}</body>
       </SessionProvider>
     </html>
