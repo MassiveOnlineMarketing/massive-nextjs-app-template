@@ -6,7 +6,7 @@
   .theme-t-t { @apply text-theme-light-text-tertiary dark:text-theme-night-text-tertiary }
   .theme-t-n { @apply text-theme-light-text-notes dark:text-theme-night-text-notes }
 
-  .theme-bg-p { @apply bg-theme-light-background-primary dark:bg-theme-night-background-primary }
+  .theme-bg-p { @apply bg-theme-light-background-primary dark:bg-theme-night-background-primary } /* base-950*/
   .theme-bg-s { @apply bg-theme-light-background-secondary dark:bg-theme-night-background-secondary }
   .theme-bg-w { @apply bg-white dark:bg-base-950 }
 
@@ -27,6 +27,7 @@
     before:pointer-events-none
 
     after:border-base-100 
+    after:dark:border-theme-night-background-secondary
     after:border-4 
     after:-top-1 /* 1/4 van border*/
     after:-left-1 

@@ -7,12 +7,12 @@ const BackAndForwardButtons = () => {
   const router = useRouter();
 
   return (
-    <div className="flex molecule rounded-[39px] before:rounded-[39px] after:rounded-[39px]">
-      <button onClick={() => router.back()} className="pl-1 py-1 pr-1.5">
+    <div className="flex molecule hover:after:border-[5px] hover:after:-top-[5px] hover:after:-left-[5px] hover:theme-bg-p rounded-[39px] before:rounded-[39px] after:rounded-[39px]">
+      <button onClick={() => router.back()} className="pl-1 py-1 pr-1.5 rounded-lg hover:bg-white">
         <ArrowLeftIcon className="theme-t-p w-8 h-8 p-1.5" />
       </button>
-      <button onClick={() => router.forward()} className="theme-bg-s pr-1 py-1 pl-1.5">
-        <ArrowRightIcon className="theme-t-n w-8 h-8 p-1.5" />
+      <button onClick={() => router.forward()} className="theme-bg-p hover:bg-white pr-1 py-1 pl-1.5">
+        <ArrowRightIcon className="theme-t-n w-8 h-8 p-1.5 hover:theme-t-p"/>
       </button>
     </div>
   );

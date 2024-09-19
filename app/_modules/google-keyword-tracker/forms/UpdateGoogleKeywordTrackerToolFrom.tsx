@@ -169,7 +169,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
                         </div>
                         <div className='flex gap-3 pt-2 flex-wrap'>
                           {competitors.map((domain) => (
-                            <div key={domain} className='theme-bg-s w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-xs'>
+                            <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-xs'>
                               <button type='button' onClick={() => removeCompetitor(domain)} disabled={isPending}>
                                 <XMarkIcon className='w-4 h-4 theme-t-t' />
                               </button>
