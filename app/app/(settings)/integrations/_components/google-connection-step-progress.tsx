@@ -1,11 +1,10 @@
 'use client';
 
 import React from "react";
-import useGoogleToken from "@/presentation/hooks/useGoogleRefreshToken";
-
-import { cn } from "@/presentation/components/utils";
 
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { cn } from "@/app/_components/utils";
+import useGoogleToken from "@/app/_hooks/useGoogleRefreshToken";
 
 const SteppedProgressBar = () => {
 

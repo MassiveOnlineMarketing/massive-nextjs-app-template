@@ -3,7 +3,6 @@
 import React from 'react'
 
 import { Card, CardContent, CardHeader } from '@/app/_modules/settings/components/SettingsCard'
-import IntegrationCard from './_components/IntergrationCard'
 import { GoogleAdsSvg, GoogleIconSvg, GoogleSearchConsoleSvg } from '@/assets/logos'
 import GoogleServiceCard from './_components/GoogleServiceCard';
 
