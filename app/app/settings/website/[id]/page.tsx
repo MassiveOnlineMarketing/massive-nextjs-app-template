@@ -6,6 +6,7 @@ import { getWebsiteWithLocation } from '@/app/_actions/website.actions';
 
 import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
 import LocationsCard from './LocationsCard';
+import { getFaviconUrl } from '@/app/_utils/imageUtils';
 
 const page = async ({
   params: { id }
@@ -28,6 +29,8 @@ const page = async ({
     gscUrl: website.gscUrl || null,
   }
 
+  const websiteFavicon = getFaviconUrl(website.domainUrl)
+
   return (
     <div className='flex gap-4'>
       <div className='max-w-[918px] w-full theme-bg-w border theme-b-p rounded-xl p-6'>
@@ -38,7 +41,7 @@ const page = async ({
         <UpdateWebsiteForm defaultValues={defaultValues} />
       </div>
 
-      <LocationsCard website={website} />
+      <LocationsCard websiteFavicon={websiteFavicon} website={website} />
     </div>
   )
 }

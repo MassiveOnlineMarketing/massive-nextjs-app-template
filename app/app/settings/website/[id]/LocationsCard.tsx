@@ -1,16 +1,18 @@
-import { WebsiteWithLocation } from '@/src/entities/models/website'
-import { ChevronUpIcon } from '@heroicons/react/16/solid'
-import { MapPinIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import React from 'react'
 
+import { WebsiteWithLocation } from '@/src/entities/models/website'
 
-const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
+import { ChevronUpIcon, PlusIcon } from '@heroicons/react/16/solid'
+import { MapPinIcon } from '@heroicons/react/20/solid'
+
+
+const LocationsCard = ({ website, websiteFavicon }: { website: WebsiteWithLocation, websiteFavicon: string }) => {
 
   if (!website.location || website.location.length === 0) {
     return (
       <Card>
-        <div>Setup locations</div>
+        <AddLocationButton />
       </Card>
     )
   }
@@ -20,11 +22,12 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
   return (
     <Card>
       {Object.entries(groupedByCountry).map(([country, locations]) => (
-        <div key={country} className='space-y-4 mb-4'>
+        <div key={country} className='space-y-4 mb-4 '>
           <p className='text-xs theme-t-t'>{country}</p>
           {locations.map((loc, index) => (
             <Link href={`/app/settings/website/location/${loc.id}`} key={index} className='ml-2 flex gap-3 group'>
-              <div className='w-11 h-11 border border-base-100  rounded-full    transition-all duration-300 after:absolute after:w-full after:h-full after:border-[#F2F3FF] after:rounded-full after:border-0 group-hover:after:border-4  after:box-content after:top-0 after:left-0 group-hover:after:-left-1 group-hover:after:-top-1 relative'>
+              <div className='w-11 h-11 flex items-center justify-center  molecule rounded-full before:rounded-full after:rounded-full  after:hidden group-hover:after:block'>
+                <img src={websiteFavicon} alt='favicon' className='w-6 h-6 rounded-full' />
               </div>
 
               <div className='theme-t-p'>
@@ -47,14 +50,17 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
           ))}
         </div>
       ))}
+
+      <AddLocationButton />
+      
     </Card>
   )
 }
 
 const Card = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='min-w-[400px] theme-bg-w border theme-b-p rounded-lg'>
-      <div className='flex items-center gap-1.5 p-6 theme-t-p border-b theme-b-p'>
+    <div className='relative min-w-[400px] h-fit max-h-[528px] overflow-y-auto custom-scrollbar-white-tracks   theme-bg-w border theme-b-p rounded-lg'>
+      <div className='sticky top-0 z-10 theme-bg-w flex items-center gap-1.5 p-6 theme-t-p border-b theme-b-p'>
         <MapPinIcon className='w-4 h-4' />
         <p>Locations</p>
       </div>
@@ -65,6 +71,14 @@ const Card = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
+const AddLocationButton = () => {
+  return (
+    <Link href='/app/website/location' className='mx-auto w-fit flex gap-2 items-center text-sm font-medium theme-t-t '>
+      Add Location
+      <PlusIcon className='w-4 h-4 theme-t-n' />
+    </Link>
+  )
+}
 
 function sortAndGroupWebsiteWithLocations(website: WebsiteWithLocation | undefined) {
   if (!website?.location) {

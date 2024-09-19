@@ -82,4 +82,10 @@ export class MockLocationRepository implements ILocationRepository {
   async getById(id: string): Promise<Location | null> {
     return this._locations.find((l) => l.id === id) || null;
   }
+
+  async removeGoogleKeywordTrackerConnection(id: string): Promise<void> {
+    const index = this._locations.findIndex((l) => l.id === id);
+
+    this._locations[index].keywordTrackerToolId = null;
+  }
 }

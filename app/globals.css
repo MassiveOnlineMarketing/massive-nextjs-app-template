@@ -31,3 +31,21 @@
   overflow-y: scroll; /* Add the ability to scroll vertically */
   position: relative;
 }
+
+
+/* Target the scrollbar track */
+.custom-scrollbar-white-tracks::-webkit-scrollbar {
+  width: 5px; /* Default width of the scrollbar */
+}
+
+/* Scrollbar track */
+.custom-scrollbar-white-tracks::-webkit-scrollbar-track {
+  @apply bg-white dark:bg-base-950
+   /* Track color */
+}
+
+/* Scrollbar thumb */
+.custom-scrollbar-white-tracks::-webkit-scrollbar-thumb {
+  background-color: #6366f1 ; /* Scrollbar color */
+  border-radius: 16px; /* Optional: Rounded corners */
+}

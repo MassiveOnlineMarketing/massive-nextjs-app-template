@@ -101,5 +101,26 @@ export class LocationRepository implements ILocationRepository {
         }
       }
     )
+  };
+
+  async removeGoogleKeywordTrackerConnection(id: string): Promise<void> {
+    return await startSpan(
+      { name: "LocationRepository > removeGoogleKeywordTrackerConnection" },
+      async () => {
+        try {
+          await db.location.update({
+            where: {
+              id,
+            },
+            data: {
+              keywordTrackerToolId: null,
+            },
+          });
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    )
   }
 }

@@ -8,4 +8,6 @@ export interface ILocationRepository {
   update(location: LocationUpdate): Promise<Location>;
   delete(id: string): Promise<Location>;
   getById(id: string): Promise<Location | null>;
+
+  removeGoogleKeywordTrackerConnection(id: string): Promise<void>;
 }

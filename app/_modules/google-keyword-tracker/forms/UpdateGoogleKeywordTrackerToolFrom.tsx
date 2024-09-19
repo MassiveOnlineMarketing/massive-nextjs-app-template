@@ -101,7 +101,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className='mx-6 mb-6'>
-          <CardHeader className='flex justify-between items-center'>
+          <CardHeader className='flex justify-between items-center py-3'>
             Setup Google Keyword Tracker
 
             <div className='flex gap-2.5'>

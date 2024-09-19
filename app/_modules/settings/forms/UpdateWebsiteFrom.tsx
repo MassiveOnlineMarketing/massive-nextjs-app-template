@@ -95,7 +95,7 @@ const UpdateWebsiteForm = ({ defaultValues }: { defaultValues: DefaultValues }) 
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onFormSubmit)}>
         <Card className='mb-6'>
-          <CardHeader className='flex flex-row items-center justify-between'>
+          <CardHeader className='py-3 flex flex-row items-center justify-between'>
             <div className='theme-t-p flex flex-row items-center gap-1.5'>
               <GlobeAltIcon className='w-4 h-4 ' />
               <p className='font-medium'>Website Settings</p>

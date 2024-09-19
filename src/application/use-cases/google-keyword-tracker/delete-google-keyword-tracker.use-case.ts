@@ -20,12 +20,16 @@ export async function deleteGoogleKeywordTrackerUseCase(
     { name: "deleteGoogleKeywordTrackerUseCase Use Case", op: "function" },
     async () => {
       const googleKeywordTrackerRepository = getInjection("IGoogleKeywordTrackerRepository");   
+      const locationRepository = getInjection("ILocationRepository");
 
       const googleKeywordTracker = await googleKeywordTrackerRepository.findById(id);
 
       if (!googleKeywordTracker) {
         throw new NotFoundError("GoogleKeywordTracker not found");
       }
+
+      // Delete connection to website
+      await locationRepository.removeGoogleKeywordTrackerConnection(googleKeywordTracker.locationId);
 
       // TODO: check if the user is the owner of the GoogleKeywordTracker/ allowed to access the GoogleKeywordTracker
 
