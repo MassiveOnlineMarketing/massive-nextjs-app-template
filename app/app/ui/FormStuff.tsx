@@ -86,7 +86,7 @@ const FormStuff = () => {
               name="testSelect"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
+                  <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-base-500' /></FormLabel>
                   <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
                     <FormControl>
                       <FormInputSelectTrigger>
@@ -109,7 +109,7 @@ const FormStuff = () => {
               name="testSelect2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-p-500' /></FormLabel>
+                  <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-base-500' /></FormLabel>
                   {/* //! voeg open={true} toe aan FormInputSelect om hem altijd te openen, makkelijk om ui changes the checken  */}
                   <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
                     <FormControl>

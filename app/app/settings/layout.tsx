@@ -16,14 +16,10 @@ export default function Layout(
 
   return (
     <>
-      <div className='mt-[68px]'>
-        <SettingsSideMenu />
-      </div>
+      <SettingsSideMenu />
 
       <div className='pr-3 w-full'>
-        <div className='py-4'>
-          <Topbar />
-        </div>
+
         {/* Calc height needs to be the height of the top bar above */}
         <div className='h-[calc(100vh-79px)] overflow-y-auto custom-scrollbar -mr-3 pr-[3px]'>
           {children}

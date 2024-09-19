@@ -27,9 +27,9 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
               <div className='w-11 h-11 border border-base-100  rounded-full    transition-all duration-300 after:absolute after:w-full after:h-full after:border-[#F2F3FF] after:rounded-full after:border-0 group-hover:after:border-4  after:box-content after:top-0 after:left-0 group-hover:after:-left-1 group-hover:after:-top-1 relative'>
               </div>
 
-              <div>
-                <p className='font-medium theme-t-p'>{loc.location ? loc.location?.split(',')[0] : 'Country'} {loc.language}</p>
-                <p className='text-sm theme-p-t'>{website.websiteName}</p>
+              <div className='theme-t-p'>
+                <p className='font-medium'>{loc.location ? loc.location?.split(',')[0] : 'Country'} {loc.language}</p>
+                <p className='text-sm'>{website.websiteName}</p>
               </div>
 
               <div className='group-hover:block hidden my-auto theme-t-p'>

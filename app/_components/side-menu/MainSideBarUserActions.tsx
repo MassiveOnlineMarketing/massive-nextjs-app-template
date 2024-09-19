@@ -18,10 +18,10 @@ export const MainSideBarUserActions = () => {
         <p className="text-gray-500 dark:text-dark-text-light font-medium text-sm text-nowrap">
           {user?.name}
         </p>
-        <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
+        <div className="w-full h-[1px] bg-base-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
         <ChevronDownIcon className="h-4 w-4 text-gray-500 dark:text-dark-text-dark shrink-0 transition-transform duration-200 group-hover/user:-rotate-90" />
       </div>
-      <div className="h-0 group-hover/user:h-[88px] transition-all duration-300 overflow-hidden text-gray-500 bg-p-25 dark:text-dark-text-dark dark:bg-p-1100 rounded-md">
+      <div className="h-0 group-hover/user:h-[88px] transition-all duration-300 overflow-hidden text-gray-500 bg-base-50 dark:text-dark-text-dark dark:bg-base-950 rounded-md">
         <div className="px-[6px] py-[10px]  flex items-center gap-2">
           <Cog6ToothIcon className="w-6 h-6" />
           <Link

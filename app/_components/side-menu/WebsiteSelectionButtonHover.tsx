@@ -15,6 +15,7 @@ import { getFaviconUrl } from '@/app/_utils/imageUtils';
 import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { BoxIcon } from '@radix-ui/react-icons';
+import { cn } from '../utils';
 
 
 
@@ -23,7 +24,7 @@ interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
   faviconUrl: string;
 }
 
-const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | undefined }> = ({ websites }) => {
+const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | undefined, isOpen: boolean }> = ({ websites, isOpen }) => {
   const [websitesWithGroupedLocations, setWebsitesWithGroupedLocations] = useState<WebsiteWithGroupedLocations[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -102,18 +103,24 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <div className='cursor-pointer w-fit flex items-center      molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
-          
+
           {/* Favicon box */}
-          <div className='w-[42px] h-[42px] m-1 group-hover/side-bar:m-2 rounded-[8px] bg-green-50 flex items-center justify-center'>
+          <div className={cn(
+            'w-[42px] h-[42px] rounded-[8px] bg-green-50 flex items-center justify-center transition-all duration-300',
+            isOpen ? 'm-2' : 'm-1',
+          )}>
             {selectedWebsite ? (
               <img src={selectedWebsite.faviconUrl} alt={`favicon ${selectedWebsite.websiteName}`} width={28} height={28} />
-            ): (
+            ) : (
               <BoxIcon className='h-[28px] w-[28px] theme-t-n' />
-              )}
+            )}
           </div>
 
           {/* Website and location */}
-          <div className='w-0 group-hover/side-bar:w-[244px] overflow-hidden transition-width duration-300 flex items-center'>
+          <div className={cn(
+            'overflow-hidden transition-width duration-300 flex items-center',
+            isOpen ? 'w-[244px]' : 'w-0',
+          )}>
             <div>
               {/* Website */}
               <p className='text-nowrap theme-t-p'>

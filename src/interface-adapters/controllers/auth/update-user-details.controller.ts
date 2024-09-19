@@ -44,6 +44,7 @@ function presenter(user: User) {
     image: user.image,
     loginProvider: user.loginProvider,
     name: user.name,
+    credits: user.credits,
     role: user.role,
   }));
 }

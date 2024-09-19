@@ -29,7 +29,7 @@ const SettingsSideMenu = () => {
 
 
   return (
-    <div className='p-4 w-[300px] h-full'>
+    <div className='p-4 w-[300px] min-w-[300px] h-full'>
       <div className='pb-6'>
         <NavLabel>Account Settings</NavLabel>
         {navItems.map((item, index) => (

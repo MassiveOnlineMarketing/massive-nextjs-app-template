@@ -2,6 +2,7 @@ import React from 'react'
 import Providers from './providers'
 import MainSideMenu from '@/app/_components/side-menu/MainSideMenu'
 import UitgeklaptMainSideMenu from '../_components/side-menu/UitgeklaptMainSideMenu'
+import Topbar from '../_components/topbar/Topbar'
 
 export default function layout(
   { children }: { children: React.ReactNode }
@@ -14,7 +15,14 @@ export default function layout(
         <MainSideMenu />
         {/* <UitgeklaptMainSideMenu /> */}
 
-        {children}
+        <div className='w-full'>
+          <div className='py-4'>
+            <Topbar />
+          </div>
+          <div className='flex'>
+          {children}
+          </div>
+        </div>
 
       </div>
     </Providers>
