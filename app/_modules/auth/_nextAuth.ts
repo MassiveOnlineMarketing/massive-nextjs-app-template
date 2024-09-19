@@ -36,6 +36,38 @@ export const {
     },
   },
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") {
+        // Store the refresh token
+        if (
+          account?.provider === "google" &&
+          account.refresh_token &&
+          account.scope
+        ) {
+          console.log("google account");
+          await updateGoogleAccount(
+            user.id as string,
+            account.refresh_token,
+            account.scope,
+          );
+        }
+
+        return true;
+      }
+
+      // * only triggers when email has been used to create an account
+      if (user.id) {
+        const existingUser = await getById(user.id);
+
+        // Prevent sign in without email verification
+        if (!existingUser?.emailVerified) return false;
+
+        // Update login provider for showing correct setting in the UI
+        await updateLoginProvider(user.id as string, account.provider);
+      }
+
+      return true;
+    },
     async jwt({ token, account, trigger, session }) {
       // console.log('jwt callback', token, account, trigger, session)
 
@@ -135,3 +167,45 @@ async function getById(id: string): Promise<User | null> {
 // const { update } = useSession()
 
 // <button onClick={() => update({ user: { name: "John Doe" }})}>update session</button>
+
+
+export const updateGoogleAccount = async (
+  userId: string,
+  refresh_token: string,
+  scope: string,
+) => {
+  return await db.$transaction(async (prisma) => {
+    const account = await prisma.account.findFirst({
+      where: { userId: userId },
+    });
+
+    if (!account) {
+      return null;
+    }
+
+    const updatedAccount = await prisma.account.update({
+      where: {
+        id: account.id,
+      },
+      data: {
+        refresh_token,
+        scope,
+      },
+    });
+
+    return updatedAccount;
+  });
+};
+
+const updateLoginProvider = async (id: string, provider: string) => {
+  try {
+    const user = await db.user.update({
+      where: { id },
+      data: { loginProvider: provider },
+    });
+
+    return user;
+  } catch {
+    return null;
+  }
+};
