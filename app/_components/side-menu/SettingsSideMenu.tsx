@@ -4,14 +4,14 @@ import React from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { WebsiteWithLocation } from '@/src/entities/models/website';
+
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 import { cn } from '@/app/_components/utils';
-import ThemeSwitcher from '@/app/_components/ui/ThemeSwitcher';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { PlusIcon, UserCircleIcon } from '@heroicons/react/20/solid';
-import { WebsiteWithLocation } from '@/src/entities/models/website';
 
 type NavItem = {
   href: string,

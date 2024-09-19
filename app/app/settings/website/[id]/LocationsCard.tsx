@@ -53,7 +53,7 @@ const LocationsCard = ({ website }: { website: WebsiteWithLocation }) => {
 
 const Card = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='w-[400px] theme-bg-w border theme-b-p rounded-lg'>
+    <div className='min-w-[400px] theme-bg-w border theme-b-p rounded-lg'>
       <div className='flex items-center gap-1.5 p-6 theme-t-p border-b theme-b-p'>
         <MapPinIcon className='w-4 h-4' />
         <p>Locations</p>

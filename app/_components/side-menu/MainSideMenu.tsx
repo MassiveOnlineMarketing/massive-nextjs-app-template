@@ -110,13 +110,12 @@ const MainSideMenu = () => {
 
   return (
     <div className={cn(
-      'relative w-[80px] flex flex-col h-screen pl-[18px] pr-[10px] pb-4',
+      'group/openClose',
+      'relative w-[80px] flex flex-col h-full pl-[18px] pr-[10px] pb-4',
       'transition-width duration-300',
       secondarySidebarOpen ? 'w-[328px]' : 'w-[80px]',
     )}>
-      <div className='w-full h-[76px] flex'>
-        <LogoWithHover isOpen={secondarySidebarOpen} />
-      </div>
+
       <div className='h-[88px] flex items-center' >
         <WebsiteSelectionButtonHover websites={websites} isOpen={secondarySidebarOpen} />
       </div>
@@ -137,7 +136,7 @@ const MainSideMenu = () => {
         <Tooltip>
           <TooltipTrigger className="w-8 h-[72px]">
             <div
-              className="flex h-[72px] w-8 items-center justify-center group "
+              className="h-[72px] w-8 items-center justify-center group hidden group-hover/openClose:flex "
               onClick={() => setSecondarySidebarOpen(!secondarySidebarOpen)}
             >
               <div className="flex h-6 w-6 flex-col items-center">
@@ -200,7 +199,7 @@ const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: bool
       </div>
       <p
         className={cn(
-          'text-nowrap overflow-hidden transition-width duration-300',
+          'text-nowrap overflow-hidden transition-width duration-300 underline:text-green-900',
           item.active ? 'theme-t-p' : 'theme-t-n',
           isOpen ? 'w-[244px]' : 'w-0',
         )}
@@ -209,23 +208,5 @@ const NavItemWithHover = ({ item, isOpen }: { item: NavigationItem, isOpen: bool
   )
 }
 
-
-const LogoWithHover = ({ isOpen }: { isOpen: boolean }) => {
-  return (
-    <div className='mt-auto mb-2 flex items-center gap-2.5'>
-      <div className='w-[52px] h-[52px] theme-bg-w flex items-center justify-center  molecule rounded-lg before:rounded-lg after:rounded-[14px]'>
-        <div className='w-[26px]'>
-          <MassiveLogoColor />
-        </div>
-      </div>
-      <div className={cn(
-        'overflow-hidden transition-width duration-300',
-        isOpen ? 'w-[244px]' : 'w-0',
-      )}>
-        <MassiveTextDash />
-      </div>
-    </div>
-  )
-}
 
 export default MainSideMenu

@@ -106,7 +106,7 @@ const WebsiteSelectionButtonHover: React.FC<{ websites: WebsiteWithLocation[] | 
 
           {/* Favicon box */}
           <div className={cn(
-            'w-[42px] h-[42px] rounded-[8px] bg-green-50 flex items-center justify-center transition-all duration-300',
+            'w-[42px] h-[42px] rounded-[8px]  flex items-center justify-center transition-all duration-300',
             isOpen ? 'm-2' : 'm-1',
           )}>
             {selectedWebsite ? (
