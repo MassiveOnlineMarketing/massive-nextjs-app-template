@@ -24,7 +24,7 @@ const ThemeSwitcher = () => {
 
   return (
     <button type="button" className={cn(
-      "relative inline-flex justify-center h-11 w-[88px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent theme-bg-s",
+      "relative inline-flex gap-1 justify-center h-11 w-[88px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent theme-bg-s",
       // 'transition-colors duration-200 ease-in-out',
       // enabled ? "bg-indigo-500" : "bg-base-200"
     )} role="switch" aria-checked="false" onClick={() => handleTheme()}>
