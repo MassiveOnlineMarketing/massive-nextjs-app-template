@@ -13,10 +13,10 @@ import { createWebsiteController } from "@/src/interface-adapters/controllers/we
 import { updateWebsiteController } from "@/src/interface-adapters/controllers/website/update-website.controller";
 import { deleteWebsiteController } from "@/src/interface-adapters/controllers/website/delete-website.controller";
 import { getWebsiteWithLocationController } from "@/src/interface-adapters/controllers/website/get-website-with-location.controller";
-
-import { auth } from "@/app/_modules/auth/_nextAuth";
 import { getWebsiteWithLocationByUserController } from "@/src/interface-adapters/controllers/website/get-website-with-location-by-user.controller";
 import { getWebsitesByUserController } from "@/src/interface-adapters/controllers/website/get-websites-by-user.controller";
+
+import { auth } from "@/app/_modules/auth/_nextAuth";
 
 export async function createWebsite(formData: z.infer<typeof formInputCreateWebsiteSchema>): Promise<{ createdWebsite?: WebsiteWithLocation, error?: string }> {
   return await withServerActionInstrumentation(

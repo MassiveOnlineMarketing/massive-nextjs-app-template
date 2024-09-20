@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Account, User } from "@prisma/client";
 
 /**
  * Represents a repository for managing user data.
@@ -13,6 +13,13 @@ export interface IUsersRepository {
    * @returns A promise that resolves to the created user.
    */
   create(email: string, password: string, name: string): Promise<User>;
+
+  /**
+   * Finds an account by the user ID.
+   * @param userId - The ID of the user.
+   * @returns A promise that resolves to the found account, or null if not found.
+   */
+  findAccountByUserId(userId: string): Promise<Account | null>;
 
   /**
    * Deducts credits from a user.
