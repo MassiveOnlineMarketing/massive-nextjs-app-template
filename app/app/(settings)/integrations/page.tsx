@@ -1,5 +1,6 @@
 import React from 'react'
 import GoogleIntegrations from './GoogleIntegrations'
+import Message from './_components/Message'
 
 const page = () => {
   return (
@@ -10,6 +11,10 @@ const page = () => {
       </div>
 
       <GoogleIntegrations />
+
+      <Message className='mt-6'>
+        Our app adhere's to <a className='underline' href='https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes'>Google API Services User Data Policy</a>, including the Limited Use requirements.
+      </Message>
 
     </div>
   )

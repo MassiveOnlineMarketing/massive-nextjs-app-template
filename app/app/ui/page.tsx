@@ -15,12 +15,13 @@ import UiCard from './UiCard'
 import KwDetailCard from './KwDetailCard'
 import Theme from './Theme'
 import Tiers from './Tiers'
+import Switch from './Switch'
 
 const Page = () => {
   const { toast } = useToast()
 
   return (
-    <div className='p-6'>
+    <div className='p-6 overflow-y-auto custom-scrollbar '>
       {/* Buttons */}
       <h1 className='text-xl font-semibold mb-2'>Buttons</h1>
       <div className='grid grid-cols-4 gap-6 items-center place-items-center'>
@@ -318,6 +319,10 @@ const Page = () => {
 
       <div className='p-6'>
         <Theme />
+      </div>
+
+      <div className='p-6'>
+          <Switch />
       </div>
 
       <div className='p-6'>

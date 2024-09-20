@@ -8,7 +8,7 @@ const UserCredits = () => {
 
   return (
     <div className='ml-auto flex items-center px-4 molecule rounded-lg before:rounded-lg after:rounded-[12px] before:left-0'> 
-      <p className='theme-t-p'>{user?.credits} <span className='theme-t-n text-sm'>Credits</span></p>
+      <p className='theme-t-p text-nowrap'>{user?.credits} <span className='theme-t-n text-sm'>Credits</span></p>
     </div>
   )
 }

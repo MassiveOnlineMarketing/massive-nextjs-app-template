@@ -65,7 +65,7 @@ const Card = ({ children }: { children: React.ReactNode }) => {
         <MapPinIcon className='w-4 h-4' />
         <p>Locations</p>
       </div>
-      <div className='p-6'>
+      <div className='pt-6 px-6'>
         {children}
       </div>
     </div>
@@ -74,10 +74,13 @@ const Card = ({ children }: { children: React.ReactNode }) => {
 
 const AddLocationButton = () => {
   return (
-    <Link href='/app/website/location' className='mx-auto w-fit flex gap-2 items-center text-sm font-medium theme-t-t '>
+    <div className='w-full py-4 sticky bottom-0 theme-bg-w'>
+    <Link href='/app/settings/website/location' className=' py-2 mx-auto w-fit  flex gap-2 items-center text-sm font-medium theme-t-t'>
       Add Location
       <PlusIcon className='w-4 h-4 theme-t-n' />
     </Link>
+
+    </div>
   )
 }
 
