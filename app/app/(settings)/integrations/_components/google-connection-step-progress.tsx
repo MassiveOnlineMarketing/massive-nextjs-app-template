@@ -4,7 +4,7 @@ import React from "react";
 
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/app/_components/utils";
-import useGoogleToken from "@/app/_hooks/useGoogleRefreshToken";
+import useGoogleToken from "@/app/_modules/auth/hooks/useGoogleRefreshToken";
 
 const SteppedProgressBar = () => {
 

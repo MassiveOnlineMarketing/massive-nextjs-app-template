@@ -3,7 +3,7 @@ import { startSpan } from "@sentry/nextjs";
 import { DI_SYMBOLS } from "@/di/types";
 import 'reflect-metadata';
 
-import { UnauthenticatedError } from "@/src/entities/errors/auth";
+import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth";
 
 import { Session } from "next-auth";
 import { ExtendedUser } from "@/next-auth";
@@ -13,6 +13,16 @@ import { auth } from "@/app/_modules/auth/_nextAuth";
 
 import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
 import type { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
+import { NotFoundError } from "@/src/entities/errors/common";
+
+
+export type GoogleScopeOptions = "search-console" | "ads" | "account";
+
+export const SCOPE_URLS: Record<GoogleScopeOptions, string> = {
+  "account": "openid email profile",
+  "search-console": "https://www.googleapis.com/auth/webmasters.readonly",
+  'ads': "https://www.googleapis.com/auth/adwords",
+};
 
 
 @injectable()
@@ -64,4 +74,32 @@ export class AuthenticationService implements IAuthenticationService {
     return user.role === "ADMIN";
   }
 
+  async getGoogleRefreshTokenForService(userId: string, scope: GoogleScopeOptions): Promise<string> {
+    return await startSpan(
+      {name: "AuthenticationService > getGoogleRefreshTokenForService"},
+      async () => {
+        const account = await this._usersRespository.findAccountByUserId(userId);
+
+        if (!account) {
+          throw new UnauthenticatedError("User not found");
+        }
+
+
+        if (!account.scope){
+          throw new UnauthenticatedError("Scope not found");
+        }
+
+        const hasAcces = account.scope.includes(SCOPE_URLS[scope]);
+        if (!hasAcces){
+          throw new ForbiddenError("User does not have access");
+        }
+
+        if (!account.refresh_token){
+          throw new NotFoundError("Refresh token not found");
+        }
+
+        return account.refresh_token;
+      }
+    )
+  }
 }

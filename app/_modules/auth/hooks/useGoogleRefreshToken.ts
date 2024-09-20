@@ -6,15 +6,11 @@ import { useUserAccountStore } from '@/app/_stores/useUserAccountStore';
 import { signIn } from 'next-auth/react';
 import jwt from "jsonwebtoken";
 
-export type GoogleScopeOption = "search-console" | "ads" | "account";
+import { GoogleScopeOptions, SCOPE_URLS } from '@/src/infrastructure/services/authentication.service';
 
-const SCOPE_URLS: Record<GoogleScopeOption, string> = {
-  "account": "openid email profile",
-  "search-console": "https://www.googleapis.com/auth/webmasters.readonly",
-  'ads': "https://www.googleapis.com/auth/adwords",
-};
 
-const useGoogleToken = (requiredScope: GoogleScopeOption) => {
+
+const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
   const accountDetails = useUserAccountStore((state) => state.accountDetails)
 
   const [hasAccess, setHasAccess] = useState(false);
@@ -41,7 +37,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOption) => {
     decodedToken = jwt.decode(accountDetails.id_token) as jwt.JwtPayload;
   }
 
-  async function authenticate(scope: GoogleScopeOption) {
+  async function authenticate(scope: GoogleScopeOptions) {
     const scopes = accountDetails?.scope ? `${accountDetails?.scope} ${SCOPE_URLS[scope]}` : SCOPE_URLS[scope];
     let decodedToken: jwt.JwtPayload | null = null;
     if (accountDetails && accountDetails.id_token) {

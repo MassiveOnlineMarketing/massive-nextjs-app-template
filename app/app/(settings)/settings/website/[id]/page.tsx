@@ -2,6 +2,11 @@
 
 import React from 'react'
 
+import { auth } from '@/app/_modules/auth/_nextAuth';
+import { redirect } from 'next/navigation';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+
+import { getConnectedGscProperties } from '@/app/_modules/auth/actions';
 import { getWebsiteWithLocation } from '@/app/_actions/website.actions';
 
 import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
@@ -14,6 +19,13 @@ const page = async ({
   params: { id: string }
 }) => {
 
+  const session = await auth();
+
+  if (!session?.user || !session?.user.id) (
+    redirect(DEFAULT_LOGIN_REDIRECT)
+  )
+
+  const connectedGscProperties = await getConnectedGscProperties();
   const res = await getWebsiteWithLocation(id)
 
   // TODO: Not Found
@@ -38,7 +50,7 @@ const page = async ({
           <p className='text-xl font-medium theme-t-p'>Website</p>
           <p className='text-sm theme-t-t'>Stel je website en locatie settings bij voor de Keyword Tracker</p>
         </div>
-        <UpdateWebsiteForm defaultValues={defaultValues} />
+        <UpdateWebsiteForm defaultValues={defaultValues} gscProperties={connectedGscProperties.properties} />
       </div>
 
       <LocationsCard websiteFavicon={websiteFavicon} website={website} />

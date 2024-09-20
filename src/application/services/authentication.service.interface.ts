@@ -1,5 +1,6 @@
 import { ExtendedUser } from "@/next-auth";
 import { User } from "@/src/entities/models/user";
+import { GoogleScopeOptions } from "@/src/infrastructure/services/authentication.service";
 import { Session } from "next-auth";
 
 /**
@@ -29,4 +30,6 @@ export interface IAuthenticationService {
    * @returns True if the current user is an admin; otherwise, false.
    */
   isAdmin(): Promise<boolean>;
+
+  getGoogleRefreshTokenForService(userId: string, scope: GoogleScopeOptions): Promise<string>;
 }

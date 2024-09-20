@@ -5,7 +5,7 @@ import { getSession, useSession } from 'next-auth/react'
 import React from 'react'
 import { useKeywordOpperations } from '../_modules/google-keyword-tracker/hooks/useKeywordOpperations';
 import axios from 'axios';
-import useGoogleToken from '../_hooks/useGoogleRefreshToken';
+import useGoogleToken from '../_modules/auth/hooks/useGoogleRefreshToken';
 
 const ClientPage = () => {
   const { update } = useSession()

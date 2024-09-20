@@ -5,7 +5,7 @@ import React from 'react'
 
 
 // TODO: Fix page contents 
-const page = () => {
+const Page = () => {
   const selectedLocation = useWebsiteDetailsStore((state) => state.selectedLocation)
 
   if (!selectedLocation) {
@@ -21,4 +21,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

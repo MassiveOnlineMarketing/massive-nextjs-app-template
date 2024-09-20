@@ -1,50 +1,33 @@
 'use client'
 
 import React, { useTransition } from 'react'
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { z } from 'zod';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import useGoogleToken from "@/app/_modules/auth/hooks/useGoogleRefreshToken";
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
+import { ConnectedGscProperties } from '@/src/application/api/search-console.api.types';
 
 import { formInputCreateWebsiteSchema } from '@/src/entities/models/website';
 import { createWebsite } from '@/app/_actions/website.actions';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue, FormInputField } from '../components/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputField } from '../components/form';
+import { GoogleSearchConsolePropertyInputSelector } from './GSCconnectionButton';
 
 import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../components/SettingsCard';
 
-import { InformationCircleIcon } from '@heroicons/react/20/solid';
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
-type PythonApiSite = {
-  permissionLevel: string;
-  siteUrl: string;
-};
-const CreateWebsiteForm = () => {
-  const HAS_ACCESS = true
-  const gscProperties = [
-    {
-      "permissionLevel": "siteFullUser",
-      "siteUrl": "https://baristart.nl/"
-    },
-    {
-      "permissionLevel": "siteOwner",
-      "siteUrl": "sc-domain:massiveonlinemarketing.nl"
-    },
-    {
-      "permissionLevel": "siteFullUser",
-      "siteUrl": "sc-domain:baristart.nl"
-    },
-    {
-      "permissionLevel": "siteFullUser",
-      "siteUrl": "https://www.fiveelephant.com/"
-    }
-  ]
+
+const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProperties[] }) => {
+
+  const { hasAccess, isLoading, refreshToken } = useGoogleToken('search-console');
+  console.log('CreateWebsiteForm hasAccess', hasAccess, isLoading, refreshToken);
 
   const [isPending, startTransition] = useTransition();
 
@@ -52,6 +35,9 @@ const CreateWebsiteForm = () => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formInputCreateWebsiteSchema>>({
     resolver: zodResolver(formInputCreateWebsiteSchema),
+    defaultValues: {
+      gscUrl: 'noWebsite'
+    }
   });
 
   const addWebsiteToStore = useWebsiteDetailsStore(state => state.addWebsite);
@@ -120,7 +106,7 @@ const CreateWebsiteForm = () => {
               )}
             />
 
-            <GoogleSearchConsolePropertyInputSelector hasAcces={HAS_ACCESS} sites={gscProperties} form={form} isPending={isPending} />
+            <GoogleSearchConsolePropertyInputSelector hasAccess={hasAccess} isLoading={isLoading} sites={gscProperties} form={form} isPending={isPending} />
 
           </CardContent>
         </Card>
@@ -141,76 +127,5 @@ const CreateWebsiteForm = () => {
   )
 }
 
-interface GoogleSearchConsolePropertyInputSelectorProps {
-  hasAcces: boolean;
-  isLoading?: boolean;
-  sites: PythonApiSite[] | null;
-  form: UseFormReturn<z.infer<typeof formInputCreateWebsiteSchema>>;
-  isPending: boolean;
-}
-// ! if updating this component, make sure to also update the UpdateWebsiteForm component
-const GoogleSearchConsolePropertyInputSelector: React.FC<GoogleSearchConsolePropertyInputSelectorProps> = ({ hasAcces, isLoading, sites, form, isPending }) => {
-
-  if (!hasAcces) {
-    return (
-      <div>
-        <p className='font-normal text-sm text-slate-500'>Google Search Console Property</p>
-        <div className='inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'>
-          <p className="text-gray-500 font-normal">
-            Authenticate your{" "}
-            <Link
-              href="/app/integrations"
-              className="text-base-500"
-            >
-              Search Console{" "}
-            </Link>
-            Account
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!sites || sites.length === 0) {
-    return (
-      <div>
-        <p className='font-normal text-sm text-slate-500'>Google Search Console Property</p>
-        <div className='inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'>
-          <p className="text-gray-500 font-normal">
-            No properties found
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <FormField
-      control={form.control}
-      name="gscUrl"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-base-500' /></FormLabel>
-          <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
-            <FormControl>
-              <FormInputSelectTrigger disabled={isPending}>
-                <FormInputSelectValue placeholder="Select a property" />
-              </FormInputSelectTrigger>
-            </FormControl>
-            <FormInputSelectContent>
-              {sites.map((site) => (
-                <FormInputSelectItem key={site.siteUrl} value={site.siteUrl}>
-                  {site.siteUrl}
-                </FormInputSelectItem>
-              ))}
-              <FormInputSelectItem value="noWebsite">Don&apos;t use a property</FormInputSelectItem>
-            </FormInputSelectContent>
-          </FormInputSelect>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  )
-}
 
 export default CreateWebsiteForm

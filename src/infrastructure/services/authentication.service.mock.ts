@@ -5,6 +5,7 @@ import { IAuthenticationService } from "@/src/application/services/authenticatio
 import { User } from "@/src/entities/models/user";
 import { inject, injectable } from "inversify";
 import { Session } from "next-auth";
+import { GoogleScopeOptions, SCOPE_URLS } from "./authentication.service";
 
 
 @injectable()
@@ -71,5 +72,24 @@ export class MockAuthenticationService implements IAuthenticationService {
     const user = session?.user as ExtendedUser;
 
     return user.role === "ADMIN";
+  }
+
+  async getGoogleRefreshTokenForService(userId: string, scope: GoogleScopeOptions): Promise<string> {
+    const account = await this._usersRespository.findAccountByUserId(userId);
+
+    if (!account) {
+      throw new Error('User not found');
+    }
+
+    if (!account.scope){
+      throw new Error('Scope not found');
+    }
+
+    const hasAcces = account.scope.includes(SCOPE_URLS[scope]);
+    if (!hasAcces){
+      throw new Error('No access');
+    }
+
+    return 'google-refresh-token';
   }
 }

@@ -1,10 +1,11 @@
-import ThemeSwitcher from '@/app/_components/ui/ThemeSwitcher'
+
+import ThemeSwitch from '@/app/_components/topbar/ThemeSwitch'
 import React from 'react'
 
 const Theme = () => {
   return (
     <div className='bg-theme-bg-p'>
-        <ThemeSwitcher />
+        <ThemeSwitch />
         <div className='theme-t-s       px-4 py-2'>Text-primary</div>
         <div className='theme-t-p       px-4 py-2'>Text-secondary</div>
         <div className='theme-t-t       px-4 py-2'>Text-tertiary</div>

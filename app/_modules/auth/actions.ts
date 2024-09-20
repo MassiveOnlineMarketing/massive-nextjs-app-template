@@ -36,6 +36,8 @@ import {
   formInputSignInSchema,
   formInputNewPasswordSchema,
 } from "@/src/entities/models/user";
+import { getConnectedGscPropertiesController } from "@/src/interface-adapters/controllers/search-console-api/get-connected-gsc-properties.controller";
+import { ConnectedGscProperties } from "@/src/application/api/search-console.api.types";
 
 export const logout = async () => {
   await signOut();
@@ -238,6 +240,42 @@ export async function getAccountDetails(): Promise<{
           return { error: "Email does not exist!" };
         }
         console.error("getAccount error", error);
+        captureException(error);
+        return {
+          error:
+            "An error happened. The developers have been notified. Please try again later.",
+        };
+      }
+    }
+  );
+}
+
+export async function getConnectedGscProperties(): Promise<{error?: string;  properties?: ConnectedGscProperties[]} > {
+  return await withServerActionInstrumentation(
+    "getConnectedGscProperties",
+    { recordResponse: true },
+    async () => {
+     const session = await auth();
+      if (!session?.user || !session?.user.id) {
+        return {
+          error: "Must be logged in to retrieve your account details",
+        };
+      }
+
+      try {
+        const connectedGscProperties = await getConnectedGscPropertiesController(session.user.id);
+
+        return { properties: connectedGscProperties };
+      } catch (error) {
+        
+        if (error instanceof UnauthenticatedError) {
+          return {
+            error: "Must be logged in to update your profile information",
+          };
+        } else if (error instanceof NotFoundError) {
+          return { error: "Email does not exist!" };
+        }
+        console.error("getConnectedGscProperties error", error);
         captureException(error);
         return {
           error:

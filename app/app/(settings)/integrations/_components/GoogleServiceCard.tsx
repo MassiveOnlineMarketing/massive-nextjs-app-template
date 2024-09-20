@@ -2,15 +2,17 @@
 
 import React from 'react'
 
+import { GoogleScopeOptions } from '@/src/infrastructure/services/authentication.service';
+import useGoogleToken from '@/app/_modules/auth/hooks/useGoogleRefreshToken';
+
 import IntegrationCard from './IntergrationCard';
-import useGoogleToken, { GoogleScopeOption } from '@/app/_hooks/useGoogleRefreshToken';
 import Button from './button';
 
 interface GoogleCardProps {
   heading: string;
   subHeading?: string;
   Icon: React.ElementType;
-  scope: GoogleScopeOption;
+  scope: GoogleScopeOptions;
   currentlyAvailable: boolean;
 }
 

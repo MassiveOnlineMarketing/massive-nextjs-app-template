@@ -14,6 +14,7 @@ import { IGoogleKeywordTrackerKeywordsRepository } from "@/src/application/repos
 
 // Api
 import { ISerperApi } from "@/src/application/api/serper.api.interface";
+import { ISearchConsoleApi } from "@/src/application/api/search-console.api.interface";
 
 export const DI_SYMBOLS = {
   // Services
@@ -32,6 +33,7 @@ export const DI_SYMBOLS = {
 
   // Api
   ISerperApi: Symbol.for("ISerperApi"),
+  ISearchConsoleApi: Symbol.for("ISearchConsoleApi"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -51,4 +53,5 @@ export interface DI_RETURN_TYPES {
 
   // Api
   ISerperApi: ISerperApi;
+  ISearchConsoleApi: ISearchConsoleApi;
 }
