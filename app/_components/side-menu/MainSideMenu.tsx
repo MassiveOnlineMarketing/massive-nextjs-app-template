@@ -179,21 +179,21 @@ const NavItemWith = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }
     <Link
       href={item.link}
       className={cn(
-        'h-[52px] w-full  flex items-center theme-b-p',
+        'h-[52px] w-full flex items-center theme-b-p pb-1 group hover:rounded-[10px] hover:bg-theme-light-background-secondary hover:dark:bg-theme-night-background-primary',
         isOpen
-          ? item.active ? 'theme-bg-w rounded-none border-x before:border-0 after:border-0' : ''
+          ? item.active ? 'theme-bg-w rounded-none border-x before:border-0 after:border-0 hover:bg-white' : ''
           : item.active ? 'molecule rounded-[8px] before:rounded-[8px] after:rounded-[12px] before:left-0 before:top-0' : '',
       )}>
       <div className='min-w-[52px] min-h-[52px]  flex items-center justify-center p-3'>
         <item.icon
           className={cn(
-            'w-6 h-6 ',
-            item.active ? 'text-base-500' : 'theme-t-n'
+            'w-6 h-6 group-hover:fill-base-500',
+            item.active ? 'text-base-500 ' : 'theme-t-n'
           )} />
       </div>
       <p
         className={cn(
-          'text-nowrap overflow-hidden transition-width duration-300 underline:text-green-900',
+          'text-nowrap overflow-hidden transition-width duration-300 underline:text-green-900 group-hover:text-base-500',
           item.active ? 'theme-t-p' : 'theme-t-n',
           isOpen ? 'w-[244px]' : 'w-0',
         )}
