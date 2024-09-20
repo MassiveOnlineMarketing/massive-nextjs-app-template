@@ -31,7 +31,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       <input
         ref={ref}
         className={cn(
-          "inline-flex w-full mt-3 justify-between  py-4 px-8 rounded-xl border border-gray-200",
+          "inline-flex w-full mt-3 justify-between py-4 px-8 rounded-xl border border-gray-200",
           className,
         )}
         {...props}
