@@ -27,6 +27,7 @@ const LocationsCard = ({ website, websiteFavicon }: { website: WebsiteWithLocati
           {locations.map((loc, index) => (
             <Link href={`/app/settings/website/location/${loc.id}`} key={index} className='ml-2 flex gap-3 group'>
               <div className='w-11 h-11 flex items-center justify-center  molecule rounded-full before:rounded-full after:rounded-full  after:hidden group-hover:after:block'>
+                {/* eslint-disable-next-line @next/next/no-img-element  */}
                 <img src={websiteFavicon} alt='favicon' className='w-6 h-6 rounded-full' />
               </div>
 
@@ -52,7 +53,7 @@ const LocationsCard = ({ website, websiteFavicon }: { website: WebsiteWithLocati
       ))}
 
       <AddLocationButton />
-      
+
     </Card>
   )
 }

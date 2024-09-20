@@ -33,6 +33,24 @@ export class UsersRepository implements IUsersRepository {
     });
   }
 
+  async findAccountByUserId(userId: string): Promise<Account | null> {
+    return await startSpan(
+      { name: "UsersRepository > findAccountByUserId" },
+      async () => {
+        try {
+          const account = await db.account.findFirst({
+            where: { userId },
+          });
+
+          return account;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
   async deductCredits(userId: string, credits: number): Promise<void> {
     return await startSpan(
       { name: "UsersRepository > deductCredits" },

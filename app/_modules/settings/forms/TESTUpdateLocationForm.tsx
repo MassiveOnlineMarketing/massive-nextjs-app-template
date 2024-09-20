@@ -59,6 +59,7 @@ const UpdateLocationForm = ({
 
   useEffect(() => {
     setSelectedLocationDisplayTitle(locations.find(location => location.googleId.toString() === defaultLocation.locationCode) || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onFormSubmit = async (values: z.infer<typeof formInputUpdateLocationSchema>) => {

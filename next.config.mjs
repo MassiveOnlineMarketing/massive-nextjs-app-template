@@ -1,6 +1,7 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import TerserPlugin from "terser-webpack-plugin";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -36,6 +37,16 @@ const nextConfig = {
         analyzerPort: 8889
       }));
     }
+
+    // Add TerserPlugin for minimizing and limiting threads
+    config.optimization = {
+      ...config.optimization, // Ensure other optimization settings remain intact
+      minimizer: [
+        new TerserPlugin({
+          parallel: 2, // Limit the number of concurrent threads
+        }),
+      ],
+    };
 
     return config;
   },

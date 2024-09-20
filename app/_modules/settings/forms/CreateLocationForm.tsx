@@ -56,6 +56,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
 
   useEffect(() => {
     setSelectedLocationDisplayTitle(displayLocations.find(l => l.canonicalName.toString() === location?.location) || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSubmit = async (values: z.infer<typeof formInputCreateLocationSchema>) => {

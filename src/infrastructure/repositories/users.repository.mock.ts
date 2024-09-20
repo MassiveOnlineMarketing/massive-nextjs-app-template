@@ -2,6 +2,7 @@ import { IUsersRepository } from "@/src/application/repositories/users.repositor
 import { User } from "@/src/entities/models/user";
 import { injectable } from "inversify";
 import bcrypt from "bcryptjs";
+import { Account } from "@prisma/client";
 
 
 @injectable()
@@ -72,6 +73,12 @@ export class MockUsersRepository implements IUsersRepository {
     this._users.push(user);
 
     return user;
+  }
+
+  async findAccountByUserId(userId: string): Promise<Account | null> {
+    throw new Error('Method not implemented.');
+    await this._initialized;
+    return null;
   }
 
 

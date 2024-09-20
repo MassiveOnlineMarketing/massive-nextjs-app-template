@@ -29,7 +29,7 @@ const FormStuff = () => {
       type: 'manual',
       message: 'This is a custom error message',
     });
-  }, [form.setError]);
+  }, [form]);
 
   return (
     <div><h1 className='text-xl font-semibold mt-6 mb-2'>Form stuff</h1>
