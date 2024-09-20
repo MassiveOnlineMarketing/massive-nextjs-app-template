@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { cn } from "../utils";
 
 
-const ThemeSwitcher = () => {
+const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -83,4 +83,4 @@ const ThemeSwitcher = () => {
   );
 }
 
-export default ThemeSwitcher;
+export default ThemeSwitch;

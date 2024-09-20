@@ -2,7 +2,7 @@ import React from 'react'
 
 import BackAndForwardButtons from './BackAndForwardButton'
 import BreadCrumbs from './BreadCrumbs'
-import ThemeSwitcher from './ThemeSwitch'
+import ThemeSwitch from './ThemeSwitch'
 import UserCredits from './UserCredits'
 import MassiveLogo from './MassiveLogo'
 import UserActionsDropdown from './UserActionsDropdown'
@@ -16,7 +16,7 @@ const Topbar = () => {
         <BreadCrumbs />
         <UserCredits />
         <VerticalDevider />
-        <ThemeSwitcher />
+        <ThemeSwitch />
         <VerticalDevider />
         <UserActionsDropdown />
       </div>
