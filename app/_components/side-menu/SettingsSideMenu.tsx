@@ -13,6 +13,8 @@ import { cn } from '@/app/_components/utils';
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { PlusIcon, UserCircleIcon } from '@heroicons/react/20/solid';
 
+import { Tooltip, TooltipTrigger, TooltipArrow, TooltipContent, TooltipProvider, } from "@/app/_components/ui/tooltip"
+
 type NavItem = {
   href: string,
   text: string,
@@ -43,7 +45,7 @@ const SettingsSideMenu = () => {
         ))}
       </div>
 
-      <div> 
+      <div>
         <WebsiteList websiteStore={websiteStore} />
       </div>
 
@@ -61,10 +63,10 @@ const NavLabel = ({ children }: { children: React.ReactNode }) => {
 const NavItem = ({ navItem, children, className }: { navItem: NavItem, children: React.ReactNode, className: string }) => {
   return (
     <Link href={navItem.href} className={cn(
-      'theme-t-t p-3 flex items-center gap-2 ',
+      'theme-t-t p-3 flex items-center gap-2 group hover:text-base-500',
       className
     )}>
-      <navItem.icon className='theme-t-n w-5 h-5' />
+      <navItem.icon className='theme-t-n w-5 h-5 group-hover:fill-base-500 hover:border-base-500' />
 
       {children}
     </Link>
@@ -86,24 +88,33 @@ const WebsiteList = ({ websiteStore }: { websiteStore: WebsiteWithLocation[] | u
 
   return (
     <>
-      <div className='p-3 flex justify-between items-center border-y theme-b-s'>
+      <div className='p-2 flex justify-between items-center border-y theme-b-p'>
         <button
-          className='flex items-center gap-1.5'
+          className='flex items-center gap-1.5 '
           onClick={() => setWebsitesListExpanded(!websitesListExpanded)}
         >
           <div className={websitesListExpanded ? 'rotate-90' : ''}>
             <Svg />
           </div>
-          <p className='theme-t-t text-sm '>
+          <p className='theme-t-t text-sm hover:text-base-500'>
             Websites
             {websiteStore && websiteStore.length > 0 && (
               <span className='text-[#94A3B8] text-xs ml-1'>({websiteStore.length})</span>
             )}
           </p>
         </button>
-        <button onClick={handleAddWebsite}>
-          <PlusIcon className='w-5 h-5 theme-t-t' />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button onClick={handleAddWebsite} className='p-1 group rounded-md hover:bg-theme-light-background-secondary hover:dark:bg-theme-night-background-primary'>
+                <PlusIcon className='w-5 h-5 theme-t-t group-hover:fill-base-500' />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className='molecule2 after:bg-theme-light-text-secondary'>
+              <p className='theme-t-t'>Add new website</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
 
@@ -114,8 +125,8 @@ const WebsiteList = ({ websiteStore }: { websiteStore: WebsiteWithLocation[] | u
         )}>
           {websiteStore?.map((website, index) => (
             <Link key={index} href={`/app/settings/website/${website.id}`}>
-              <div className='flex items-center gap-2 theme-t-t p-3'>
-                <p>{website.websiteName}</p>
+              <div className='flex items-center gap-2 theme-t-t p-3 hover:text-base-500'>
+                <p className='hover:theme'>{website.websiteName}</p>
               </div>
             </Link>
           ))}

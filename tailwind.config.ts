@@ -83,6 +83,10 @@ module.exports = {
           "100%": { opacity: "0" },
         },
       },
+        blink: {
+          '0%, 100%': { opacity: '1' }, // wit
+          '50%': { opacity: '0' }, // zwart (pas deze aan naar gewenste kleur)
+        },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "open-down": "open-down 0.3s ease-out",
@@ -90,6 +94,7 @@ module.exports = {
         "modal-opacity-in": "modalOpacityIn 0.5s ease forwards",
         "modal-opacity-out": "modalOpacityOut 0.5s ease forwards",
         'pulse-fast': 'pulse 0.2s linear infinite',
+        'blink-bg': 'blink-bg 1s linear infinite',
       },
       borderRadius: {
         'lg': '0.625rem'
