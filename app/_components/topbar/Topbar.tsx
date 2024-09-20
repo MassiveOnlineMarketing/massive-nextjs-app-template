@@ -2,7 +2,7 @@ import React from 'react'
 
 import BackAndForwardButtons from './BackAndForwardButton'
 import BreadCrumbs from './BreadCrumbs'
-import ThemeSwitcher from '../ui/ThemeSwitcher'
+import ThemeSwitcher from './ThemeSwitch'
 import UserCredits from './UserCredits'
 import MassiveLogo from './MassiveLogo'
 import UserActionsDropdown from './UserActionsDropdown'
