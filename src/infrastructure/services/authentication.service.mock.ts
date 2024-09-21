@@ -92,4 +92,16 @@ export class MockAuthenticationService implements IAuthenticationService {
 
     return 'google-refresh-token';
   }
+
+  async isAllowedToAccessWebsite(userId: string): Promise<void> {
+    return;
+  }
+
+  async isAllowedToAccessLocation(userId: string, websiteId: string): Promise<void> {
+    return;
+  }
+
+  async isAllowedToAccessTool(userId: string, locationId: string): Promise<void> {
+    return;
+  }
 }

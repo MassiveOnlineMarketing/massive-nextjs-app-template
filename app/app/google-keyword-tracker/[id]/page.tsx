@@ -1,12 +1,32 @@
+import React from 'react'
+
+import { redirect } from 'next/navigation';
+import { auth } from '@/app/_modules/auth/_nextAuth';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+
+import { getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
+
+import ClientPage from './ClientPage';
 
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
-import React from 'react'
 
 const page = async ({
   params: { id }
 }: {
   params: { id: string }
 }) => {
+  const session = await auth();
+
+  if (!session?.user || !session?.user.id) (
+    redirect(DEFAULT_LOGIN_REDIRECT)
+  )
+
+  const res = await getLatestGoogleKeywordResults(id)
+
+  console.log('item', res.results)
+
+
+
   return (
     <div className='w-full theme-bg-w border theme-b-p mr-3 rounded-t-2xl '>
       <div className=' h-[calc(100vh-79px)]  custom-scrollbar -mr-3 pr-[3px]'>
@@ -26,6 +46,7 @@ const page = async ({
           </div>
           {id}
           <div className=' border'>
+            <ClientPage data={res.results}/>
             <p>content</p>
             <p>content</p>
             <p>content</p>
