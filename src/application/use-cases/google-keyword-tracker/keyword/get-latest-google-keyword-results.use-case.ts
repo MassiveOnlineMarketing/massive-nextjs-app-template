@@ -13,7 +13,7 @@ export async function getLatestGoogleKeywordResultsUseCase(
   return await startSpan(
     { name: "getLatestGoogleKeywordResults Use Case" },
     async () => {
-      const googleKeywordTrackerKeywordsRepositor = getInjection(
+      const googleKeywordTrackerKeywordsRepository = getInjection(
         "IGoogleKeywordTrackerKeywordsRepository"
       );
 
@@ -36,7 +36,7 @@ export async function getLatestGoogleKeywordResultsUseCase(
       );
 
       const results =
-        await googleKeywordTrackerKeywordsRepositor.getKeywordsWithResultsByToolId(
+        await googleKeywordTrackerKeywordsRepository.getKeywordsWithResultsByToolId(
           googleKeywordTrackerToolId
         );
 

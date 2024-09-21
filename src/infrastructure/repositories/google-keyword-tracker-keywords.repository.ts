@@ -43,6 +43,12 @@ export class GoogleKeywordTrackerKeywordsRepository
                 take: 1,
               },
               tags: true,
+              googleAdsKeywordMetrics: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
             },
           });
 

@@ -22,11 +22,11 @@ export type LatestGoogleKeywordResultsDto = {
   peopleAlsoAsk: SerpApiPeopleAsloAsk[] | null;
   tags: GoogleKeywordTrackerKeywordTag[];
 
-  // avgMonthlySearches: string | null;
-  // competition: string | null;
-  // competitionIndex: string | null;
-  // highTopOfPageBid: string | null;
-  // lowTopOfPageBid: string | null;
+  avgMonthlySearches: string | null;
+  competition: string | null;
+  competitionIndex: string | null;
+  highTopOfPageBid: string | null;
+  lowTopOfPageBid: string | null;
 
   createdAt: Date;
 };
@@ -35,6 +35,8 @@ function presenter(
   googleKeywordTrackerKeywordWithResultsQuery: GoogleKeywordTrackerKeywordWithResultsQuery[]
 ): LatestGoogleKeywordResultsDto[] {
   return googleKeywordTrackerKeywordWithResultsQuery.map((keyword) => {
+    const googleAdsMetrics = keyword.googleAdsKeywordMetrics[0] || {};
+
     return {
       id: keyword.results[0].id,
       keywordId: keyword.id,
@@ -49,11 +51,13 @@ function presenter(
       relatedSearches: keyword.results[0].relatedSearches,
       peopleAlsoAsk: keyword.results[0].peopleAlsoAsk,
       tags: keyword.tags,
-      // avgMonthlySearches: keyword.,
-      // competition: keyword.competition,
-      // competitionIndex: keyword.competitionIndex,
-      // highTopOfPageBid: keyword.highTopOfPageBid,
-      // lowTopOfPageBid: keyword.lowTopOfPageBid,
+
+      avgMonthlySearches: googleAdsMetrics.avgMonthlySearches ?? null,
+      competition: googleAdsMetrics.competition ?? null,
+      competitionIndex: googleAdsMetrics.competitionIndex ?? null,
+      highTopOfPageBid: googleAdsMetrics.highTopOfPageBid ?? null,
+      lowTopOfPageBid: googleAdsMetrics.lowTopOfPageBid ?? null,
+
       createdAt: keyword.createdAt,
     };
   });

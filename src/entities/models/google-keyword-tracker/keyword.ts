@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { googleKeywordTrackerResultSchema } from "./result";
 import { googleKeywordTrackerKeywordTagSchema } from "./tag";
+import { googleAdsKeywordMetricsSchema } from "./google-ads-keyword-metrics";
 
 export const selectGoogleKeywordTrackerKeywordCoreSchema = z.object({
   id: z.string(),
@@ -24,6 +25,6 @@ export type GoogleKeywordTrackerKeyword = z.infer<typeof googleKeywordTrackerKey
 export const selectGoogleKeywordTrackerKeywordWithResultsQuery = selectGoogleKeywordTrackerKeywordCoreSchema.extend({
   tags: z.lazy(() => z.array(googleKeywordTrackerKeywordTagSchema)),
   results: z.lazy(() => z.array(googleKeywordTrackerResultSchema)),
-  // googleAdsKeywordMetrics: z.lazy(() => z.array(selectGoogleAdsKeywordMetricSchema)),
+  googleAdsKeywordMetrics: z.lazy(() => z.array(googleAdsKeywordMetricsSchema)),
 });
 export type GoogleKeywordTrackerKeywordWithResultsQuery = z.infer<typeof selectGoogleKeywordTrackerKeywordWithResultsQuery>;
