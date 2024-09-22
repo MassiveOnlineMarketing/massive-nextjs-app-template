@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from "@/app/_modules/auth/_nextAuth"
+import dynamic from "next/dynamic"
 
 import { getLocation } from "@/app/_actions/location.actions"
 import { getWebsitesByUser } from "@/app/_actions/website.actions"
@@ -8,9 +9,10 @@ import { getGoogleKeywordTrackerWithCompetitors } from "@/app/_modules/actions/g
 
 import { capitalizeFirstLetter } from "@/app/_utils/stringUtils"
 
-import UpdateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/UpdateGoogleKeywordTrackerToolFrom"
-import CreateGoogleKeywordTrackerToolFrom from "@/app/_modules/google-keyword-tracker/forms/CreateGoogleKeywordTrackerToolFrom"
-import LocationDetails from "./LocationDetails"
+const LocationDetails = dynamic(() => import(/* webpackChunkName: "location-details" */ './LocationDetails'), {ssr: false});
+const UpdateGoogleKeywordTrackerToolFrom = dynamic(() => import(/* webpackChunkName: "update-keyword-form" */ '@/app/_modules/google-keyword-tracker/forms/UpdateGoogleKeywordTrackerToolFrom'), {ssr: false});
+const CreateGoogleKeywordTrackerToolFrom = dynamic(() => import(/* webpackChunkName: "create-keyword-form" */ '@/app/_modules/google-keyword-tracker/forms/CreateGoogleKeywordTrackerToolFrom'), {ssr: false});
+
 
 import { MapPinIcon } from "@heroicons/react/20/solid"
 
@@ -24,22 +26,27 @@ const page = async ({
   const session = await auth();
   if (!session?.user.id) return <>No user id</>
 
+  const [locationRes, websiteRes] = await Promise.all([
+    getLocation(id),
+    getWebsitesByUser(session.user.id)
+  ]);
+  
+
   const res = await getLocation(id)
 
-  if (!res.location) {
+  if (!locationRes.location) {
     return <div>not found</div>
   }
 
-  const keywordTrackerToolRes = await getGoogleKeywordTrackerWithCompetitors(res.location.keywordTrackerToolId) 
-  
+  const keywordTrackerToolRes = await getGoogleKeywordTrackerWithCompetitors(locationRes.location.keywordTrackerToolId) 
+
   
   // display data 
-  const websiteRes = await getWebsitesByUser(session.user.id)
   const website = websiteRes.websites?.find(website => website.id === res.location?.websiteId)
 
   const websiteName = website?.websiteName
-  const country = res.location.country
-  const location = res.location.location
+  const country = locationRes.location.country
+  const location = locationRes.location.location
 
 
   return (
@@ -54,14 +61,14 @@ const page = async ({
         </div>
 
         <div>
-          <LocationDetails defaultLocation={res.location} usersWebsites={websiteRes.websites} />
+          <LocationDetails defaultLocation={locationRes.location} usersWebsites={websiteRes.websites} />
 
 
           {
             keywordTrackerToolRes.googleKeywordTracker ? (
               <UpdateGoogleKeywordTrackerToolFrom keywordTracker={keywordTrackerToolRes.googleKeywordTracker}/>
             ) : (
-              <CreateGoogleKeywordTrackerToolFrom locationId={res.location.id} websiteId={res.location.websiteId} />
+              <CreateGoogleKeywordTrackerToolFrom locationId={locationRes.location.id} websiteId={locationRes.location.websiteId} />
             )
           }
 

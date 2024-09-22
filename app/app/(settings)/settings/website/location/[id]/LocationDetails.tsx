@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 
-import { LOCATION_LANGUAGE_OPTIONS } from '@/src/constants/locationLanguages'
-import { LOCATION_COUNTRY_OPTIONS } from '@/src/constants/locationCountries'
-import { LOCATION_LOCATION_OPTIONS } from '@/src/constants/locationLocations'
+// import { LOCATION_LANGUAGE_OPTIONS } from '@/src/constants/locationLanguages'
+// import { LOCATION_COUNTRY_OPTIONS } from '@/src/constants/locationCountries'
+// import { LOCATION_LOCATION_OPTIONS } from '@/src/constants/locationLocations'
 
 import { Website } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location'
@@ -14,24 +14,21 @@ import { Label } from '@/app/_components/ui/label'
 import { Card, CardContent, CardHeader } from '@/app/_modules/settings/components/SettingsCard'
 import { Button } from '@/app/_components/ui/button'
 
-import { ClipboardDocumentIcon, TrashIcon } from '@heroicons/react/20/solid'
+import { ClipboardDocumentIcon } from '@heroicons/react/20/solid'
 import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
+// import { getCountry, getLanguage, getLocation } from './utils';
 
 
-const LocationDetails = ({
+const LocationDetails = async ({
   defaultLocation,
   usersWebsites,
 }: {
   defaultLocation: Location;
   usersWebsites: Website[] | undefined;
 }) => {
-  const languages = LOCATION_LANGUAGE_OPTIONS;
-  const countries = LOCATION_COUNTRY_OPTIONS;
-  const locations = LOCATION_LOCATION_OPTIONS;
-
-  const language = languages.find(language => language.googleId.toString() === defaultLocation.languageCode);
-  const location = locations.find(location => location.canonicalName === defaultLocation.location);
-  const country = countries.find(country => country.countryCode === defaultLocation.country);
+  // const language = await getLanguage(defaultLocation.languageCode);
+  // const location = await getLocation(defaultLocation.location);
+  // const country = await getCountry(defaultLocation.country)
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
   return (
@@ -69,8 +66,8 @@ const LocationDetails = ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {language ? (
-              <p>{language.name}</p>
+            {defaultLocation ? (
+              <p>{defaultLocation.location}</p>
             ) : (
               <p>No Language selected</p>
             )}
@@ -84,12 +81,12 @@ const LocationDetails = ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {location ? (
+            {defaultLocation.location ? (
               <>
-                <p className='text-xs font-bold'>{location.countryCode}</p>
-                <p className='text-sm pl-1'>{location.name}</p>
+                <p className='text-xs font-bold'>{defaultLocation.location}</p>
+                <p className='text-sm pl-1'>{defaultLocation.location}</p>
 
-                <p className='ml-auto'>{location.targetType}</p>
+                <p className='ml-auto'>{defaultLocation.location}</p>
               </>
             ) : (
               <p>No Location selected</p>
@@ -104,8 +101,8 @@ const LocationDetails = ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {country ? (
-              <p>{country.name}</p>
+            {defaultLocation ? (
+              <p>{defaultLocation.location}</p>
             ) : (
               <p>No Country selected</p>
             )}
