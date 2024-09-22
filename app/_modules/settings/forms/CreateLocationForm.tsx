@@ -17,7 +17,7 @@ import { Website } from '@/src/entities/models/website'
 
 import { Label } from '@/app/_components/ui/label'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../components/form'
-// import GoogleLocationsDropdown from '../components/form/GoogleLocationsDropdown'
+import GoogleLocationsDropdown from '../components/form/GoogleLocationsDropdown'
 
 import { useToast } from '@/app/_components/ui/toast/use-toast'
 import { cn } from '@/app/_components/utils'
@@ -28,25 +28,25 @@ import { Button } from '@/app/_components/ui/button'
 
 import { MapPinIcon } from '@heroicons/react/20/solid'
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
-// import { loadLocationOptions } from '@/app/app/(settings)/settings/website/location/[id]/utils'
+import { loadLocationOptions } from '@/app/app/(settings)/settings/website/location/[id]/utils'
 
 const CreateLocationForm = ({ location, usersWebsites }: {
   location: Location | undefined, usersWebsites: Website[] | undefined;
 }) => {
   const [isPending, startTransition] = useTransition();
   const [selectedLocationDisplayTitle, setSelectedLocationDisplayTitle] = useState<LocationLocationOptions | null>(null);
-  // const [locations, setLocations] = useState<LocationLocationOptions[]>([]);
-  // const [displayLocations, setDisplayLocations] = useState<LocationLocationOptions[]>([]);
+  const [locations, setLocations] = useState<LocationLocationOptions[]>([]);
+  const [displayLocations, setDisplayLocations] = useState<LocationLocationOptions[]>([]);
 
   const languages = useMemo(() => LOCATION_LANGUAGE_OPTIONS, []);
   const countries = useMemo(() => LOCATION_COUNTRY_OPTIONS, []);
 
-  // useEffect(() => {
-  //   loadLocationOptions().then((options) => {
-  //     setLocations(options);
-  //     setDisplayLocations(options.filter((location) => location.targetType !== 'Country'));
-  //   });
-  // }, []);
+  useEffect(() => {
+    loadLocationOptions().then((options) => {
+      setLocations(options);
+      setDisplayLocations(options.filter((location) => location.targetType !== 'Country'));
+    });
+  }, []);
 
   const addLocation = useWebsiteDetailsStore(state => state.addLocation)
 
@@ -57,15 +57,15 @@ const CreateLocationForm = ({ location, usersWebsites }: {
     defaultValues: {
       websiteId: location?.websiteId,
       language: languages.find(language => language.googleId.toString() === location?.languageCode),
-      // location: location?.location ? locations.find(l => l.canonicalName === location?.location) : undefined,
+      location: location?.location ? locations.find(l => l.canonicalName === location?.location) : undefined,
       country: countries.find(country => country.countryCode === location?.country),
     }
   });
 
-  // useEffect(() => {
-  //   setSelectedLocationDisplayTitle(displayLocations.find(l => l.canonicalName.toString() === location?.location) || null);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    setSelectedLocationDisplayTitle(displayLocations.find(l => l.canonicalName.toString() === location?.location) || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onSubmit = async (values: z.infer<typeof formInputCreateLocationSchema>) => {
     startTransition(async () => {
@@ -212,7 +212,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
               )}
             />
 
-            {/* <div className='flex flex-col'>
+            <div className='flex flex-col'>
               <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
               <Popover>
                 <PopoverTrigger asChild>
@@ -246,7 +246,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                 Use a location to track your information for a specific geographic area.
               </FormDescription>
               {form.formState.errors.location && <p className="text-sm font-medium text-red-500 dark:text-red-900">{form.formState.errors.location.message}</p>}
-            </div> */}
+            </div>
 
             <FormField
               control={form.control}

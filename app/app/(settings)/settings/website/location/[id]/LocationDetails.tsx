@@ -2,12 +2,11 @@
 
 import Link from 'next/link'
 
-// import { LOCATION_LANGUAGE_OPTIONS } from '@/src/constants/locationLanguages'
-// import { LOCATION_COUNTRY_OPTIONS } from '@/src/constants/locationCountries'
-// import { LOCATION_LOCATION_OPTIONS } from '@/src/constants/locationLocations'
-
 import { Website } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location'
+
+import { getCountry, getLanguage, getLocation } from './utils';
+import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
 
 import { cn } from '@/app/_components/utils'
 import { Label } from '@/app/_components/ui/label'
@@ -15,8 +14,6 @@ import { Card, CardContent, CardHeader } from '@/app/_modules/settings/component
 import { Button } from '@/app/_components/ui/button'
 
 import { ClipboardDocumentIcon } from '@heroicons/react/20/solid'
-import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
-// import { getCountry, getLanguage, getLocation } from './utils';
 
 
 const LocationDetails = async ({
@@ -26,9 +23,9 @@ const LocationDetails = async ({
   defaultLocation: Location;
   usersWebsites: Website[] | undefined;
 }) => {
-  // const language = await getLanguage(defaultLocation.languageCode);
-  // const location = await getLocation(defaultLocation.location);
-  // const country = await getCountry(defaultLocation.country)
+  const language = await getLanguage(defaultLocation.languageCode);
+  const location = await getLocation(defaultLocation.location);
+  const country = await getCountry(defaultLocation.country)
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
   return (
@@ -66,8 +63,8 @@ const LocationDetails = async ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {defaultLocation ? (
-              <p>{defaultLocation.location}</p>
+            {language ? (
+              <p>{language.name}</p>
             ) : (
               <p>No Language selected</p>
             )}
@@ -81,12 +78,12 @@ const LocationDetails = async ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {defaultLocation.location ? (
+            {location ? (
               <>
-                <p className='text-xs font-bold'>{defaultLocation.location}</p>
-                <p className='text-sm pl-1'>{defaultLocation.location}</p>
+                <p className='text-xs font-bold'>{location.countryCode}</p>
+                <p className='text-sm pl-1'>{location.name}</p>
 
-                <p className='ml-auto'>{defaultLocation.location}</p>
+                <p className='ml-auto'>{location.targetType}</p>
               </>
             ) : (
               <p>No Location selected</p>
@@ -101,8 +98,8 @@ const LocationDetails = async ({
             role="combobox"
             className={cn("w-[412px] justify-between items-center cursor-default ")}
           >
-            {defaultLocation ? (
-              <p>{defaultLocation.location}</p>
+            {country ? (
+              <p>{country.name}</p>
             ) : (
               <p>No Country selected</p>
             )}
