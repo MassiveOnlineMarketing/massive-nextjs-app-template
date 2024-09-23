@@ -256,7 +256,7 @@ export class GoogleKeywordTrackerKeywordsRepository
         try {
           await db.googleKeywordTrackerKeywordTag.update({
             where: {
-              name: tag,
+              id: tag,
             },
             data: {
               keywords: {
