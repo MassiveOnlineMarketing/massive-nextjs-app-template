@@ -22,7 +22,7 @@ export async function addTagToGoogleKeywordsController(
       return await addTagToGoogleKeywordsUseCase(
         {
           keywordIds: keywordIdsArray,
-          tagName,
+          tagName: tagName?.toLowerCase(),
           tagId,
         },
         user
