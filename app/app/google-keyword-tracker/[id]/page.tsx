@@ -1,29 +1,22 @@
 import React from 'react'
 
-import { redirect } from 'next/navigation';
-import { auth } from '@/app/_modules/auth/_nextAuth';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
-
+import { isAuthenticated } from '@/app/_modules/auth/actions';
 import { getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
 
+import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layout/FilteredStats';
 import ClientPage from './ClientPage';
 
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
-import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layout/FilteredStats';
 
 const page = async ({
   params: { id }
 }: {
   params: { id: string }
 }) => {
-  const session = await auth();
-
-  if (!session?.user || !session?.user.id) (
-    redirect(DEFAULT_LOGIN_REDIRECT)
-  )
+  await isAuthenticated();
 
   const res = await getLatestGoogleKeywordResults(id)
-  console.log('new page fetch',id, res.results?.length)
+  // console.log('new page fetch',id, res.results?.length)
 
   return (
     <div className='w-full theme-bg-w border theme-b-p mr-3 rounded-t-2xl '>

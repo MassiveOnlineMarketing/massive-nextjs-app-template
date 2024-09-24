@@ -1,10 +1,9 @@
-import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth';
 import React from 'react'
 
-const page = async () => {
-  // const { notAllowedPage, session  } = await isAllowedToViewPage('admin');
-  // if (notAllowedPage) return notAllowedPage;
+import { isAuthenticated } from '@/app/_modules/auth/actions';
 
+const page = async () => {
+  await isAuthenticated();
 
   return (
     <div>

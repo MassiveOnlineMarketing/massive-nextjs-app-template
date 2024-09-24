@@ -3,17 +3,10 @@
 import React from 'react'
 
 import CreateWebsiteForm from '@/app/_modules/settings/forms/CreateWebsiteForm'
-import { auth } from '@/app/_modules/auth/_nextAuth';
-import { getConnectedGscProperties } from '@/app/_modules/auth/actions';
-import { redirect } from 'next/navigation';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { getConnectedGscProperties, isAuthenticated } from '@/app/_modules/auth/actions';
 
 const page = async () => {
-  const session = await auth();
-  if (!session?.user || !session?.user.id) (
-    redirect(DEFAULT_LOGIN_REDIRECT)
-  )
-
+  await isAuthenticated();
   const connectedGscProperties = await getConnectedGscProperties();
 
 

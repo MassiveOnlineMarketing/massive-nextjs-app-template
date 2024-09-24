@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from "@/app/_modules/auth/_nextAuth"
+import { isAuthenticated } from "@/app/_modules/auth/actions"
 import dynamic from "next/dynamic"
 
 import { getLocation } from "@/app/_actions/location.actions"
@@ -28,18 +28,17 @@ const CreateGoogleKeywordTrackerToolFrom = dynamic(
 import { MapPinIcon } from "@heroicons/react/20/solid"
 
 
+
 const page = async ({
   params: { id }
 }: {
   params: { id: string }
 }) => {
-
-  const session = await auth();
-  if (!session?.user.id) return <>No user id</>
+  const { user } = await isAuthenticated();
 
   const [locationRes, websiteRes] = await Promise.all([
     getLocation(id),
-    getWebsitesByUser(session.user.id)
+    getWebsitesByUser(user.id)
   ]);
 
 

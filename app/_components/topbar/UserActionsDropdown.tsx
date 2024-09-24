@@ -1,16 +1,16 @@
 'use client';
 
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import React from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuItemLink, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { ChevronDownIcon, UserIcon } from '@heroicons/react/20/solid';
-import Link from 'next/link';
+
 import { logout } from '@/app/_modules/auth/actions';
+import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuItemLink, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+
+import { ChevronDownIcon, UserIcon } from '@heroicons/react/20/solid';
 
 const UserActionsDropdown = () => {
-
   const user = useCurrentUser()
-
 
   return (
     <DropdownMenu>

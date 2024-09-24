@@ -1,15 +1,14 @@
 import React from 'react'
 
-import { auth } from '@/app/_modules/auth/_nextAuth';
+import { isAuthenticated } from '@/app/_modules/auth/actions';
 import { getWebsitesByUser } from '@/app/_actions/website.actions';
 
 import CreateLocationForm from '@/app/_modules/settings/forms/CreateLocationForm';
 
 const page = async () => {
-  const session = await auth();
-  if (!session?.user.id) return <>No user id</>
+  const { user } = await isAuthenticated() 
 
-  const res = await getWebsitesByUser(session.user.id)
+  const res = await getWebsitesByUser(user.id)
 
   return (
     <div className='max-w-[918px] theme-bg-w border theme-b-p rounded-xl'>

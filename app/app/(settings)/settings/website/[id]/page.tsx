@@ -2,11 +2,7 @@
 
 import React from 'react'
 
-import { auth } from '@/app/_modules/auth/_nextAuth';
-import { redirect } from 'next/navigation';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
-
-import { getConnectedGscProperties } from '@/app/_modules/auth/actions';
+import { getConnectedGscProperties, isAuthenticated } from '@/app/_modules/auth/actions';
 import { getWebsiteWithLocation } from '@/app/_actions/website.actions';
 
 import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
@@ -18,15 +14,12 @@ const page = async ({
 }: {
   params: { id: string }
 }) => {
+  await isAuthenticated();
 
-  const session = await auth();
-
-  if (!session?.user || !session?.user.id) (
-    redirect(DEFAULT_LOGIN_REDIRECT)
-  )
-
-  const connectedGscProperties = await getConnectedGscProperties();
-  const res = await getWebsiteWithLocation(id)
+  const [ connectedGscProperties, res ] = await Promise.all([
+    getConnectedGscProperties(),
+    getWebsiteWithLocation(id)
+  ])
 
   // TODO: Not Found
   if (!res?.website) {

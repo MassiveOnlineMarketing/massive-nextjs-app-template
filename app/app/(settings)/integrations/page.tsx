@@ -1,8 +1,13 @@
 import React from 'react'
+
+import { isAuthenticated } from '@/app/_modules/auth/actions'
+
 import GoogleIntegrations from './GoogleIntegrations'
 import Message from './_components/Message'
 
-const page = () => {
+const page = async () => {
+  await isAuthenticated();
+  
   return (
     <div className='max-w-[918px] w-full theme-bg-w border theme-b-p rounded-xl p-6'>
       <div className='pb-3 flex flex-col gap-1.5'>
