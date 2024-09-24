@@ -47,7 +47,7 @@ export const logout = async () => {
 export const isAuthenticated = async () => {
   const session = await auth();
   if (!session?.user || !session?.user.id) {
-    redirect(DEFAULT_LOGIN_REDIRECT)
+    redirect(DEFAULT_SIGNIN_ROUTE)
   }
 
   return { user: session.user }
