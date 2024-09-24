@@ -22,9 +22,8 @@ export class GoogleAdsApi implements IGoogleAdsApi {
           }/historical-metrics?country-code=${country_code}&language-code=${language_code}&keywords=${keywordString.join(
             ","
           )}`;
-          console.log("reqUrl", url);
+          // console.log("reqUrl", url);
           const res = await axios(url);
-          console.log("res.data.results", res.data.results);
           return res.data.results;
         } catch (error) {
           console.error(error);

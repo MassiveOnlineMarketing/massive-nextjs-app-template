@@ -37,6 +37,33 @@ function presenter(
   return googleKeywordTrackerKeywordWithResultsQuery.map((keyword) => {
     const googleAdsMetrics = keyword.googleAdsKeywordMetrics[0] || {};
 
+    if (!keyword.results[0]) {
+      // console.error('Error: keyword.results[0] is undefined for keyword:', keyword);
+      return {
+        id: keyword.id,
+        keywordId: keyword.id,
+        keywordName: keyword.keyword,
+        position: null,
+        url: null,
+        metaTitle: null,
+        metaDescription: null,
+        firstPosition: null,
+        bestPosition: null,
+        latestChange: null,
+        relatedSearches: null,
+        peopleAlsoAsk: null,
+        tags: keyword.tags,
+
+        avgMonthlySearches: googleAdsMetrics.avgMonthlySearches ?? null,
+        competition: googleAdsMetrics.competition ?? null,
+        competitionIndex: googleAdsMetrics.competitionIndex ?? null,
+        highTopOfPageBid: googleAdsMetrics.highTopOfPageBid ?? null,
+        lowTopOfPageBid: googleAdsMetrics.lowTopOfPageBid ?? null,
+
+        createdAt: keyword.createdAt
+      }; // or handle the error as needed
+    }
+
     return {
       id: keyword.results[0].id,
       keywordId: keyword.id,

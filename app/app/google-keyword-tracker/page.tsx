@@ -1,10 +1,9 @@
-'use client';
+'use server';
 
 import { isAuthenticated } from "@/app/_modules/auth/actions";
 import ClientPage from "./ClientPage";
 
-const Page = async () => {
-
+const page = async () => {
   await isAuthenticated();
 
   return (
@@ -12,4 +11,4 @@ const Page = async () => {
   )
 }
 
-export default Page
+export default page
