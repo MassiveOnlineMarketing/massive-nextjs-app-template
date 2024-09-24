@@ -12,6 +12,8 @@ import DataTablePagination from "@/app/_components/ui/table/table-pagination";
 
 import ResultsDataTableTopBar from "../table/topbar/ResultsTableTopbar";
 import { cn } from "@/app/_components/utils";
+import KeywordDetails from "./KeywordDetails";
+import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
 
 
 
@@ -39,9 +41,8 @@ function DataTable<TData, TValue>({
     lowTopOfBidPage: false,
   });
 
-
-
   //* Result Details row
+  const currentDomain = useWebsiteDetailsStore((state) => state.selectedWebsite?.domainUrl);
   const [selectedRowIndex, setSelectedRowIndex] = useState<string | null>(null);
   const [keywordData, setKeywordData] = useState<LatestGoogleKeywordResultsDto | null>(null);
 
@@ -155,20 +156,21 @@ function DataTable<TData, TValue>({
                     ))}
                   </TableRow>
 
-                  {/* {row.id === selectedRowIndex && (
+                  {row.id === selectedRowIndex && (
                     <tr>
                       {keywordData ? (
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
-                          <KeywordDetailsRow
-                            keywordData={keywordData}
-                            googleSearchCampaign={googleSearchCampaign}
+                          <KeywordDetails
+                            result={keywordData}
+                            domain={currentDomain || ""}
+                            // googleSearchCampaign={googleSearchCampaign}
                           />
                         </td>
                       ) : (
                         <td colSpan={numberOfVisibleColumns}>Loading...</td>
                       )}
                     </tr>
-                  )} */}
+                  )}
                 </React.Fragment>
               ))
             ) : (

@@ -62,8 +62,10 @@ function ResultTableActions<TData>({ table, data }: { table: Table<TData>, data:
         <Tooltip>
           <TooltipTrigger>
             <DropdownMenu>
-              <DropdownMenuTrigger className="px-4 py-[10px]">
-                <ViewColumnsIcon className="w-5 h-5 theme-t-t" />
+              <DropdownMenuTrigger asChild >
+                <div className="px-4 py-[10px]">
+                  <ViewColumnsIcon className="w-5 h-5 theme-t-t" />
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {table

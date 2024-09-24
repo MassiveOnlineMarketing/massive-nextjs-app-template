@@ -14,3 +14,7 @@ export function urlWithoutDomain(url: string, domainUrl: string): string {
   }
   return result;
 }
+
+export function extractHostname(url: string) {
+  return new URL(url).hostname;
+};
