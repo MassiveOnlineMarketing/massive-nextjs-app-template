@@ -23,6 +23,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
   const [isPending, startTransition] = useTransition();
   const [competitorDomain, setCompetitorDomain] = useState<string>("");
   const [competitors, setCompetitors] = useState<string[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const { toast } = useToast();
   const { addNewGoogleKeyword } = useKeywordOpperations();
@@ -88,10 +89,12 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
       })
 
       if (values.keywords) {
-        const res = await addNewGoogleKeyword(values.keywords, keywordTracker.id);
-        if (res.success) {
-          form.setValue('keywords', '');
-        }
+        addNewGoogleKeyword(values.keywords, keywordTracker.id)
+          .then((res) => {
+            if (res.success) {
+              form.setValue('keywords', '');
+            }
+          })
       }
     })
   }
