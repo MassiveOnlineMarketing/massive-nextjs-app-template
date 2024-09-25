@@ -17,7 +17,7 @@ export const usePopulateAccountStore = () => {
         const res = await getAccountDetails();
 
         if (res.error) {
-          console.error("Error fetching account details", res.error);
+          console.warn("Error fetching account details", res.error);
           return;
         }
 
@@ -25,7 +25,7 @@ export const usePopulateAccountStore = () => {
           setAccountDetails(res.account);
         }
       } catch (error) {
-        console.error("Error fetching account details", error);
+        console.warn("Error fetching account details", error);
       }
     };
 

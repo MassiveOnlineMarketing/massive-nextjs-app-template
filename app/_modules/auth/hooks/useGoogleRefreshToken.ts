@@ -19,7 +19,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
 
   useEffect(() => {
     if (!accountDetails || !accountDetails.scope) {
-      console.error('Google token AccountDetails not found');
+      console.log('Google account not found');
       setIsLoading(false);
       return;
     }
@@ -27,7 +27,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
     setRefreshToken(accountDetails.refresh_token);
     setIsLoading(false);
 
-    console.log('accountDetails', accountDetails);
+    // console.log('accountDetails', accountDetails);
     
 
   }, [requiredScope, accountDetails]);
@@ -44,8 +44,8 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
       decodedToken = jwt.decode(accountDetails.id_token) as jwt.JwtPayload;
     }
 
-    console.log('scopes', scopes);
-    console.log('decodedToken', decodedToken);
+    // console.log('scopes', scopes);
+    // console.log('decodedToken', decodedToken);
 
     const test = await signIn(
       'google',
@@ -57,7 +57,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
         login_hint: decodedToken?.email || '',
       }
     )
-    console.log('test', test);
+    // console.log('test', test);
   }
 
   return { hasAccess, refreshToken, isLoading, hasGoogleAccount: !!accountDetails, authenticate, email: decodedToken?.email };

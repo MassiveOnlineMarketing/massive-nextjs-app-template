@@ -72,7 +72,7 @@ const MainSideMenu = () => {
     const fetchWebsites = async () => {
       if (!user) return
       const res = await getWebsiteWithLocationByUser(user.id)
-      console.log('fetch initial websiteStore', res)
+      console.log('fetch initial websiteStore')
       if (res.error) {
         console.log('error', res.error)
       }
