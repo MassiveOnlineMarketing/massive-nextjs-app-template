@@ -25,9 +25,8 @@ import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
 
 const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProperties[] }) => {
-
-  const { hasAccess, isLoading, refreshToken } = useGoogleToken('search-console');
-  console.log('CreateWebsiteForm hasAccess', hasAccess, isLoading, refreshToken);
+  const { hasAccess, isLoading } = useGoogleToken('search-console');
+  // console.log('CreateWebsiteForm hasAccess', hasAccess, isLoading, refreshToken);
 
   const [isPending, startTransition] = useTransition();
 

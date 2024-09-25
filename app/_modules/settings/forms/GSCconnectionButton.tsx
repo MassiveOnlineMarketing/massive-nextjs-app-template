@@ -19,9 +19,6 @@ interface GoogleSearchConsolePropertyInputSelectorProps<T extends FieldValues> {
 // ! if updating this component, make sure to also update the UpdateWebsiteForm component
 export const GoogleSearchConsolePropertyInputSelector = <T extends FieldValues,>({ hasAccess, isLoading, sites, form, isPending }: GoogleSearchConsolePropertyInputSelectorProps<T>) => {
 
-  console.log('selector sites', sites)
-  console.log('selector hasAccess', hasAccess)
-
   if (isLoading) {
     return (
       <div>
