@@ -29,7 +29,7 @@ const page = async () => {
       <LogoutButton />
       <Link href='/auth/login'>Login</Link>
       <h1>page</h1>
-      <ClientPage />
+      <ClientPage userId={user.id} />
       <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   )

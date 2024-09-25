@@ -2,14 +2,25 @@
 
 import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { getSession, useSession } from 'next-auth/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useKeywordOpperations } from '../_modules/google-keyword-tracker/hooks/useKeywordOpperations';
 import axios from 'axios';
 import useGoogleToken from '../_modules/auth/hooks/useGoogleRefreshToken';
 import { testController } from '@/src/interface-adapters/controllers/test.controller';
 
-const ClientPage = () => {
-  const { update } = useSession()
+const ClientPage = ({ userId }: { userId?: string }) => {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (userId !== session?.user.id) {
+      console.log('user id changed')
+
+      window.location.reload()
+    }
+  }, [userId])
+
+
+  // const { update } = useSession()
   const currentUser = useCurrentUser()
   console.log('user', currentUser)
 
@@ -32,14 +43,14 @@ const ClientPage = () => {
     console.log(updateSession)
   }
 
-  const handleUpdateSession = async () => {
-    try {
-      await update({ user: { name: "John Doees" } })
-      console.log("Session updated successfully in ClientPage")
-    } catch (error) {
-      console.error("Failed to update session in ClientPage", error)
-    }
-  }
+  // const handleUpdateSession = async () => {
+  //   try {
+  //     await update({ user: { name: "John Doees" } })
+  //     console.log("Session updated successfully in ClientPage")
+  //   } catch (error) {
+  //     console.error("Failed to update session in ClientPage", error)
+  //   }
+  // }
 
 
   const { addNewGoogleKeyword } = useKeywordOpperations()
@@ -66,7 +77,7 @@ const ClientPage = () => {
 
   return (
     <div>
-      <button onClick={handleUpdateSession}>update session</button>
+      {/* <button onClick={handleUpdateSession}>update session</button> */}
       <button onClick={handleClick}>getSession</button>
       <button onClick={handleSecondClick}>update user</button>
       <button onClick={() => addNewGoogleKeyword("baristart\nEureka mignon\nEureka mignon specialita\n\nRocket appartamento", 'cm10ys4200000q48b5bvyzw2a')}>process new google keywords</button>
