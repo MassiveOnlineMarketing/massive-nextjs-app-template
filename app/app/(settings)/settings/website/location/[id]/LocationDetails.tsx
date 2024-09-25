@@ -2,36 +2,30 @@
 
 import Link from 'next/link'
 
-import { LOCATION_LANGUAGE_OPTIONS } from '@/src/constants/locationLanguages'
-import { LOCATION_COUNTRY_OPTIONS } from '@/src/constants/locationCountries'
-import { LOCATION_LOCATION_OPTIONS } from '@/src/constants/locationLocations'
-
 import { Website } from '@/src/entities/models/website'
 import { Location } from '@/src/entities/models/location'
+
+import { getCountry, getLanguage, getLocation } from './utils';
+import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
 
 import { cn } from '@/app/_components/utils'
 import { Label } from '@/app/_components/ui/label'
 import { Card, CardContent, CardHeader } from '@/app/_modules/settings/components/SettingsCard'
 import { Button } from '@/app/_components/ui/button'
 
-import { ClipboardDocumentIcon, TrashIcon } from '@heroicons/react/20/solid'
-import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocationButton';
+import { ClipboardDocumentIcon } from '@heroicons/react/20/solid'
 
 
-const LocationDetails = ({
+const LocationDetails = async ({
   defaultLocation,
   usersWebsites,
 }: {
   defaultLocation: Location;
   usersWebsites: Website[] | undefined;
 }) => {
-  const languages = LOCATION_LANGUAGE_OPTIONS;
-  const countries = LOCATION_COUNTRY_OPTIONS;
-  const locations = LOCATION_LOCATION_OPTIONS;
-
-  const language = languages.find(language => language.googleId.toString() === defaultLocation.languageCode);
-  const location = locations.find(location => location.canonicalName === defaultLocation.location);
-  const country = countries.find(country => country.countryCode === defaultLocation.country);
+  const language = await getLanguage(defaultLocation.languageCode);
+  const location = await getLocation(defaultLocation.location);
+  const country = await getCountry(defaultLocation.country)
   const website = usersWebsites?.find(website => website.id === defaultLocation.websiteId);
 
   return (

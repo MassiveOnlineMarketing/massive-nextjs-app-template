@@ -231,13 +231,15 @@ model GoogleKeywordTrackerSerpResult {
 }
 
 model GoogleAdsKeywordMetrics {
-  id                 String   @id @default(cuid())
-  avgMonthlySearches String?
-  competition        String?
-  competitionIndex   String?
-  highTopOfPageBid   String?
-  lowTopOfPageBid    String?
-  createdAt          DateTime @default(now())
+  id                   String   @id @default(cuid())
+  keywordId            String
+  avgMonthlySearches   String?
+  monthlySearchVolumes Json?
+  competition          String?
+  competitionIndex     String?
+  highTopOfPageBid     String?
+  lowTopOfPageBid      String?
+  createdAt            DateTime @default(now())
 
-  googleKeywordTrackerKeyword GoogleKeywordTrackerKeyword[]
+  keyword GoogleKeywordTrackerKeyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
 }

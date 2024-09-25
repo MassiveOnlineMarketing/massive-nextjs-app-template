@@ -25,17 +25,48 @@ type NavigationItem = {
 
 const MainSideMenu = () => {
   const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
-  const [navigation, setNavigation] = React.useState<NavigationItem[]>([
-    { label: 'Home', icon: Squares2X2Icon, link: '/app', active: false },
-    { label: 'Keyword Tracker', icon: ViewfinderCircleIcon, link: '/app/keyword-tracker', active: false },
-    { label: 'Settings', icon: Cog6ToothIcon, link: '/app/settings', active: false },
-    { label: 'Billing', icon: CreditCardIcon, link: '/app/billing', active: false },
-    { label: 'Integrations', icon: LinkIcon, link: '/app/integrations', active: false },
-  ])
-  const [secondarySidebarOpen, setSecondarySidebarOpen] = React.useState(true)
-
   const user = useCurrentUser()
   const pathname = usePathname();
+
+  const selectedWebsiteId = useWebsiteDetailsStore((state) => state.selectedWebsite?.id) ?? ''
+  const selectedKeywordTrackerId = useWebsiteDetailsStore((state) => state.selectedLocation?.keywordTrackerToolId)
+  const keywordTrackerLink = selectedKeywordTrackerId
+  ? `/app/google-keyword-tracker/${selectedKeywordTrackerId}`
+  : '/app/google-keyword-tracker';
+
+  const [navigation, setNavigation] = React.useState<NavigationItem[]>([
+    {
+      label: 'Home',
+      icon: Squares2X2Icon,
+      link: '/app',
+      active: isActive('/app', pathname)
+    },
+    {
+      label: 'Keyword Tracker',
+      icon: ViewfinderCircleIcon,
+      link: keywordTrackerLink,
+      active: isActive('/app/google-keyword-tracker', pathname)
+    },
+    {
+      label: 'Settings',
+      icon: Cog6ToothIcon,
+      link: `/app/settings/website/${selectedWebsiteId}`,
+      active: isActive('/app/settings', pathname)
+    },
+    {
+      label: 'Billing',
+      icon: CreditCardIcon,
+      link: '/app/billing',
+      active: isActive('/app/billing', pathname)
+    },
+    {
+      label: 'Integrations',
+      icon: LinkIcon,
+      link: '/app/integrations',
+      active: isActive('/app/integrations', pathname)
+    },
+  ])
+  const [secondarySidebarOpen, setSecondarySidebarOpen] = React.useState(true)
 
   useEffect(() => {
     const fetchWebsites = async () => {
@@ -56,16 +87,8 @@ const MainSideMenu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const websites = useWebsiteDetailsStore((state) => state.websites)
-  const selectedWebsiteId = useWebsiteDetailsStore((state) => state.selectedWebsite?.id) ?? null
-  const selectedKeywordTrackerId = useWebsiteDetailsStore((state) => state.selectedLocation?.keywordTrackerToolId) ?? null
-
+  // Update navigation items on pathname change, selectedWebsiteId or selectedKeywordTrackerId
   useEffect(() => {
-    console.log('pathname', pathname)
-    const keywordTrackerLink = selectedKeywordTrackerId
-      ? `/app/google-keyword-tracker/${selectedKeywordTrackerId}`
-      : '/app/google-keyword-tracker';
-
     setNavigation([
       {
         label: 'Home',
@@ -98,8 +121,9 @@ const MainSideMenu = () => {
         active: isActive('/app/integrations', pathname)
       },
     ])
-  }, [pathname])
+  }, [pathname, selectedKeywordTrackerId, selectedWebsiteId])
 
+  const websites = useWebsiteDetailsStore((state) => state.websites)
 
   return (
     <div className={cn(

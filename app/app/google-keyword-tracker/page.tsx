@@ -1,24 +1,14 @@
-'use client';
+'use server';
 
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-import React from 'react'
+import { isAuthenticated } from "@/app/_modules/auth/actions";
+import ClientPage from "./ClientPage";
 
-
-// TODO: Fix page contents 
-const Page = () => {
-  const selectedLocation = useWebsiteDetailsStore((state) => state.selectedLocation)
-
-  if (!selectedLocation) {
-    return <div>Please first select a location</div>
-  }
-
-  if (!selectedLocation.keywordTrackerToolId) {
-    return <div>Setup Keyword Tracker</div>
-  }
+const page = async () => {
+  await isAuthenticated();
 
   return (
-    <div>Something went wrong please try again later</div>
+    <ClientPage />
   )
 }
 
-export default Page
+export default page

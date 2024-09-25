@@ -1,12 +1,23 @@
+import React from 'react'
+
+import { isAuthenticated } from '@/app/_modules/auth/actions';
+import { getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
+
+import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layout/FilteredStats';
+import ClientPage from './ClientPage';
 
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
-import React from 'react'
 
 const page = async ({
   params: { id }
 }: {
   params: { id: string }
 }) => {
+  await isAuthenticated();
+
+  const res = await getLatestGoogleKeywordResults(id)
+  // console.log('new page fetch',id, res.results?.length)
+
   return (
     <div className='w-full theme-bg-w border theme-b-p mr-3 rounded-t-2xl '>
       <div className=' h-[calc(100vh-79px)]  custom-scrollbar -mr-3 pr-[3px]'>
@@ -21,131 +32,12 @@ const page = async ({
             </div>
 
             <div>
-              Insert Stats
+              <FilteredStats />
             </div>
           </div>
-          {id}
-          <div className=' border'>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <div className='sticky top-6'>test</div>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-            <p>content</p>
-          </div>
+
+          <ClientPage latestResults={res.results ?? []} />
+
         </div>
       </div>
     </div>

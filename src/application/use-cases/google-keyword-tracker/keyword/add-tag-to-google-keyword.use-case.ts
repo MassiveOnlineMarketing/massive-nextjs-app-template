@@ -4,6 +4,8 @@ import { startSpan } from "@sentry/nextjs";
 import { User } from "@/src/entities/models/user";
 import { NotFoundError } from "@/src/entities/errors/common";
 
+import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
+
 export async function addTagToGoogleKeywordsUseCase(
   input: {
     keywordIds: string[];
@@ -11,7 +13,7 @@ export async function addTagToGoogleKeywordsUseCase(
     tagId?: string;
   },
   user: User
-): Promise<void> {
+): Promise<GoogleKeywordTrackerKeywordTag> {
   return await startSpan(
     { name: "addTagToGoogleKeywords Use Case" },
     async () => {
@@ -37,10 +39,12 @@ export async function addTagToGoogleKeywordsUseCase(
         throw new NotFoundError("Tag not found");
       }
 
-      return await googleKeywordTrackerKeywordsRepository.addTag(
+      await googleKeywordTrackerKeywordsRepository.addTag(
         tag.id,
         input.keywordIds
       );
+
+      return tag
     }
   );
 }

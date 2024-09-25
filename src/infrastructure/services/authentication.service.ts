@@ -12,8 +12,12 @@ import { User } from "@/src/entities/models/user";
 import { auth } from "@/app/_modules/auth/_nextAuth";
 
 import { IAuthenticationService } from "@/src/application/services/authentication.service.interface";
-import type { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
 import { NotFoundError } from "@/src/entities/errors/common";
+import { Website } from "@/src/entities/models/website";
+
+import type { IUsersRepository } from "@/src/application/repositories/users.repository.interface";
+import type { IWebsiteRepository } from "@/src/application/repositories/website.repository.interface";
+import type { ILocationRepository } from "@/src/application/repositories/location.repository.interface";
 
 
 export type GoogleScopeOptions = "search-console" | "ads" | "account";
@@ -30,9 +34,15 @@ export class AuthenticationService implements IAuthenticationService {
 
   constructor(
     @inject(DI_SYMBOLS.IUsersRepository)
-    private _usersRespository: IUsersRepository
+    private _usersRespository: IUsersRepository,
+    @inject(DI_SYMBOLS.IWebsiteRepository)
+    private _websiteRepository: IWebsiteRepository,
+    @inject(DI_SYMBOLS.ILocationRepository)
+    private _locationRepository: ILocationRepository,
   ) {
     this._usersRespository = _usersRespository;
+    this._websiteRepository = _websiteRepository;
+    this._locationRepository = _locationRepository;
   }
 
   async session(): Promise<Session | null> {
@@ -99,6 +109,56 @@ export class AuthenticationService implements IAuthenticationService {
         }
 
         return account.refresh_token;
+      }
+    )
+  }
+
+  private async checkWebsiteAccess(userId: string, websiteId: string): Promise<Website> {
+    const website = await this._websiteRepository.getById(websiteId);
+
+    if (!website) {
+      throw new ForbiddenError("Website not found");
+    }
+
+    if (website.userId !== userId) {
+      throw new ForbiddenError("User does not have access to this website");
+    }
+
+    return website;
+  }
+
+
+  async isAllowedToAccessWebsite(userId: string, website: Website): Promise<void> {
+    return await startSpan(
+      {name: "AuthenticationService > isAllowedToAccessWebsite"},
+      async () => {
+        if (website.userId !== userId) {
+          throw new ForbiddenError("User does not have access to this website");
+        }
+      }
+    )
+  }
+
+  async isAllowedToAccessLocation(userId: string, websiteId: string): Promise<void> {
+    return await startSpan(
+      {name: "AuthenticationService > isAllowedToAccessLocation"},
+      async () => {
+        await this.checkWebsiteAccess(userId, websiteId);
+      }
+    )
+  }
+
+  async isAllowedToAccessTool(userId: string, locationId: string): Promise<void> {
+    return await startSpan(
+      {name: "AuthenticationService > isAllowedToAccessTool"},
+      async () => {
+        const location = await this._locationRepository.getById(locationId);
+
+        if (!location) {
+          throw new ForbiddenError("location not found");
+        }
+
+        await this.checkWebsiteAccess(userId, location.websiteId);
       }
     )
   }

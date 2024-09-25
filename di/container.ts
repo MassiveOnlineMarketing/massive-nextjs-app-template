@@ -15,6 +15,7 @@ import { GoogleKeywordTrackerRepositoryModule } from "./modules/google-keyword-t
 import { SerperApiModule } from "./modules/serper.module";
 import { GoogleKeywordTrackerKeywordsRepositoryModule } from "./modules/google-keyword-tracker-keywords.module";
 import { SearchConsoleApiModule } from "./modules/search-console.module";
+import { GoogleAdsApiModule } from "./modules/google-ads.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -33,6 +34,7 @@ export const initializeContainer = () => {
   ApplicationContainer.load(SerperApiModule);
   ApplicationContainer.load(GoogleKeywordTrackerKeywordsRepositoryModule);
   ApplicationContainer.load(SearchConsoleApiModule);
+  ApplicationContainer.load(GoogleAdsApiModule);
 };
 
 export const destroyContainer = () => {
@@ -48,6 +50,7 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(SerperApiModule);
   ApplicationContainer.unload(GoogleKeywordTrackerKeywordsRepositoryModule);
   ApplicationContainer.unload(SearchConsoleApiModule);
+  ApplicationContainer.unload(GoogleAdsApiModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

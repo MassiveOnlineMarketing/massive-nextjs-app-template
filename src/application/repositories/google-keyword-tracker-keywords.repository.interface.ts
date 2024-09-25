@@ -1,9 +1,10 @@
-import { GoogleKeywordTrackerKeyword } from "@/src/entities/models/google-keyword-tracker/keyword";
+import { GoogleKeywordTrackerKeyword, GoogleKeywordTrackerKeywordWithResultsQuery } from "@/src/entities/models/google-keyword-tracker/keyword";
 import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
 
 import { GoogleKeywordTrackerResult } from "@/src/entities/models/google-keyword-tracker/result";
 
 export interface IGoogleKeywordTrackerKeywordsRepository {
+    getKeywordsWithResultsByToolId(toolId: string): Promise<GoogleKeywordTrackerKeywordWithResultsQuery[]>;
     insertMany(googleKeywordTrackerToolId: string, keywords: string[]): Promise<GoogleKeywordTrackerKeyword[]>;
     deleteMany(ids: string[]): Promise<void>;
     findMany(ids: string[]): Promise<GoogleKeywordTrackerKeyword[]>;

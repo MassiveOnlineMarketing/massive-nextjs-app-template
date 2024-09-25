@@ -1,4 +1,5 @@
 import { captureException, startSpan } from "@sentry/nextjs";
+import { injectable } from "inversify";
 import { db } from "@/prisma";
 
 import { IGoogleKeywordTrackerKeywordsRepository } from "@/src/application/repositories/google-keyword-tracker-keywords.repository.interface";
@@ -6,18 +7,78 @@ import { IGoogleKeywordTrackerKeywordsRepository } from "@/src/application/repos
 import {
   SerpApiPeopleAsloAsk,
   SerpApiRelatedSearches,
+  SerperApiSerpResult,
   SiteLinks,
 } from "@/src/application/api/serper.api.types";
 
-import { GoogleKeywordTrackerKeyword } from "@/src/entities/models/google-keyword-tracker/keyword";
+import {
+  GoogleKeywordTrackerKeyword,
+  GoogleKeywordTrackerKeywordWithResultsQuery,
+} from "@/src/entities/models/google-keyword-tracker/keyword";
 import { GoogleKeywordTrackerResult } from "@/src/entities/models/google-keyword-tracker/result";
 import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
-import { injectable } from "inversify";
 
 @injectable()
 export class GoogleKeywordTrackerKeywordsRepository
   implements IGoogleKeywordTrackerKeywordsRepository
 {
+  async getKeywordsWithResultsByToolId(
+    toolId: string
+  ): Promise<GoogleKeywordTrackerKeywordWithResultsQuery[]> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerKeywordsRepository > getKeywordsWithResultsByToolId",
+      },
+      async () => {
+        try {
+          const keywords = await db.googleKeywordTrackerKeyword.findMany({
+            where: {
+              googleKeywordTrackerToolId: toolId,
+            },
+            include: {
+              results: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+              tags: true,
+              googleAdsKeywordMetrics: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          });
+
+          return keywords.map((keyword) => ({
+            ...keyword,
+            results: keyword.results.map((result) => ({
+              ...result,
+              relatedSearches:
+                typeof result.relatedSearches === "string"
+                  ? (JSON.parse(result.relatedSearches) as SerpApiRelatedSearches[])
+                  : null,
+              peopleAlsoAsk:
+                typeof result.peopleAlsoAsk === "string"
+                  ? (JSON.parse(result.peopleAlsoAsk) as SerperApiSerpResult[])
+                  : null,
+              siteLinks:
+                typeof result.siteLinks === "string"
+                  ? (JSON.parse(result.siteLinks) as SiteLinks[])
+                  : null,
+            })),
+          })) as GoogleKeywordTrackerKeywordWithResultsQuery[];
+
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
   async insertMany(
     googleKeywordTrackerId: string,
     keywords: string[]
@@ -46,7 +107,7 @@ export class GoogleKeywordTrackerKeywordsRepository
       }
     );
   }
-  
+
   async deleteMany(ids: string[]): Promise<void> {
     return await startSpan(
       {
@@ -61,7 +122,6 @@ export class GoogleKeywordTrackerKeywordsRepository
               },
             },
           });
-
         } catch (error) {
           captureException(error);
           throw error;
@@ -196,7 +256,7 @@ export class GoogleKeywordTrackerKeywordsRepository
         try {
           await db.googleKeywordTrackerKeywordTag.update({
             where: {
-              name: tag,
+              id: tag,
             },
             data: {
               keywords: {
@@ -241,7 +301,9 @@ export class GoogleKeywordTrackerKeywordsRepository
     );
   }
 
-  async findTagByid(id: string): Promise<GoogleKeywordTrackerKeywordTag | null> {
+  async findTagByid(
+    id: string
+  ): Promise<GoogleKeywordTrackerKeywordTag | null> {
     return await startSpan(
       {
         name: "GoogleKeywordTrackerKeywordsRepository > findTagByid",

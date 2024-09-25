@@ -12,6 +12,8 @@ import {
 } from "@/src/entities/errors/auth";
 import { NotFoundError } from "@/src/entities/errors/common";
 
+import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
+
 import { addTagToGoogleKeywordsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/add-tag-to-google-keywords.controller";
 import { removeTagFromGoogleKeywordsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/remove-tag-from-google-keywords.controller";
 import { deleteGoogleKeywordsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/delete-google-keywords.controller";
@@ -52,7 +54,7 @@ export async function addTagToGoogleKeywords(
   keywordIds: string[] | string,
   tagName?: string,
   tagId?: string
-): Promise<{ success?: boolean; error?: string }> {
+): Promise<{ tag?: GoogleKeywordTrackerKeywordTag; error?: string }> {
   return await withServerActionInstrumentation(
     "addTagToGoogleKeywords",
     { recordResponse: true },
@@ -61,10 +63,9 @@ export async function addTagToGoogleKeywords(
       if (!session?.user || !session?.user.id) {
         return { error: "Must be logged in to add a tag to Keywords" };
       }
-
       try {
-        await addTagToGoogleKeywordsController(keywordIds, tagName, tagId);
-        return { success: true };
+        const tag = await addTagToGoogleKeywordsController(keywordIds, tagName, tagId);
+        return { tag };
       } catch (error) {
         if (error instanceof NotFoundError) {
           return { error: "Tag not found" };

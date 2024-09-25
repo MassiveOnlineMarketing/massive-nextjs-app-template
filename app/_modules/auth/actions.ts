@@ -14,7 +14,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "@/src/entities/errors/common";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, DEFAULT_SIGNIN_ROUTE } from "@/routes";
 
 import { z } from "zod";
 import {
@@ -41,6 +41,16 @@ import { ConnectedGscProperties } from "@/src/application/api/search-console.api
 
 export const logout = async () => {
   await signOut();
+  redirect(DEFAULT_SIGNIN_ROUTE);
+};
+
+export const isAuthenticated = async () => {
+  const session = await auth();
+  if (!session?.user || !session?.user.id) {
+    redirect(DEFAULT_SIGNIN_ROUTE)
+  }
+
+  return { user: session.user }
 };
 
 export interface UpdateUserDetailsResponse {

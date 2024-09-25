@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { LOCATION_LANGUAGE_OPTIONS } from '@/src/constants/locationLanguages'
 import { LOCATION_COUNTRY_OPTIONS } from '@/src/constants/locationCountries'
-import { LOCATION_LOCATION_OPTIONS, LocationLocationOptions } from '@/src/constants/locationLocations'
+import { LocationLocationOptions } from '@/src/constants/locationLocations'
 
 import { createLocation } from '@/app/_actions/location.actions'
 import { formInputCreateLocationSchema, Location } from '@/src/entities/models/location'
@@ -28,17 +28,25 @@ import { Button } from '@/app/_components/ui/button'
 
 import { MapPinIcon } from '@heroicons/react/20/solid'
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
+import { loadLocationOptions } from '@/app/app/(settings)/settings/website/location/[id]/utils'
 
 const CreateLocationForm = ({ location, usersWebsites }: {
   location: Location | undefined, usersWebsites: Website[] | undefined;
 }) => {
   const [isPending, startTransition] = useTransition();
   const [selectedLocationDisplayTitle, setSelectedLocationDisplayTitle] = useState<LocationLocationOptions | null>(null);
+  const [locations, setLocations] = useState<LocationLocationOptions[]>([]);
+  const [displayLocations, setDisplayLocations] = useState<LocationLocationOptions[]>([]);
 
   const languages = useMemo(() => LOCATION_LANGUAGE_OPTIONS, []);
   const countries = useMemo(() => LOCATION_COUNTRY_OPTIONS, []);
-  const locations = useMemo(() => LOCATION_LOCATION_OPTIONS, []);
-  const displayLocations = useMemo(() => LOCATION_LOCATION_OPTIONS.filter((location) => location.targetType !== 'Country'), []);
+
+  useEffect(() => {
+    loadLocationOptions().then((options) => {
+      setLocations(options);
+      setDisplayLocations(options.filter((location) => location.targetType !== 'Country'));
+    });
+  }, []);
 
   const addLocation = useWebsiteDetailsStore(state => state.addLocation)
 

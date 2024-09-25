@@ -1,12 +1,14 @@
 import { auth } from "@/app/_modules/auth/_nextAuth";
+import { captureException } from "@sentry/nextjs";
+
 import {
-  DatabaseOperationError,
   InputParseError,
   NotFoundError,
 } from "@/src/entities/errors/common";
 import { InsufficientCreditsError } from "@/src/entities/errors/credits";
 import { processNewGoogleKeywordsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/process-new-google-keywords.controller";
-import { captureException } from "@sentry/nextjs";
+
+export const maxDuration = 300;
 
 export async function POST(req: Request) {
   const data = await req.json();

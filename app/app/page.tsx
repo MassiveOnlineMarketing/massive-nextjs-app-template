@@ -3,13 +3,12 @@
 import React from 'react'
 import Link from 'next/link'
 
+import { isAuthenticated } from '../_modules/auth/actions'
 import LogoutButton from '@/app/_modules/auth/components/logout-button'
 import ClientPage from './ClientPage'
-import { isAllowedToViewPage } from '@/app/_modules/auth/pageAuth'
-import { Dialog, DialogContent } from '../_components/ui/dialog'
 
 const page = async () => {
-  const session = await isAllowedToViewPage('private');
+  const { user } = await isAuthenticated();
 
   return (
     <div>
@@ -31,7 +30,7 @@ const page = async () => {
       <Link href='/auth/login'>Login</Link>
       <h1>page</h1>
       <ClientPage />
-      <pre>{JSON.stringify(session, null, 2)}</pre>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   )
 }

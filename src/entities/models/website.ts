@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { selectLocationSchema } from "./location";
 import { selectUserCoreSchema } from "./user"; // Import the lightweight user schema
 
