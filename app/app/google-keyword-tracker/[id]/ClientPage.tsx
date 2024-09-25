@@ -10,7 +10,7 @@ import useFilteredKeywordResults from '@/app/_modules/google-keyword-tracker/hoo
 import DataTable from '@/app/_modules/google-keyword-tracker/components/layout/ResultTable';
 import { columns } from '@/app/_modules/google-keyword-tracker/components/table/columns';
 
-const ClientPage = ({ latestResults }: { latestResults: LatestGoogleKeywordResultsDto[] }) => {
+const ClientPage = ({ latestResults }: { latestResults: LatestGoogleKeywordResultsDto[]}) => {
   
   const { setNewSerpResultState } = useGoogleKeywordTracker()
   

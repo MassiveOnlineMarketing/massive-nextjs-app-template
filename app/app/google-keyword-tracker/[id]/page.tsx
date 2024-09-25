@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { isAuthenticated } from '@/app/_modules/auth/actions';
 import { getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
@@ -7,6 +7,10 @@ import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layo
 import ClientPage from './ClientPage';
 
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
+import dynamic from 'next/dynamic';
+import { LoadingSpinner } from '@/app/_components/ui/loading-spinner';
+
+
 
 const page = async ({
   params: { id }
@@ -17,6 +21,7 @@ const page = async ({
 
   const res = await getLatestGoogleKeywordResults(id)
   // console.log('new page fetch',id, res.results?.length)
+
 
   return (
     <div className='w-full theme-bg-w border theme-b-p mr-3 rounded-t-2xl '>
@@ -36,8 +41,9 @@ const page = async ({
             </div>
           </div>
 
-          <ClientPage latestResults={res.results ?? []} />
-
+          <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
+            <ClientPage latestResults={res.results || []} />
+          </Suspense>
         </div>
       </div>
     </div>
