@@ -19,7 +19,7 @@ const page = async ({
 }) => {
   await isAuthenticated();
 
-  const res = await getLatestGoogleKeywordResults(id)
+
   // console.log('new page fetch',id, res.results?.length)
 
 
@@ -41,13 +41,19 @@ const page = async ({
             </div>
           </div>
 
-          <Suspense fallback={<div className='flex h-full w-full items-center justify-center'><LoadingSpinner /></div>}>
-            <ClientPage latestResults={res.results || []} />
+          <Suspense fallback={<div className='flex h-[calc(100vh-170px)] w-full items-center justify-center'><LoadingSpinner /></div>}>
+            <PageInitialization toolId={id}/>
           </Suspense>
         </div>
       </div>
     </div>
   )
+}
+
+async function PageInitialization({ toolId }: { toolId: string }) {
+  const res = await getLatestGoogleKeywordResults(toolId)
+
+  return <ClientPage latestResults={res.results || []} />
 }
 
 export default page
