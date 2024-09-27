@@ -17,19 +17,16 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // This effect loads the state of the Google access.
   useEffect(() => {
     if (!accountDetails || !accountDetails.scope) {
-      console.error('Google token AccountDetails not found');
+      console.log('Google account not found');
       setIsLoading(false);
       return;
     }
     setHasAccess(accountDetails.scope.includes(SCOPE_URLS[requiredScope]));
     setRefreshToken(accountDetails.refresh_token);
     setIsLoading(false);
-
-    console.log('accountDetails', accountDetails);
-    
-
   }, [requiredScope, accountDetails]);
 
   let decodedToken: jwt.JwtPayload | null = null;
@@ -44,10 +41,7 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
       decodedToken = jwt.decode(accountDetails.id_token) as jwt.JwtPayload;
     }
 
-    console.log('scopes', scopes);
-    console.log('decodedToken', decodedToken);
-
-    const test = await signIn(
+    await signIn(
       'google',
       { callbackUrl: '/app/integrations' },
       {
@@ -57,7 +51,6 @@ const useGoogleToken = (requiredScope: GoogleScopeOptions) => {
         login_hint: decodedToken?.email || '',
       }
     )
-    console.log('test', test);
   }
 
   return { hasAccess, refreshToken, isLoading, hasGoogleAccount: !!accountDetails, authenticate, email: decodedToken?.email };

@@ -33,8 +33,7 @@ type DefaultValues = {
 
 const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: DefaultValues, gscProperties?: ConnectedGscProperties[] }) => {
   // TODO: search console access, also check ui styles
-  const { hasAccess, email, isLoading, refreshToken } = useGoogleToken('search-console');
-  console.log('hasAccess', hasAccess, email, isLoading, refreshToken);
+  const { hasAccess, isLoading } = useGoogleToken('search-console');
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -79,7 +78,6 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
               <GlobeAltIcon className='w-4 h-4 ' />
               <p className='font-medium'>Website Settings</p>
             </div>
-            {/* // TODO: add as delete button in the Card */}
             <DeleteWebsiteButton websiteId={defaultValues.id} />
           </CardHeader>
           <CardContent className='space-y-3'>
@@ -118,7 +116,7 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
               )}
             />
 
-            <GoogleSearchConsolePropertyInputSelector hasAccess={hasAccess} sites={gscProperties} form={form} isPending={isPending} />
+            <GoogleSearchConsolePropertyInputSelector hasAccess={hasAccess} isLoading={isLoading} sites={gscProperties} form={form} isPending={isPending} />
 
           </CardContent>
         </Card>

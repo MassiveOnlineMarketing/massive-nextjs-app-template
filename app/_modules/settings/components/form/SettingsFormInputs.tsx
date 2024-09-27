@@ -13,11 +13,18 @@ const FormInputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       <input
         ref={ref}
         className={cn(
+<<<<<<< HEAD
           "inline-flex w-full mt-3 justify-between px-4 py-3 rounded-[9px] border theme-b-p focus:outline-none  disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
           'bg-transparent hover:theme-bg-p focus:theme-bg-w',
           // Kan geen dynamische classes gebruiken op een of andere manier \\
           'ring-base-200 before:dark:ring-base-500 transition-shadow delay-75 focus:ring-2 focus:ring-ring focus:ring-offset-2',
           'theme-t-p font-medium',
+=======
+          "inline-flex w-full mt-3 justify-between px-4 py-3 rounded-[9px] border theme-b-p theme-t-p focus:outline-none  disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+          'bg-transparent',
+          "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
+          'placeholder-theme-light-text-tertiary dark:placeholder-theme-night-text-tertiary',
+>>>>>>> f9eaf981634722c5931f8afbd8d1c73cc691a92f
           className,
         )}
         {...props}
@@ -41,7 +48,7 @@ const TextareaApp = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={cn(
           "inline-flex w-full mt-3 justify-between px-4 py-3 rounded-[9px] focus:outline-none  disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
           'bg-transparent',
-          'ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2',
+          "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
           'placeholder-theme-light-text-tertiary dark:placeholder-theme-night-text-tertiary',
           className,
         )}
@@ -70,7 +77,7 @@ const InputFieldAppWithIcon = React.forwardRef<HTMLInputElement, InputFieldWithI
           className={cn(
             "block w-full p-3 pl-[50px] rounded-md border theme-b-p theme-t-p focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
             'bg-transparent text-sm placeholder:text-sm',
-            'ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2',
+            "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
             'placeholder-theme-light-text-tertiary dark:placeholder-theme-night-text-tertiary',
             className,
           )}

@@ -11,12 +11,10 @@ import { DAYS_OF_WEEK, formInputCreateGoogleKeywordTrackerSchema } from '@/src/e
 import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMessage, FormInputField } from '@/app/_modules/settings/components/form'
 import { Card, CardContent, CardHeader } from "@/app/_modules/settings/components/SettingsCard"
 import { Button } from '@/app/_components/ui/button'
-import { InputField } from '@/app/_components/ui/inputFields'
 import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { createGoogleKeywordTracker } from '../../actions/google-keyword-tracker.actions'
 import { useToast } from '@/app/_components/ui/toast/use-toast'
 import { useKeywordOpperations } from '../hooks/useKeywordOpperations'
-import { Router } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 // import { Form, FormControl, FormField, FormInputField, FormItem, FormLabel, FormMessage } from 
@@ -73,10 +71,12 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
       })
 
       if (values.keywords && createRes.googleKeywordTracker?.id) {
-        const res = await addNewGoogleKeyword(values.keywords, createRes.googleKeywordTracker.id);
-        if (res.success) {
-          form.setValue('keywords', '');
-        }
+        addNewGoogleKeyword(values.keywords, createRes.googleKeywordTracker.id)
+          .then((res) => {
+            if (res.success) {
+              form.setValue('keywords', '');
+            }
+          })
       }
     })
   }

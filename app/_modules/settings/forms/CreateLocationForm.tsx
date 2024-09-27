@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useTransition, useMemo, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState, useTransition, useMemo, useEffect, use } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -26,7 +26,7 @@ import { Card, CardContent, CardHeader } from '../components/SettingsCard'
 import { Popover, PopoverContent, PopoverTrigger } from '@/app/_components/ui/popover'
 import { Button } from '@/app/_components/ui/button'
 
-import { MapPinIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, MapPinIcon } from '@heroicons/react/20/solid'
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
 import { loadLocationOptions } from '@/app/app/(settings)/settings/website/location/[id]/utils'
 
@@ -37,6 +37,8 @@ const CreateLocationForm = ({ location, usersWebsites }: {
   const [selectedLocationDisplayTitle, setSelectedLocationDisplayTitle] = useState<LocationLocationOptions | null>(null);
   const [locations, setLocations] = useState<LocationLocationOptions[]>([]);
   const [displayLocations, setDisplayLocations] = useState<LocationLocationOptions[]>([]);
+  console.log('selectedLocationDisplayTitle', selectedLocationDisplayTitle)
+
 
   const languages = useMemo(() => LOCATION_LANGUAGE_OPTIONS, []);
   const countries = useMemo(() => LOCATION_COUNTRY_OPTIONS, []);
@@ -49,6 +51,17 @@ const CreateLocationForm = ({ location, usersWebsites }: {
   }, []);
 
   const addLocation = useWebsiteDetailsStore(state => state.addLocation)
+
+
+  // Set the websiteId from the query params
+  const searchParams = useSearchParams();
+  const websiteId = searchParams.get('websiteId');
+  useEffect(() => {
+    if (websiteId) {
+      console.log('setting websiteId', websiteId)
+      form.setValue('websiteId', websiteId);
+    }
+  }, [websiteId]);
 
   const router = useRouter();
   const { toast } = useToast();
@@ -87,7 +100,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
       }
     })
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -108,11 +121,12 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
-                          <Button
-                            variant="outline"
+                          <button
                             role="combobox"
                             className={cn(
-                              "w-[412px] justify-between",
+                              "w-[412px] justify-between items-center text-sm outline-none",
+                              "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+                              "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -121,11 +135,11 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                                 (website) => website.id === field.value
                               )?.websiteName
                               : "Select website"}
-                            {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
-                          </Button>
+                            <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[412px] p-0">
+                      <PopoverContent className="w-[412px] p-0 theme-bg-w">
                         <Command>
                           <CommandInput placeholder="Search website..." />
                           <CommandList>
@@ -148,7 +162,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                       </PopoverContent>
                     </Popover>
                     <FormDescription>
-                      This is the language that will be used in the dashboard.
+                      This is the website that the location will be associated with.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -167,21 +181,21 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button
-                          variant="outline"
+                        <button
                           role="combobox"
                           className={cn(
-                            "w-[412px] justify-between",
-                            !field.value && "text-muted-foreground"
+                            "w-[412px] justify-between items-center text-sm",
+                            "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+                            "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ", !field.value && "text-muted-foreground"
                           )}
                         >
                           {field.value ? languages.find((language) => language.name === field.value.name)?.name : "Select language"}
-                          {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
-                        </Button>
+                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[412px] p-0 bg-white">
-                      <Command className='bg-white'>
+                    <PopoverContent className="w-[412px] p-0 theme-bg-w">
+                      <Command>
                         <CommandInput placeholder="Search language..." />
                         <CommandList>
                           <CommandEmpty>No language found.</CommandEmpty>
@@ -205,7 +219,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
-                    This is the language that will be used in the dashboard.
+                    This is the language that will be used to gather the data.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -213,13 +227,15 @@ const CreateLocationForm = ({ location, usersWebsites }: {
             />
 
             <div className='flex flex-col'>
-              <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
+              <Label className={cn('font-normal text-sm theme-t-t ',)}>Location <span className='text-xs'>(optional)</span></Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
+                  <button
                     role="combobox"
-                    className={cn("w-[412px] justify-between items-center mt-1")}
+                    className={cn("w-[412px] flex justify-between items-baseline mt-1 text-sm",
+                      "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+                      "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
+                    )}
                   >
                     {location?.location ? (
                       <>
@@ -229,11 +245,21 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                         <p className='ml-auto'>{selectedLocationDisplayTitle?.targetType}</p>
                       </>
                     ) : (
-                      <p>Select location</p>
+                      selectedLocationDisplayTitle ? (
+                        <>
+                          <p className='text-xs font-bold'>{selectedLocationDisplayTitle?.countryCode}</p>
+                          <p className='text-sm pl-1'>{selectedLocationDisplayTitle?.name}</p>
+
+                          <p className='ml-auto'>{selectedLocationDisplayTitle?.targetType}</p>
+                        </>
+                      ) : (
+                        <p>Select location</p>
+                      )
                     )}
-                  </Button>
+                    <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[412px] p-0">
+                <PopoverContent className="w-[412px] p-0 theme-bg-w">
                   <GoogleLocationsDropdown
                     setLocationDisplayValue={setSelectedLocationDisplayTitle}
                     items={displayLocations}
@@ -257,12 +283,13 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button
-                          variant="outline"
+                        <button
                           role="combobox"
                           disabled={selectedLocationDisplayTitle ? true : false}
                           className={cn(
-                            "w-[412px] justify-between",
+                            "w-[412px] justify-between items-center text-sm",
+                            "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+                            "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -274,11 +301,11 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                             ) : (field.value ? countries.find((country) => country.name === field.value.name)?.name : "Select country"
                             )
                           }
-                          {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
-                        </Button>
+                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[412px] p-0">
+                    <PopoverContent className="w-[412px] p-0 theme-bg-w">
                       <Command>
                         <CommandInput placeholder="Search country..." />
                         <CommandList>
@@ -303,7 +330,7 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
-                    This is the country that will be used in the dashboard.
+                    Specify the country where the location is based.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

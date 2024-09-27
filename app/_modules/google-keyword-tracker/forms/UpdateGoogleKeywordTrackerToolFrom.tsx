@@ -12,7 +12,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMes
 import { Card, CardContent, CardHeader } from "@/app/_modules/settings/components/SettingsCard";
 import { Button } from '@/app/_components/ui/button';
 
-import { PauseIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { updateGoogleKeywordsTracker } from '../../actions/google-keyword-tracker.actions';
 import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { useKeywordOpperations } from '../hooks/useKeywordOpperations';
@@ -88,10 +88,12 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
       })
 
       if (values.keywords) {
-        const res = await addNewGoogleKeyword(values.keywords, keywordTracker.id);
-        if (res.success) {
-          form.setValue('keywords', '');
-        }
+        addNewGoogleKeyword(values.keywords, keywordTracker.id)
+          .then((res) => {
+            if (res.success) {
+              form.setValue('keywords', '');
+            }
+          })
       }
     })
   }

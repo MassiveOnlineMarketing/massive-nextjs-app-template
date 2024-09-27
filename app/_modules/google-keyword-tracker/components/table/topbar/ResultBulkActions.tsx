@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useTransition } from 'react'
 
 import { Table } from '@tanstack/react-table';
 import { useKeywordOpperations } from '@/app/_modules/google-keyword-tracker/hooks/useKeywordOpperations';
@@ -163,16 +163,20 @@ const AddNewTagInput = ({
     (row: any) => row.original.keywordId,
   );
 
+  const [isPending, startTransition] = useTransition();
+
   const [inputValue, setInputValue] = useState("");
   const { addTag } = useKeywordOpperations();
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    const res = await addTag(keywordIds, inputValue, undefined);
-    if (res.success) {
-      onActionFinished();
-      setInputValue("");
-    }
+    startTransition(async () => {
+      event.preventDefault();
+      const res = await addTag(keywordIds, inputValue, undefined);
+      if (res.success) {
+        onActionFinished();
+        setInputValue("");
+      }
+    });
   };
 
   return (
@@ -182,6 +186,7 @@ const AddNewTagInput = ({
           <input
             className="m-1 pl-[12px] pr-[20px] py-[8px] w-[204px] bg-transparent    focus:outline-none ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2   placeholder-theme-light-text-tertiary dark:placeholder-theme-night-text-tertiary"
             type="text"
+            disabled={isPending}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
@@ -194,6 +199,7 @@ const AddNewTagInput = ({
           />
         </div>
         <button
+          disabled={isPending}
           className={cn(
             'text-sm font-normal theme-t-p',
             "px-[16px] py-[8px] w-full",

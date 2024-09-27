@@ -38,15 +38,18 @@ import {
 } from "@/src/entities/models/user";
 import { getConnectedGscPropertiesController } from "@/src/interface-adapters/controllers/search-console-api/get-connected-gsc-properties.controller";
 import { ConnectedGscProperties } from "@/src/application/api/search-console.api.types";
+import { revalidatePath } from "next/cache";
 
 export const logout = async () => {
   await signOut();
+  revalidatePath('/app')
   redirect(DEFAULT_SIGNIN_ROUTE);
 };
 
 export const isAuthenticated = async () => {
   const session = await auth();
   if (!session?.user || !session?.user.id) {
+    revalidatePath('/app')
     redirect(DEFAULT_SIGNIN_ROUTE)
   }
 
@@ -106,6 +109,7 @@ export async function signIn(
         return { error: signIn.error };
       }
       console.log("redirecting to", callbackUrl || DEFAULT_LOGIN_REDIRECT);
+      revalidatePath(callbackUrl || DEFAULT_LOGIN_REDIRECT)
       redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
     }
   );

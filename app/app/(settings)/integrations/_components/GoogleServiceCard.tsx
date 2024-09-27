@@ -26,7 +26,7 @@ const GoogleServiceCard = ({
 
   const { hasAccess, isLoading, hasGoogleAccount, authenticate, email } = useGoogleToken(scope);
 
-  console.log('GoogleServiceCard', scope, hasAccess, hasGoogleAccount)
+  // console.log('GoogleServiceCard', scope, hasAccess, hasGoogleAccount)
 
   if (!currentlyAvailable) {
     return (

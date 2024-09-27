@@ -45,12 +45,14 @@ const SkeletonLabel = () => {
   return (
     <div className='flex flex-col'>
       <Label className={cn('font-normal text-sm bg-slate-200 h-3 my-1 w-[70px] rounded-full')}></Label>
-      <Button
-        variant="outline"
+      <button
         role="combobox"
-        className={cn("w-[412px] justify-between items-center cursor-default")}
+        className={cn(
+          "w-[412px] h-11 justify-between items-center text-sm",
+          "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        )}
       >
-      </Button>
+      </button>
     </div>
   );
 }
