@@ -11,7 +11,6 @@ import DeleteLocationButton from '@/app/_modules/settings/components/DeleteLocat
 import { cn } from '@/app/_components/utils'
 import { Label } from '@/app/_components/ui/label'
 import { Card, CardContent, CardHeader } from '@/app/_modules/settings/components/SettingsCard'
-import { Button } from '@/app/_components/ui/button'
 
 import { ClipboardDocumentIcon } from '@heroicons/react/20/solid'
 
@@ -34,7 +33,7 @@ const LocationDetails = async ({
         <p>Location Details</p>
         <div className='flex items-center gap-3'>
           {/* // TODO: add as coppy button in the Card */}
-          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-1.5 h-fit text-slate-500 border border-light-stroke rounded-lg  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4' /></Link>
+          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-1.5 h-fit border theme-b-p rounded-lg  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4 theme-t-t' /></Link>
           {/* // TODO: add as delete button in the Card */}
           <DeleteLocationButton locationId={defaultLocation.id} />
         </div>
@@ -43,40 +42,46 @@ const LocationDetails = async ({
 
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Website</Label>
-          <Button
-            variant="outline"
+          <div
             role="combobox"
-            className={cn("w-[412px] justify-between items-center cursor-default ")}
+            className={cn(
+              "w-[412px] justify-between items-center text-sm opacity-50 ",
+              "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+            )}
           >
             {website ? (
               <p>{website.websiteName}</p>
             ) : (
               <p>No Website selected</p>
             )}
-          </Button>
+          </div>
         </div>
 
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Language</Label>
-          <Button
-            variant="outline"
+          <div
             role="combobox"
-            className={cn("w-[412px] justify-between items-center cursor-default ")}
+            className={cn(
+              "w-[412px] justify-between items-center text-sm opacity-50 ",
+              "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+            )}
           >
             {language ? (
               <p>{language.name}</p>
             ) : (
               <p>No Language selected</p>
             )}
-          </Button>
+          </div>
         </div>
 
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
-          <Button
-            variant="outline"
+          <div
             role="combobox"
-            className={cn("w-[412px] justify-between items-center cursor-default ")}
+            className={cn(
+              "w-[412px] justify-between items-center text-sm opacity-50 ",
+              "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+            )}
           >
             {location ? (
               <>
@@ -88,22 +93,24 @@ const LocationDetails = async ({
             ) : (
               <p>No Location selected</p>
             )}
-          </Button>
+          </div>
         </div>
 
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Country</Label>
-          <Button
-            variant="outline"
+          <div
             role="combobox"
-            className={cn("w-[412px] justify-between items-center cursor-default ")}
+            className={cn(
+              "w-[412px] justify-between items-center text-sm opacity-50 ",
+              "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+            )}
           >
             {country ? (
               <p>{country.name}</p>
             ) : (
               <p>No Country selected</p>
             )}
-          </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

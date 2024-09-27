@@ -12,7 +12,7 @@ const LocationsCard = ({ website, websiteFavicon }: { website: WebsiteWithLocati
   if (!website.location || website.location.length === 0) {
     return (
       <Card>
-        <AddLocationButton />
+        <AddLocationButton websiteId={website.id}/>
       </Card>
     )
   }
@@ -52,7 +52,7 @@ const LocationsCard = ({ website, websiteFavicon }: { website: WebsiteWithLocati
         </div>
       ))}
 
-      <AddLocationButton />
+      <AddLocationButton websiteId={website.id} />
 
     </Card>
   )
@@ -72,10 +72,10 @@ const Card = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const AddLocationButton = () => {
+const AddLocationButton = ({websiteId}: {websiteId: string}) => {
   return (
     <div className='w-full py-4 sticky bottom-0 theme-bg-w'>
-    <Link href='/app/settings/website/location' className=' py-2 mx-auto w-fit  flex gap-2 items-center text-sm font-medium theme-t-t'>
+    <Link href={`/app/settings/website/location?websiteId=${websiteId}`} className=' py-2 mx-auto w-fit  flex gap-2 items-center text-sm font-medium theme-t-t'>
       Add Location
       <PlusIcon className='w-4 h-4 theme-t-n' />
     </Link>

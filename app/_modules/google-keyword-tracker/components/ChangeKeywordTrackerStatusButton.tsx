@@ -1,16 +1,14 @@
 'use client';
 
 import React, { ButtonHTMLAttributes } from 'react'
-
-import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import { useTransition } from 'react';
-import { deleteLocation } from '@/app/_actions/location.actions';
+import { useToast } from '@/app/_components/ui/toast/use-toast';
+
+import { GoogleKeywordTrackerStatus } from '@/src/entities/models/google-keyword-tracker';
+import { changeGoogleKeywordTrackerStatus } from '../../actions/google-keyword-tracker.actions';
 
 import { PauseIcon } from '@heroicons/react/20/solid'
-import { useToast } from '@/app/_components/ui/toast/use-toast';
-import { GoogleKeywordTrackerStatus } from '@/src/entities/models/google-keyword-tracker';
 import { PlayIcon } from '@heroicons/react/16/solid';
-import { changeGoogleKeywordTrackerStatus } from '../../actions/google-keyword-tracker.actions';
 
 
 function ChangeKeywordTrackerStatusButton({ status, id }: { status: GoogleKeywordTrackerStatus, id: string }) {
