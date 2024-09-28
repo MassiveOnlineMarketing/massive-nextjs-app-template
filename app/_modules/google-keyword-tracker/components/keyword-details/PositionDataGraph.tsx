@@ -38,7 +38,8 @@ const PositionDataGraph = ({ result, domain }: { result: LatestGoogleKeywordResu
   const keys = Object.keys(data?.[data.length - 1] || {});
   const websiteKeys = keys.filter(key => key !== 'date');
 
-  const userDomain = extractHostname(domain);
+  // TESTING: if extractHostname is needed 
+  // const userDomain = extractHostname(domain);
 
   const strokeColor = '#DFE5FA'
   const tickColor = '#9CA3AF'
@@ -77,7 +78,7 @@ const PositionDataGraph = ({ result, domain }: { result: LatestGoogleKeywordResu
             />
             <Legend />
             <CartesianGrid stroke={strokeColor} strokeDasharray={'10 10'} horizontal={true} vertical={false} />
-            <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< CustomTooltip keywordName={result.keywordName} chartData={data} userDomain={userDomain} />} />
+            <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< CustomTooltip keywordName={result.keywordName} chartData={data} userDomain={domain} />} />
             <YAxis
               reversed
               yAxisId={1}

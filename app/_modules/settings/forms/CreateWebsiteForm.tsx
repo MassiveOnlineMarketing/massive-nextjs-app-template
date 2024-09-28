@@ -14,20 +14,18 @@ import { ConnectedGscProperties } from '@/src/application/api/search-console.api
 import { formInputCreateWebsiteSchema } from '@/src/entities/models/website';
 import { createWebsite } from '@/app/_actions/website.actions';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputField } from '../components/form';
-import { GoogleSearchConsolePropertyInputSelector } from './GSCconnectionButton';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputField, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../components/form';
+import GSCWrapper from './GSCWrapper';
 
 import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardHeader } from '../components/SettingsCard';
 
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
-
 
 const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProperties[] }) => {
   const { hasAccess, isLoading } = useGoogleToken('search-console');
-  // console.log('CreateWebsiteForm hasAccess', hasAccess, isLoading, refreshToken);
-
   const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
@@ -35,7 +33,7 @@ const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProp
   const form = useForm<z.infer<typeof formInputCreateWebsiteSchema>>({
     resolver: zodResolver(formInputCreateWebsiteSchema),
     defaultValues: {
-      gscUrl: 'noWebsite'
+      gscUrl: null
     }
   });
 
@@ -105,7 +103,42 @@ const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProp
               )}
             />
 
-            <GoogleSearchConsolePropertyInputSelector hasAccess={hasAccess} isLoading={isLoading} sites={gscProperties} form={form} isPending={isPending} />
+            <GSCWrapper hasAccess={hasAccess} isLoading={isLoading}>
+              <FormField
+                control={form.control}
+                name="gscUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='flex items-center gap-1.5'>Google Search Console Property <InformationCircleIcon className='w-4 h-4 text-base-500' /></FormLabel>
+                    <FormInputSelect onValueChange={field.onChange} defaultValue={field.value ?? undefined}>
+                      <FormControl>
+                        <FormInputSelectTrigger disabled={isPending}>
+                          <FormInputSelectValue placeholder="Select a property" />
+                        </FormInputSelectTrigger>
+                      </FormControl>
+                      <FormInputSelectContent>
+                        <FormInputSelectItem value="noWebsite">Don&apos;t use a property</FormInputSelectItem>
+                        {gscProperties ? (
+                          gscProperties.map((site) => (
+                            <FormInputSelectItem key={site.siteUrl} value={site.siteUrl}>
+                              {site.siteUrl}
+                            </FormInputSelectItem>
+                          ))
+                        ) : (
+                          <div className='w-full h-20 flex items-center justify-center'>
+                            <p className='text-sm'>No Properties found</p>
+                          </div>
+                        )}
+                      </FormInputSelectContent>
+                    </FormInputSelect>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </GSCWrapper>
+
+            {/* <GoogleSearchConsolePropertyInputSelector hasAccess={hasAccess} isLoading={isLoading} sites={gscProperties} form={form} isPending={isPending} /> */}
+            {form.formState.errors.gscUrl && <p className="text-sm font-medium text-red-500 dark:text-red-900">{form.formState.errors.gscUrl.message}</p>} 
 
           </CardContent>
         </Card>

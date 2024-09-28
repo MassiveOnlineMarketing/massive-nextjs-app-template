@@ -32,8 +32,7 @@ const LocationDetails = async ({
       <CardHeader className='flex justify-between items-center py-3'>
         <p>Location Details</p>
         <div className='flex items-center gap-3'>
-          {/* // TODO: add as coppy button in the Card */}
-          <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-1.5 h-fit border theme-b-p rounded-lg  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4 theme-t-t' /></Link>
+          {/* <Link href={`/app/settings/website/copy-location/${defaultLocation.id}`} className='px-4 py-1.5 h-fit border theme-b-p rounded-lg  flex items-center gap-2'><ClipboardDocumentIcon className='w-4 h-4 theme-t-t' /></Link> */}
           {/* // TODO: add as delete button in the Card */}
           <DeleteLocationButton locationId={defaultLocation.id} />
         </div>

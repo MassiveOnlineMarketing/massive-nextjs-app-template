@@ -19,7 +19,7 @@ import { useKeywordOpperations } from '../hooks/useKeywordOpperations';
 import DeleteKeywordTrackerButton from '../components/DeleteKeywordTrackerButton';
 import ChangeKeywordTrackerStatusButton from '../components/ChangeKeywordTrackerStatusButton';
 
-const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker: GoogleKeywordTrackerWithCompetitors }) => {
+const UpdateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker: GoogleKeywordTrackerWithCompetitors }) => {
   const [isPending, startTransition] = useTransition();
   const [competitorDomain, setCompetitorDomain] = useState<string>("");
   const [competitors, setCompetitors] = useState<string[]>([]);
@@ -258,4 +258,4 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
   )
 }
 
-export default CreateGoogleKeywordTrackerToolFrom
+export default UpdateGoogleKeywordTrackerToolFrom
