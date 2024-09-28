@@ -3,6 +3,7 @@ import { getInjection } from "@/di/container";
 
 import { AuthError } from "next-auth";
 import { signIn } from "@/app/_modules/auth/_nextAuth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 
 /**
@@ -42,7 +43,7 @@ export async function signInUseCase(input: { email: string, password: string }) 
       await signIn("credentials", {
         email: lowerCaseEmail,
         password: input.password,
-        redirect: false,
+        redirectTo: DEFAULT_LOGIN_REDIRECT,
       });
     } catch (error) {
       if (error instanceof AuthError) {

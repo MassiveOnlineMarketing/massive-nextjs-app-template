@@ -9,7 +9,7 @@ import { testController } from '@/src/interface-adapters/controllers/test.contro
 import { GetSessionTest, UpdateSessionTest, UpdateUserTest } from './_components/session';
 import { FetchConnectedSitesTest, ProcessKeywordTest } from './_components/api';
 
-const ClientPage = ({ userId }: { userId?: string }) => {
+const ClientPage = ({ userId }: { userId: string }) => {
   // ! This hook is necessary to refresh the application when the user changes their account.
   useRefreshOnUserChange(userId);
 

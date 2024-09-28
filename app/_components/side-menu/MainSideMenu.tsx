@@ -4,10 +4,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react'
 import { usePathname } from 'next/navigation';
 
-import { useCurrentUser } from '@/app/_modules/auth/hooks/user-current-user';
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
-
-import { getWebsiteWithLocationByUser } from '@/app/_actions/website.actions';
 
 import WebsiteSelectionButton from './WebsiteSelectionButton';
 
@@ -24,8 +21,6 @@ type NavigationItem = {
 }
 
 const MainSideMenu = () => {
-  const setInitialWebsiteDetails = useWebsiteDetailsStore(state => state.initialteWebsiteDetails)
-  const user = useCurrentUser()
   const pathname = usePathname();
 
   const selectedWebsiteId = useWebsiteDetailsStore((state) => state.selectedWebsite?.id) ?? ''
@@ -68,24 +63,6 @@ const MainSideMenu = () => {
   ])
   const [secondarySidebarOpen, setSecondarySidebarOpen] = React.useState(true)
 
-  useEffect(() => {
-    const fetchWebsites = async () => {
-      if (!user) return
-      const res = await getWebsiteWithLocationByUser(user.id)
-      console.log('fetch initial websiteStore')
-      if (res.error) {
-        console.log('error', res.error)
-      }
-
-      if (res.website || res.error === 'Must be logged in to get a website') {
-        console.log('settings initial websites details', res.website)
-        setInitialWebsiteDetails(res.website || [])
-      }
-    }
-
-    fetchWebsites()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // Update navigation items on pathname change, selectedWebsiteId or selectedKeywordTrackerId
   useEffect(() => {

@@ -107,9 +107,10 @@ export async function signIn(
       if (signIn.error) {
         return { error: signIn.error };
       }
-      console.log("redirecting to", callbackUrl || DEFAULT_LOGIN_REDIRECT);
-      revalidatePath(callbackUrl || DEFAULT_LOGIN_REDIRECT)
-      redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
+      // Redirect is placed in the use-case 
+      // console.log("redirecting to", callbackUrl || DEFAULT_LOGIN_REDIRECT);
+      // revalidatePath(callbackUrl || DEFAULT_LOGIN_REDIRECT)
+      // redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
     }
   );
 

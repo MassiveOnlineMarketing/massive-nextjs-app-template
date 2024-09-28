@@ -8,6 +8,7 @@ import { Toaster } from '../_components/ui/toast/toaster';
 import { TooltipProvider } from '../_components/ui/tooltip';
 
 import { usePopulateAccountStore } from '../_hooks/usePopulateAccountStore';
+import { usePopulateWebsiteDetailsStore } from '../_hooks/usePopulateWebsiteDetailsStore';
 
 import ReactQueryProvider from '../_providers/ReactQueryProvider';
 
@@ -16,6 +17,7 @@ function Providers(
 ) {
 
   usePopulateAccountStore()
+  usePopulateWebsiteDetailsStore()
 
   return (
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>

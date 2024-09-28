@@ -108,8 +108,8 @@ export const LoginForm = () => {
             <FormError message={error} />
             <FormSuccess message={success} />
           </div>
-          <Button disabled={isPending} type="submit" className="mt-20 w-full text-violet-50 relative gradient-mask primary-button hover:text-white bg-primary-500 font-medium" size='default'>
-            {isPending ? <LoadingSpinnerSmall /> : 'Login' } 
+          <Button disabled={isPending} type="submit" className="mt-20 w-full font-medium" size='default'>
+            {isPending ? <LoadingSpinnerSmall /> : 'Login'}
           </Button>
         </form>
       </Form>

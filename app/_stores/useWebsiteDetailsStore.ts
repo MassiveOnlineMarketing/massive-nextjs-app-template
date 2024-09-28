@@ -5,6 +5,7 @@ import { WebsiteWithLocation } from "@/src/entities/models/website";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getFaviconUrl } from "../_utils/imageUtils";
+import { getSession, useSession } from "next-auth/react";
 
 export type WebsiteDetailsActions = {
   initialteWebsiteDetails: (website: WebsiteWithLocation[]) => void;
@@ -16,6 +17,7 @@ export type WebsiteDetailsActions = {
 
   setSelectedWebsite: (id: string) => void;
   setSelectedLocation: (id: string | undefined) => void;
+  resetSelectedStore: () => void;
 };
 
 interface WebsiteWithLocationDisplay extends WebsiteWithLocation {
@@ -146,9 +148,15 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
           };
         });
       },
+      resetSelectedStore() {
+        set({
+          selectedWebsite: undefined,
+          selectedLocation: undefined,
+        });
+      },
     }),
     {
-      name: "website-details-store",
+      name: `website-details-store`,
     }
   )
 );
