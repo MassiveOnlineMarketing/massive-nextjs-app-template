@@ -84,6 +84,7 @@ export class AuthenticationService implements IAuthenticationService {
     return user.role === "ADMIN";
   }
 
+  // TODO: Craete special error for this
   async getGoogleRefreshTokenForService(userId: string, scope: GoogleScopeOptions): Promise<string> {
     return await startSpan(
       {name: "AuthenticationService > getGoogleRefreshTokenForService"},

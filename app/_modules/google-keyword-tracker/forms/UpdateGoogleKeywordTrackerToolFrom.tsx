@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { DAYS_OF_WEEK, formInputUpdateGoogleKeywordTrackerSchema, GoogleKeywordTrackerWithCompetitors } from '@/src/entities/models/google-keyword-tracker';
 
-import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMessage, FormInputField } from '@/app/_modules/settings/components/form';
+import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMessage, FormInputField, FormDescription } from '@/app/_modules/settings/components/form';
 import { Card, CardContent, CardHeader } from "@/app/_modules/settings/components/SettingsCard";
 import { Button } from '@/app/_components/ui/button';
 
@@ -71,7 +71,6 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
 
   const onSubmit = async (values: z.infer<typeof formInputUpdateGoogleKeywordTrackerSchema>) => {
     startTransition(async () => {
-      console.log('formValues ', values)
       const res = await updateGoogleKeywordsTracker(values);
 
       if (res.error) {
@@ -104,7 +103,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className='mx-6 mb-6'>
           <CardHeader className='flex justify-between items-center py-3'>
-            Setup Google Keyword Tracker
+            Keyword Tracker Settings
 
             <div className='flex gap-2.5'>
               <ChangeKeywordTrackerStatusButton id={keywordTracker.id} status={keywordTracker.status} />
@@ -120,10 +119,11 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
                   <FormItem>
                     <FormLabel>Refresh</FormLabel>
                     <FormControl>
-                      <div className='flex items-center justify-between'>
+                      <div className='flex items-center justify-between gap-1.5'>
                         {DAYS_OF_WEEK.map((day) => (
-                          <label key={day.value} className="relative flex items-center cursor-pointer">
+                          <label key={day.value} className="relative flex items-center cursor-pointer w-full min-w-8 aspect-square">
                             <input
+                              disabled={isPending}
                               type='checkbox'
                               className='hidden'
                               checked={field.value?.includes(day.value) || false}
@@ -134,13 +134,16 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
                                 form.setValue('refresh', newValue);
                               }}
                             />
-                            <span className={`w-[54px] h-[54px] grid place-items-center border rounded-[8px] ${field.value?.includes(day.value) ? 'border-base-500 text-base-500' : 'border-base-100 theme-t-t'}`}>
+                            <span className={`w-full h-full grid place-items-center border rounded-[8px] ${field.value?.includes(day.value) ? 'border-base-500 text-base-500' : 'border-base-100 theme-t-t'}`}>
                               {day.label.slice(0, 2)}
                             </span>
                           </label>
                         ))}
                       </div>
                     </FormControl>
+                    <FormDescription>
+                      <span className='font-bold italic'>Warning:</span> leaving out a day will leave gaps in your historical data and may affect the accuracy of your reports.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -158,29 +161,42 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
                       <>
                         <div className='flex items-center gap-2 relative'>
                           <FormInputField
-                            className='mt-0'
+                            className='mt-0 text-sm'
                             type='text'
                             value={competitorDomain}
                             onChange={(e) => setCompetitorDomain(e.target.value)}
                             placeholder='Enter competitor domain'
                             disabled={isPending}
                           />
-                          <Button className='absolute right-0 top-1/2 -translate-y-1/2' type='button' onClick={addCompetitor} disabled={isPending}>
+                          <Button
+                            className='absolute right-0 top-1/2 -translate-y-1/2'
+                            type='button'
+                            onClick={addCompetitor}
+                            variant='ghost'
+                            disabled={isPending}
+                          >
                             <PlusIcon className='w-5 h-5 theme-t-s' />
                           </Button>
                         </div>
-                        <div className='flex gap-3 pt-2 flex-wrap'>
-                          {competitors.map((domain) => (
-                            <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-xs'>
-                              <button type='button' onClick={() => removeCompetitor(domain)} disabled={isPending}>
-                                <XMarkIcon className='w-4 h-4 theme-t-t' />
-                              </button>
-                              <span className='theme-t-s'>{domain}</span>
-                            </div>
-                          ))}
-                        </div>
+                        {competitors.length > 0 && (
+                          <div className='flex gap-3 pt-2 flex-wrap'>
+                            {competitors.map((domain) => (
+                              <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-sm'>
+                                <button type='button' onClick={() => removeCompetitor(domain)}
+                                  disabled={isPending}
+                                >
+                                  <XMarkIcon className='w-5 h-5 theme-t-t' />
+                                </button>
+                                <span className='theme-t-s'>{domain}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </>
                     </FormControl>
+                    <FormDescription>
+                      Add competitors to compare your keyword ranking with.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -197,9 +213,10 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
                     <FormControl>
                       <TextareaApp
                         {...field}
+                        className='text-sm'
                         disabled={isPending}
-                        rows={5}
-                        placeholder='Enter keywords separated by enter'
+                        rows={8}
+                        placeholder='Enter additional keywords you want to track separated by enter'
                       />
                     </FormControl>
                     <FormMessage />
@@ -232,8 +249,6 @@ const CreateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
             type="submit"
             disabled={isPending}
             className="ml-2"
-            variant="outline"
-            size="default"
           >
             {isPending ? 'Updating...' : 'Update'}
           </Button>

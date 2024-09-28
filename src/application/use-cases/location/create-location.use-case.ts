@@ -45,7 +45,7 @@ export async function createLocationUseCase(input: {
       throw new ForbiddenError("User does not own this website");
     }
 
-    const location = await locationRepository.create({
+    const location = await locationRepository.insert({
       ...input
     });
 

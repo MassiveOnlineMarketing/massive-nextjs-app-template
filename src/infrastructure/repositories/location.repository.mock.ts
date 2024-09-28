@@ -37,7 +37,7 @@ export class MockLocationRepository implements ILocationRepository {
     ];
   }
 
-  async create(location: LocationInsert): Promise<Location> {
+  async insert(location: LocationInsert): Promise<Location> {
     const newLocation: Location = {
       id: (this._locations.length + 1).toString(),
       ...location,

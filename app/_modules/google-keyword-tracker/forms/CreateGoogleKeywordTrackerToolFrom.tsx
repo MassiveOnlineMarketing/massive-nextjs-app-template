@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { DAYS_OF_WEEK, formInputCreateGoogleKeywordTrackerSchema } from '@/src/entities/models/google-keyword-tracker'
 
-import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMessage, FormInputField } from '@/app/_modules/settings/components/form'
+import { Form, FormField, FormItem, FormLabel, FormControl, TextareaApp, FormMessage, FormInputField, FormDescription } from '@/app/_modules/settings/components/form'
 import { Card, CardContent, CardHeader } from "@/app/_modules/settings/components/SettingsCard"
 import { Button } from '@/app/_components/ui/button'
 import { PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
@@ -52,14 +52,11 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
   const onSubmit = async (values: z.infer<typeof formInputCreateGoogleKeywordTrackerSchema>) => {
     router.refresh();
     startTransition(async () => {
-      console.log('formValues', values)
+      const res = await createGoogleKeywordTracker(values);
 
-      const createRes = await createGoogleKeywordTracker(values);
-
-      if (createRes.error) {
-        // error checks
+      if (res.error) {
         toast({
-          title: createRes.error,
+          title: res.error,
           variant: 'destructive',
         });
         return;
@@ -70,8 +67,10 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
         variant: 'success',
       })
 
-      if (values.keywords && createRes.googleKeywordTracker?.id) {
-        addNewGoogleKeyword(values.keywords, createRes.googleKeywordTracker.id)
+      //TODO: Add google keyword tracker to location in the store
+
+      if (values.keywords && res.googleKeywordTracker?.id) {
+        addNewGoogleKeyword(values.keywords, res.googleKeywordTracker.id)
           .then((res) => {
             if (res.success) {
               form.setValue('keywords', '');
@@ -98,27 +97,31 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
                   <FormItem>
                     <FormLabel>Refresh</FormLabel>
                     <FormControl>
-                      <div className='flex items-center justify-between'>
-                        {DAYS_OF_WEEK.map((day) => (
-                          <label key={day.value} className="relative flex items-center cursor-pointer">
-                            <input
-                              type='checkbox'
-                              className='hidden'
-                              checked={field.value?.includes(day.value) || false}
-                              onChange={(e) => {
-                                const newValue = e.target.checked
-                                  ? [...(field.value || []), day.value]
-                                  : (field.value || []).filter((v) => v !== day.value);
-                                form.setValue('refresh', newValue);
-                              }}
-                            />
-                            <span className={`w-[54px] h-[54px] grid place-items-center border rounded-[8px] ${field.value?.includes(day.value) ? 'border-base-500 text-base-500' : 'border-base-100 theme-t-t'}`}>
-                              {day.label.slice(0, 2)}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
+                    <div className='flex items-center justify-between gap-1.5'>
+                    {DAYS_OF_WEEK.map((day) => (
+                      <label key={day.value} className="relative flex items-center cursor-pointer w-full min-w-8 aspect-square">
+                        <input
+                          disabled={isPending}
+                          type='checkbox'
+                          className='hidden'
+                          checked={field.value?.includes(day.value) || false}
+                          onChange={(e) => {
+                            const newValue = e.target.checked
+                              ? [...(field.value || []), day.value]
+                              : (field.value || []).filter((v) => v !== day.value);
+                            form.setValue('refresh', newValue);
+                          }}
+                        />
+                        <span className={`w-full h-full grid place-items-center border rounded-[8px] ${field.value?.includes(day.value) ? 'border-base-500 text-base-500' : 'border-base-100 theme-t-t'}`}>
+                          {day.label.slice(0, 2)}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                     </FormControl>
+                    <FormDescription>
+                  <span className='font-bold italic'>Warning:</span> leaving out a day will leave gaps in your historical data and may affect the accuracy of your reports.
+                </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -133,33 +136,46 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
                   >
                     <FormLabel>Competitors</FormLabel>
                     <FormControl>
-                      <>
-                        <div className='flex items-center gap-2 relative'>
-                          <FormInputField
-                            className='mt-0'
-                            type='text'
-                            value={competitorDomain}
-                            onChange={(e) => setCompetitorDomain(e.target.value)}
-                            placeholder='Enter competitor domain'
-                            disabled={isPending}
-                          />
-                          <Button className='absolute right-0 top-1/2 -translate-y-1/2' type='button' onClick={addCompetitor} disabled={isPending}>
-                            <PlusIcon className='w-5 h-5 theme-t-s' />
-                          </Button>
-                        </div>
-                        <div className='flex gap-3 pt-2 flex-wrap'>
-                          {competitors.map((domain) => (
-                            <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-sm'>
-                              <button type='button' onClick={() => removeCompetitor(domain)} disabled={isPending}>
-                                <XMarkIcon className='w-5 h-5 theme-t-t' />
-                              </button>
-                              <span className='theme-t-s'>{domain}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    </FormControl>
-                    <FormMessage />
+                    <>
+                    <div className='flex items-center gap-2 relative'>
+                      <FormInputField
+                        className='mt-0 text-sm'
+                        type='text'
+                        value={competitorDomain}
+                        onChange={(e) => setCompetitorDomain(e.target.value)}
+                        placeholder='Enter competitor domain'
+                        disabled={isPending}
+                      />
+                      <Button
+                        className='absolute right-0 top-1/2 -translate-y-1/2'
+                        type='button'
+                        onClick={addCompetitor}
+                        variant='ghost'
+                        disabled={isPending}
+                      >
+                        <PlusIcon className='w-5 h-5 theme-t-s' />
+                      </Button>
+                    </div>
+                    {competitors.length > 0 && (
+                      <div className='flex gap-3 pt-2 flex-wrap'>
+                        {competitors.map((domain) => (
+                          <div key={domain} className='theme-bg-p w-fit pl-2.5 py-1.5 pr-4 rounded-full flex items-center gap-2 text-sm'>
+                            <button type='button' onClick={() => removeCompetitor(domain)}
+                              disabled={isPending}
+                            >
+                              <XMarkIcon className='w-5 h-5 theme-t-t' />
+                            </button>
+                            <span className='theme-t-s'>{domain}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  Add competitors to compare your keyword ranking with.
+                </FormDescription>
                   </FormItem>
                 )}
               />
@@ -172,12 +188,13 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
                   <FormItem>
                     <FormLabel>Keywords</FormLabel>
                     <FormControl>
-                      <TextareaApp
-                        {...field}
-                        disabled={isPending}
-                        rows={5}
-                        placeholder='Enter keywords separated by enter'
-                      />
+                    <TextareaApp
+                    {...field}
+                    className='text-sm'
+                    disabled={isPending}
+                    rows={8}
+                    placeholder='Enter keywords you want to track separated by enter'
+                  />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -191,8 +208,6 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
             type="submit"
             disabled={isPending}
             className="ml-auto"
-            variant="outline"
-            size="default"
           >
             Create
           </Button>

@@ -143,8 +143,6 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
           <Button
             disabled={isPending}
             type="submit"
-            size='default'
-            variant='outline'
             className='ml-2'
           >
             {isPending ? "Updating..." : "Update"}

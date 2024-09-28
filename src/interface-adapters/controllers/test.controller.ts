@@ -1,12 +1,19 @@
+'use server'
+
 import { getInjection } from "@/di/container";
 
 export const testController = () => {
-  const googleAdsApi = getInjection("IGoogleAdsApi");
+  const searchConsoleApi = getInjection("ISearchConsoleApi");
 
   console.log("testController");
 
-  googleAdsApi
-    .generateHistoricalMetrics("1010318", "1010", ["eureka mignon", "eureka mignon specialita"])
+  searchConsoleApi
+    .fetchTopQueriesByCountry(
+      "1//05RrSrqDcLoqUCgYIARAAGAUSNwF-L9IrCtKpNa8XCg_vayjD5GiIghZqfSw8QynLZrRdfDq5Asvxz3jkUmYgccfzfNFxmfSI1R4",
+      "https://baristart.nl",
+      '100',
+      'NL'
+    )
     .then((response) => {
       console.log(response);
     })

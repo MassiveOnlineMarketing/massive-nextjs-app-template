@@ -26,4 +26,13 @@ export class MockSearchConsoleApi implements ISearchConsoleApi {
       },
     ];
   }
+
+  async fetchTopQueriesByCountry(
+    refreshToken: string,
+    siteProperty: string,
+    amountOfKeywords: string,
+    countryCode: string
+  ) {
+    return ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5'];
+  }
 }

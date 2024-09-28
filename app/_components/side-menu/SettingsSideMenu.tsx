@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { WebsiteWithLocation } from '@/src/entities/models/website';
 
@@ -10,8 +10,7 @@ import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 import { cn } from '@/app/_components/utils';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
-import { PlusIcon, UserCircleIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, UserCircleIcon, LinkIcon } from '@heroicons/react/20/solid';
 
 import { Tooltip, TooltipTrigger, TooltipArrow, TooltipContent, TooltipProvider, } from "@/app/_components/ui/tooltip"
 
@@ -19,16 +18,24 @@ type NavItem = {
   href: string,
   text: string,
   icon: React.ElementType
+  active: boolean
+}
+
+function isActive(href: string, pathname: string) {
+  return (
+    (href === "/app" && pathname === href) ||
+    (pathname.includes(href) && href !== "/app")
+  )
 }
 
 const SettingsSideMenu = () => {
   const websiteStore = useWebsiteDetailsStore(state => state.websites)
+  const pathname = usePathname();
 
   const navItems = [
-    { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon },
-    { href: '/app/integrations', text: 'Integrations', icon: LinkIcon },
+    { href: '/app/settings/profile', text: 'Profile Settings', icon: UserCircleIcon, active: isActive('/app/settings/profile', pathname) },
+    { href: '/app/integrations', text: 'Integrations', icon: LinkIcon, active: isActive('/app/integrations', pathname) },
   ]
-
 
   return (
     <div className='p-4 w-[300px] min-w-[300px] h-full'>
@@ -38,7 +45,6 @@ const SettingsSideMenu = () => {
           <NavItem
             key={index}
             navItem={item}
-            className='theme-t-t'
           >
             {item.text}
           </NavItem>
@@ -46,7 +52,7 @@ const SettingsSideMenu = () => {
       </div>
 
       <div>
-        <WebsiteList websiteStore={websiteStore} />
+        <WebsiteList websiteStore={websiteStore} pathname={pathname} />
       </div>
 
     </div>
@@ -60,22 +66,34 @@ const NavLabel = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const NavItem = ({ navItem, children, className }: { navItem: NavItem, children: React.ReactNode, className: string }) => {
+const NavItem = ({ navItem, children, className }: { navItem: NavItem, children: React.ReactNode, className?: string }) => {
   return (
     <Link href={navItem.href} className={cn(
-      'theme-t-t p-3 flex items-center gap-2 group hover:text-base-500',
+      'p-3 flex items-center gap-2 group hover:text-base-500',
+      navItem.active ? 'text-base-500' : 'theme-t-t',
       className
     )}>
-      <navItem.icon className='theme-t-n w-5 h-5 group-hover:fill-base-500 hover:border-base-500' />
+      <navItem.icon className={cn(
+        'w-5 h-5 group-hover:fill-base-500 hover:border-base-500',
+        navItem.active ? 'text-base-500' : 'theme-t-t'
+      )}
+       />
 
       {children}
     </Link>
   )
 }
 
-const WebsiteList = ({ websiteStore }: { websiteStore: WebsiteWithLocation[] | undefined }) => {
+
+function isActiveWebsite(website: WebsiteWithLocation, pathname: string) {
+  const location = website.location?.filter(location => pathname.includes(location.id)) || []
+
+  return pathname.includes(website.id) || location.length > 0
+}
+
+const WebsiteList = ({ websiteStore, pathname }: { websiteStore: WebsiteWithLocation[] | undefined, pathname: string }) => {
   const router = useRouter()
-  const [websitesListExpanded, setWebsitesListExpanded] = React.useState(false)
+  const [websitesListExpanded, setWebsitesListExpanded] = React.useState(true)
 
   const handleAddWebsite = () => {
     router.push('/app/settings/website')
@@ -125,9 +143,12 @@ const WebsiteList = ({ websiteStore }: { websiteStore: WebsiteWithLocation[] | u
         )}>
           {websiteStore?.map((website, index) => (
             <Link key={index} href={`/app/settings/website/${website.id}`}>
-              <div className='flex items-center gap-2 theme-t-t p-3 hover:text-base-500'>
-                <p className='hover:theme'>{website.websiteName}</p>
-              </div>
+              <p className={cn(
+                'p-3 hover:text-base-500',
+                isActiveWebsite(website, pathname) ? 'text-base-500' : 'theme-t-t'
+              )}>
+                {website.websiteName}
+              </p>
             </Link>
           ))}
         </div>

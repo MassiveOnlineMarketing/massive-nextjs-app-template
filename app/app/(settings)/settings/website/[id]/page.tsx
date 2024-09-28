@@ -2,8 +2,9 @@
 
 import React from 'react'
 
-import { getConnectedGscProperties, isAuthenticated } from '@/app/_modules/auth/actions';
+import { isAuthenticated } from '@/app/_modules/auth/actions';
 import { getWebsiteWithLocation } from '@/app/_actions/website.actions';
+import { getConnectedGscProperties } from '@/app/_modules/google-keyword-tracker/google-keyword-tracker.actions';
 
 import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
 import LocationsCard from './LocationsCard';

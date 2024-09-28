@@ -21,7 +21,31 @@ export class SearchConsoleApi implements ISearchConsoleApi {
 
           return res.data.siteEntry;
         } catch (error) {
-          console.error("🔴 Error fetching SERP data: ", error);
+          console.error("🔴 Error fetching Gsc sites: ", error);
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
+  async fetchTopQueriesByCountry(
+    refreshToken: string,
+    siteProperty: string,
+    amountOfKeywords: string,
+    countryCode: string
+  ) {
+    return await startSpan(
+      { name: "SearchConsoleApi > fetchTopQueriesByCountry" },
+      async () => {
+        try {
+          const url = `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/import_keywords?site-url=${siteProperty}&amount-of-keywords=${amountOfKeywords}&refresh-token=${refreshToken}&country=${countryCode}`;
+          console.log(url);
+          const res = await axios(url);
+
+          return res.data;
+        } catch (error) {
+          console.error("🔴 Error fetching Gsc top querries: ", error);
           captureException(error);
           throw error;
         }

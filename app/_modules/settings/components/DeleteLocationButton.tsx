@@ -20,6 +20,7 @@ import {
 
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { useToast } from '@/app/_components/ui/toast/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 function DeleteLocationButton({ locationId }: { locationId: string }) {
@@ -28,6 +29,7 @@ function DeleteLocationButton({ locationId }: { locationId: string }) {
   const [isPending, startTransition] = useTransition()
 
   const { toast } = useToast();
+  const router = useRouter()
 
   const handleDeleteLocation = async () => {
     startTransition(async () => {
@@ -45,7 +47,7 @@ function DeleteLocationButton({ locationId }: { locationId: string }) {
 
       if (res.deletedLocation) {
         deleteLocationFromStore(res.deletedLocation.id)
-        // TODO: Route user to the website? res.deletedLocation.websiteId
+        router.push(`/app/settings/website/${res.deletedLocation.websiteId}`)
       }
     })
   }

@@ -3,12 +3,12 @@
 import React from 'react'
 
 import CreateWebsiteForm from '@/app/_modules/settings/forms/CreateWebsiteForm'
-import { getConnectedGscProperties, isAuthenticated } from '@/app/_modules/auth/actions';
+import { isAuthenticated } from '@/app/_modules/auth/actions';
+import { getConnectedGscProperties } from '@/app/_modules/google-keyword-tracker/google-keyword-tracker.actions';
 
 const page = async () => {
   await isAuthenticated();
   const connectedGscProperties = await getConnectedGscProperties();
-
 
   return (
     <div className='max-w-[918px] theme-bg-w border theme-b-p rounded-xl'>

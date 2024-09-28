@@ -126,7 +126,7 @@ model GoogleKeywordTrackerTool {
   id          String                             @id @default(cuid())
   websiteId   String
   locationId  String                             @unique
-  status      Status                             @default(PENDING)
+  status      Status                             @default(ACTIVE)
   refresh     DayOfWeek[]
   keywords    GoogleKeywordTrackerKeyword[]
   stats       GoogleKeywordTrackerProjectStats[]

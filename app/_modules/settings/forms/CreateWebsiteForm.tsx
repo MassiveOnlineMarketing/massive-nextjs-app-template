@@ -114,8 +114,6 @@ const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProp
           <Button
             disabled={isPending}
             type="submit"
-            size='default'
-            variant='outline'
             className='ml-auto'
           >
             {isPending ? "Creating..." : "Create"}

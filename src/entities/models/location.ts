@@ -57,6 +57,25 @@ const countrySchema = z.object({
   googleId: z.number(),
 })
 
+export const formSetupLocationSchema = selectLocationSchema.extend({
+  location: locationSchema.optional(),
+  country: countrySchema || locationSchema,
+  language: languageSchema,
+
+  // Google Keyword Tracker
+  refresh: z.array(z.enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'])),
+  keywords: z.string().optional(),
+  addCompetitors: z.array(z.string()).optional(),
+}).pick({
+  websiteId: true,
+  location: true,
+  country: true,
+  language: true,
+  refresh: true,
+  keywords: true,
+  addCompetitors: true,
+})
+
 export const formInputCreateLocationSchema = selectLocationSchema.extend({
   location: locationSchema.optional(),
   country: countrySchema || locationSchema,

@@ -8,7 +8,7 @@ import { DatabaseOperationError } from "@/src/entities/errors/common";
 
 @injectable()
 export class LocationRepository implements ILocationRepository {
-  async create(location: LocationInsert): Promise<Location> {
+  async insert(location: LocationInsert): Promise<Location> {
     return await startSpan(
       { name: "LocationRepository > create" },
       async () => {

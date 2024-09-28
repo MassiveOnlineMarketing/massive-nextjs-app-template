@@ -49,6 +49,7 @@ function DeleteKeywordTrackerButton({ KeywordTrackerId }: { KeywordTrackerId: st
           variant: "success",
         })
 
+        // TODO: Remove keyword tracker from location in the store
         router.refresh()
       }
     })

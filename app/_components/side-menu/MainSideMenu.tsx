@@ -192,7 +192,7 @@ function isActive(href: string, pathname: string) {
 const NavLabelWith = ({ children, isOpen }: { children: React.ReactNode, isOpen: boolean }) => {
   return (
     <p className={cn(
-      'text-xs text-nowrap  px-3 py-1 text-base-50',
+      'text-xs text-nowrap  px-3 py-1 text-base-50 dark:text-base-950',
       isOpen ? 'theme-t-n w-[244px]' : 'w-0',
     )}>{children}</p>
   )
@@ -203,10 +203,10 @@ const NavItemWith = ({ item, isOpen }: { item: NavigationItem, isOpen: boolean }
     <Link
       href={item.link}
       className={cn(
-        'h-[52px] w-full flex items-center theme-b-p pb-1 group hover:rounded-[10px] hover:bg-theme-light-background-secondary hover:dark:bg-theme-night-background-primary',
+        'h-[52px] w-full flex items-center theme-b-p group hover:rounded-[10px] hover:bg-theme-light-background-secondary hover:dark:bg-theme-night-background-primary',
         isOpen
           ? item.active ? 'theme-bg-w rounded-none border-x before:border-0 after:border-0 hover:bg-white' : ''
-          : item.active ? 'molecule rounded-[8px] before:rounded-[8px] after:rounded-[12px] before:left-0 before:top-0' : '',
+          : item.active ? 'molecule2 rounded-[8px] ' : '',
       )}>
       <div className='min-w-[52px] min-h-[52px]  flex items-center justify-center p-3'>
         <item.icon
