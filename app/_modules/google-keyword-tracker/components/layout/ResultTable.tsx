@@ -96,7 +96,7 @@ function DataTable<TData, TValue>({
   return (
 
     <div className="pb-10 ">
-      <div className="sticky top-[88px] pt-3 pb-6 bg-white dark:bg-base-950">
+      <div className="sticky z-10 top-[88px] pt-3 pb-6 bg-white dark:bg-base-950">
         <ResultsDataTableTopBar
           table={table}
           data={data}
@@ -109,7 +109,7 @@ function DataTable<TData, TValue>({
         {/* Dit naar Table */}
         <table className="w-full ">
           {/* Weg , overflow hidden*/}
-          <TableHeader className="sticky top-[170px] z-20 w-full overflow-hidden   ">
+          <TableHeader className="sticky z-10 top-[170px] w-full overflow-hidden   ">
             <tr className="absolute pointer-events-none w-full h-full border theme-b-p rounded-t-lg overflow-hidden z-50"></tr>
             <tr className="absolute pointer-events-none w-[101%] h-full bg-white z-10 -ml-1"></tr>
 

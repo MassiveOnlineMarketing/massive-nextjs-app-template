@@ -75,7 +75,6 @@ const PositionDataGraph = ({ result, domain }: { result: LatestGoogleKeywordResu
               padding={{ left: 30, right: 30 }}
               axisLine={{ strokeWidth: 1, stroke: strokeColor }}
             />
-            <Legend />
             <CartesianGrid stroke={strokeColor} strokeDasharray={'10 10'} horizontal={true} vertical={false} />
             <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< CustomTooltip keywordName={result.keywordName} chartData={data} userDomain={userDomain} />} />
             <YAxis
