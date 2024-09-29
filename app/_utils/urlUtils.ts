@@ -15,6 +15,13 @@ export function urlWithoutDomain(url: string, domainUrl: string): string {
   return result;
 }
 
+/**
+ * Extracts the hostname from a given URL.
+ *
+ * @param url - The URL string from which to extract the hostname.
+ * @returns The hostname if the URL includes "http", otherwise returns the original URL string.
+ */
 export function extractHostname(url: string) {
-  return new URL(url).hostname;
+  if (url.includes("http")) return new URL(url).hostname;
+  return url
 };

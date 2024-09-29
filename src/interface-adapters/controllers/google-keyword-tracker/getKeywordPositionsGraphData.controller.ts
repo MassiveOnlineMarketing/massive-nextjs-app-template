@@ -47,7 +47,7 @@ export async function getKeywordPositionsGraphDataController(
         const combinedData = [
           ...competitorResultsRes.map((result) => ({
             ...result,
-            url: result.googleKeywordTrackerCompetitor.domainUrl,
+            url: extractHostname(result.googleKeywordTrackerCompetitor.domainUrl),
           })),
           ...userResultsRes.map((result) =>
             result.url
