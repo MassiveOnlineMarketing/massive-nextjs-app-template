@@ -16,6 +16,7 @@ import { createGoogleKeywordTracker } from '../../actions/google-keyword-tracker
 import { useToast } from '@/app/_components/ui/toast/use-toast'
 import { useKeywordOpperations } from '../hooks/useKeywordOpperations'
 import { useRouter } from 'next/navigation'
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore'
 
 // import { Form, FormControl, FormField, FormInputField, FormItem, FormLabel, FormMessage } from 
 const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locationId: string, websiteId: string }) => {
@@ -26,6 +27,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
   const router = useRouter();
   const { toast } = useToast();
   const { addNewGoogleKeyword } = useKeywordOpperations();
+  const addGoogleKeywordTrackerToStore = useWebsiteDetailsStore(state => state.addKeywordTracker);
   const form = useForm<z.infer<typeof formInputCreateGoogleKeywordTrackerSchema>>({
     resolver: zodResolver(formInputCreateGoogleKeywordTrackerSchema),
     defaultValues: {
@@ -62,20 +64,21 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
         return;
       }
 
-      toast({
-        title: 'Google Keyword Tracker created',
-        variant: 'success',
-      })
+      if (res.googleKeywordTracker) {
+        toast({
+          title: 'Google Keyword Tracker created',
+          variant: 'success',
+        })
+        addGoogleKeywordTrackerToStore(res.googleKeywordTracker);
 
-      //TODO: Add google keyword tracker to location in the store
-
-      if (values.keywords && res.googleKeywordTracker?.id) {
-        addNewGoogleKeyword(values.keywords, res.googleKeywordTracker.id)
-          .then((res) => {
-            if (res.success) {
-              form.setValue('keywords', '');
-            }
-          })
+        if (values.keywords && res.googleKeywordTracker?.id) {
+          addNewGoogleKeyword(values.keywords, res.googleKeywordTracker.id)
+            .then((res) => {
+              if (res.success) {
+                form.setValue('keywords', '');
+              }
+            })
+        }
       }
     })
   }

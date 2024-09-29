@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getFaviconUrl } from "../_utils/imageUtils";
 import { getSession, useSession } from "next-auth/react";
+import { GoogleKeywordTracker } from "@/src/entities/models/google-keyword-tracker";
 
 export type WebsiteDetailsActions = {
   initialteWebsiteDetails: (website: WebsiteWithLocation[]) => void;
@@ -14,6 +15,8 @@ export type WebsiteDetailsActions = {
   updateWebsite: (website: WebsiteWithLocation) => void;
   addLocation: (location: Location) => void;
   deleteLocation: (id: string) => void;
+  addKeywordTracker: (keywordTracker: GoogleKeywordTracker) => void;
+  removeKeywordTracker: (eywordTracker: GoogleKeywordTracker) => void;
 
   setSelectedWebsite: (id: string) => void;
   setSelectedLocation: (id: string | undefined) => void;
@@ -117,6 +120,59 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
           return state;
         });
       },
+      addKeywordTracker(keywordTracker) {
+        set((state) => {
+          if (state.websites) {
+            return {
+              websites: state.websites.map((website) => {
+                if (website.location) {
+                  return {
+                    ...website,
+                    location: website.location.map((loc) => {
+                      if (loc.id === keywordTracker.locationId) {
+                        return {
+                          ...loc,
+                          keywordTrackerToolId: keywordTracker.id
+                        };
+                      }
+                      return loc;
+                    }),
+                  };
+                }
+                return website;
+              }),
+            };
+          }
+          return state;
+        });
+      },
+      removeKeywordTracker(keywordTracker) {
+        set((state) => {
+          if (state.websites) {
+            return {
+              websites: state.websites.map((website) => {
+                if (website.location) {
+                  return {
+                    ...website,
+                    location: website.location.map((loc) => {
+                      if (loc.keywordTrackerToolId === keywordTracker.id) {
+                        return {
+                          ...loc,
+                          keywordTrackerToolId: null
+                        };
+                      }
+                      return loc;
+                    }),
+                  };
+                }
+                return website;
+              }),
+            };
+          }
+          return state;
+        });
+      },
+
       setSelectedWebsite(id) {
         set((state) => {
           if (state.websites) {

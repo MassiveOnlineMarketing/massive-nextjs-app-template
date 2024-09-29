@@ -20,6 +20,7 @@ import { TrashIcon } from '@heroicons/react/20/solid'
 import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { deleteGoogleKeywordTracker } from '../../actions/google-keyword-tracker.actions';
 import { useRouter } from 'next/navigation';
+import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 
 
 function DeleteKeywordTrackerButton({ KeywordTrackerId }: { KeywordTrackerId: string }) {
@@ -27,6 +28,7 @@ function DeleteKeywordTrackerButton({ KeywordTrackerId }: { KeywordTrackerId: st
 
   const { toast } = useToast();
   const router = useRouter()
+  const removeKeywordTrackerFromStrore = useWebsiteDetailsStore(state => state.removeKeywordTracker)
 
   const handleDeleteKeywordTracker = async () => {
     startTransition(async () => {
@@ -48,8 +50,7 @@ function DeleteKeywordTrackerButton({ KeywordTrackerId }: { KeywordTrackerId: st
           description: "Keyword Tracker deleted successfully",
           variant: "success",
         })
-
-        // TODO: Remove keyword tracker from location in the store
+        removeKeywordTrackerFromStrore(res.googleKeywordTracker)
         router.refresh()
       }
     })
