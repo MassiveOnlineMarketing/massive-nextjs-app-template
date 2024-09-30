@@ -21,8 +21,8 @@ export class SerperApi implements ISerperApi {
       console.log("🟡 Fetching SERP data");
 
       console.log(
-        " Keywords:",
-        keywords,
+        " Keywords len:",
+        keywords.length,
         " Country:",
         country,
         " Language:",

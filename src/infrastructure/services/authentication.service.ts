@@ -3,7 +3,7 @@ import { startSpan } from "@sentry/nextjs";
 import { DI_SYMBOLS } from "@/di/types";
 import 'reflect-metadata';
 
-import { ForbiddenError, UnauthenticatedError } from "@/src/entities/errors/auth";
+import { ForbiddenError, GoogleTokenError, UnauthenticatedError } from "@/src/entities/errors/auth";
 
 import { Session } from "next-auth";
 import { ExtendedUser } from "@/next-auth";
@@ -84,7 +84,6 @@ export class AuthenticationService implements IAuthenticationService {
     return user.role === "ADMIN";
   }
 
-  // TODO: Craete special error for this
   async getGoogleRefreshTokenForService(userId: string, scope: GoogleScopeOptions): Promise<string> {
     return await startSpan(
       {name: "AuthenticationService > getGoogleRefreshTokenForService"},
@@ -92,21 +91,21 @@ export class AuthenticationService implements IAuthenticationService {
         const account = await this._usersRespository.findAccountByUserId(userId);
 
         if (!account) {
-          throw new UnauthenticatedError("User not found");
+          throw new GoogleTokenError('UnauthenticatedError', "User not found");
         }
 
 
         if (!account.scope){
-          throw new UnauthenticatedError("Scope not found");
+          throw new GoogleTokenError('UnauthenticatedError',"Scope not found");
         }
 
         const hasAcces = account.scope.includes(SCOPE_URLS[scope]);
         if (!hasAcces){
-          throw new ForbiddenError("User does not have access");
+          throw new GoogleTokenError('ForbiddenError',"User does not have access");
         }
 
         if (!account.refresh_token){
-          throw new NotFoundError("Refresh token not found");
+          throw new GoogleTokenError('NotFoundError', "Refresh token not found");
         }
 
         return account.refresh_token;

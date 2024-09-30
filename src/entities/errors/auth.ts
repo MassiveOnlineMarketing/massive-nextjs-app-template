@@ -21,3 +21,11 @@ export class ForbiddenError extends Error {
     super(message, options);
   }
 }
+
+
+export class GoogleTokenError extends Error {
+  constructor(public code: string, message: string) {
+    super(message);
+    this.name = "GoogleTokenError";
+  }
+}

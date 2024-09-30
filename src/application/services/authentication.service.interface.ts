@@ -31,7 +31,15 @@ export interface IAuthenticationService {
    * @returns True if the current user is an admin; otherwise, false.
    */
   isAdmin(): Promise<boolean>;
-
+  /**
+   * Retrieves the Google refresh token for a given user and scope.
+   * 
+   * @param userId - The ID of the user for whom the refresh token is being retrieved.
+   * @param scope - The scope for which the refresh token is required.
+   * @returns A promise that resolves to the Google refresh token as a string.
+   * @throws {GoogleTokenError} If the user is not found, the scope is not found, 
+   *                            the user does not have access, or the refresh token is not found.
+   */
   getGoogleRefreshTokenForService(
     userId: string,
     scope: GoogleScopeOptions

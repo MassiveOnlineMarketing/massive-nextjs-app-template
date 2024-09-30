@@ -2,6 +2,7 @@ import { urlWithoutDomain } from "@/app/_utils/urlUtils";
 import { cn } from "@/app/_components/utils";
 
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from "@heroicons/react/20/solid";
+import { extractFullPath } from "@/src/utils/url.utils";
 
 interface ColumnRowCellProps {
   value: string | number | null | undefined;
@@ -51,7 +52,7 @@ const TrendingIndicatorRowCell: React.FC<TrendingIndicatorProps> = ({ value }) =
 
 
 interface DateRowCellProps {
-  value: Date ;
+  value: Date;
 }
 const DateRowCell: React.FC<DateRowCellProps> = ({ value }) => {
   if (value) {
@@ -91,15 +92,9 @@ const UrlRowCell: React.FC<UrlRowCellProps> = ({ value, domainUrl }) => {
   return (
     <p className="mx-auto text-sm font-normal theme-t-t">
       {
-        domainUrl ? (
-          url.length > 52
-            ? urlWithoutDomain(url, domainUrl).substring(0, 52) + "..."
-            : urlWithoutDomain(url, domainUrl)
-        ) : (
-          url.length > 52
-            ? url.substring(0, 52) + "..."
-            : url
-        )
+        url.length > 52
+          ? extractFullPath(url).substring(0, 52) + "..."
+          : extractFullPath(url)
       }
     </p>
   );

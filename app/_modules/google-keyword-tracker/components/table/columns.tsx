@@ -159,6 +159,7 @@ export const columns = (domainUrl?: string): ColumnDef<LatestGoogleKeywordResult
     cell: ({ row: { original: {avgMonthlySearches} } }) => (
       <StandardRowCell value={avgMonthlySearches} />
     ),
+    sortingFn: positionSortingFn,
   },
   // * Tags
   {
@@ -212,6 +213,7 @@ export const columns = (domainUrl?: string): ColumnDef<LatestGoogleKeywordResult
     cell: ({ row: { original: {highTopOfPageBid} } }) => (
       <StandardRowCell value={highTopOfPageBid} />
     ),
+    sortingFn: positionSortingFn,
   },
   // * Low Top Of Page Bid
   {
@@ -223,6 +225,7 @@ export const columns = (domainUrl?: string): ColumnDef<LatestGoogleKeywordResult
     cell: ({ row: { original: {lowTopOfPageBid} } }) => (
       <StandardRowCell value={lowTopOfPageBid} />
     ),
+    sortingFn: positionSortingFn,
   },
   // * Date Retrieved
   {

@@ -96,7 +96,7 @@ function DataTable<TData, TValue>({
   return (
 
     <div className="pb-10 ">
-      <div className="sticky z-10 top-[88px] pt-3 pb-6 bg-white dark:bg-base-950">
+      <div className="sticky z-10 top-[88px] pt-3 pb-6 theme-bg-w">
         <ResultsDataTableTopBar
           table={table}
           data={data}
@@ -111,7 +111,7 @@ function DataTable<TData, TValue>({
           {/* Weg , overflow hidden*/}
           <TableHeader className="sticky z-10 top-[170px] w-full overflow-hidden   ">
             <tr className="absolute pointer-events-none w-full h-full border theme-b-p rounded-t-lg overflow-hidden z-50"></tr>
-            <tr className="absolute pointer-events-none w-[101%] h-full bg-white z-10 -ml-1"></tr>
+            <tr className="absolute pointer-events-none w-[101%] h-full theme-bg-w z-10 -ml-1"></tr>
 
 
             {table.getHeaderGroups().map((headerGroup) => (

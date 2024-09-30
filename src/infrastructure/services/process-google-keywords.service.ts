@@ -162,7 +162,7 @@ export class ProcessGoogleKeywordsService
             };
           });
 
-          console.log("🟢 Google Ads Metrics", filteredAdsMetrics);
+          console.log("🟢 Google Ads Metrics", filteredAdsMetrics.length);
 
         const GoogleAdsKeywordMetricsInsert = GoogleAdsApiMapper.fromApiResponse(filteredAdsMetrics);
         this.insertGoogleAdsMetrics(GoogleAdsKeywordMetricsInsert);

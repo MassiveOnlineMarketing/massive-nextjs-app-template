@@ -133,7 +133,7 @@ const DropdownMenuItemLink = React.forwardRef<
     <DropdownMenuPrimitive.Item
       ref={ref}
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none",
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm theme-t-p outline-none",
         // Background
         'focus:bg-base-50 data-[state=open]:bg-base-50 dark:focus:bg-theme-night-background-secondary dark:data-[state=open]:bg-theme-night-background-secondary',
         inset && "pl-8",

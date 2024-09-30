@@ -21,11 +21,11 @@ export class GoogleAdsApi implements IGoogleAdsApi {
           const encodedKeywords = encodeURIComponent(keywordString);
           const url = `${
             process.env.NEXT_PUBLIC_PYTHON_API_URL
-          }/historical-metrics?country-code=${country_code}&language-code=${language_code}&keywords=${encodedKeywords}`;
+          }/ads/historical-metrics?country-code=${country_code}&language-code=${language_code}&keywords=${encodedKeywords}`;
           console.log("reqUrl", url);
           const res = await axios(url);
-          // console.log("res.data.results", res.data.results);
-          return res.data.results;
+
+          return res.data.data.results;
         } catch (error) {
           console.error(error);
           return null;
