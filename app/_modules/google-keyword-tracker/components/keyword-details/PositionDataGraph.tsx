@@ -99,6 +99,7 @@ const SmallGraphs = ({
   const totalClicks = getTotals(gscData || [], 'clicks');
   const totalImpressions = getTotals(gscData || [], 'impressions');
   console.log('rerender small graphs')
+  console.log('gscData', gscData)
 
   return (
     <div className='max-w-[273px] w-full flex flex-col'>
@@ -277,7 +278,7 @@ const BigGraph = ({
 
   const data = combineResults(usersResult, competitorsResult);
   const websiteKeys = Object.keys(competitorsResult?.[competitorsResult.length - 1] || {}).filter(key => key !== 'date');
-  console.log('data, user, comp', data, usersResult, competitorsResult)
+  console.log('combined data, user, comp', data, usersResult, competitorsResult)
 
   // Chart config 
   const userDomain = extractHostname(domain);
@@ -431,7 +432,8 @@ function getTotals<K extends NumericKeys<KeywordSearchConsoleData>>(data: Keywor
 }
 
 const getCtrAverage = <K extends NumericKeys<KeywordSearchConsoleData>>(data: KeywordSearchConsoleData[], key: K): number => {
-  return Number((getTotals(data, key) / data.length).toFixed(2));
+  const numberOfPopulatedDays = data.filter((result) => result[key] !== 0).length;
+  return Number((getTotals(data, key) / numberOfPopulatedDays).toFixed(2));
 }
 
 function getTotalForUser(userResult: any[], userKey: string): number {
