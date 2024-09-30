@@ -365,7 +365,7 @@ const CustomTooltip = ({ payload, label, chartData, keywordName, userDomain }: T
 
   return (
     <div
-      className='w-[375px]  rounded-xl debug backdrop-blur  bg-white/60 dark:bg-theme-night-background-secondary border theme-b-p ring-4 ring-base-200 dark:ring-theme-night-background-secondary'
+      className='w-[375px]  rounded-xl debug backdrop-blur  bg-white/60 dark:bg-theme-night-background-secondary border theme-b-p ring-4 ring-base-100 dark:ring-theme-night-background-secondary'
       style={{
         transform: 'translate(-80px,-110px)',
       }}
