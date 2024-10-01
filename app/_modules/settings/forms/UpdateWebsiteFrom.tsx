@@ -64,6 +64,7 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
 
       if (res.updatedWebsite) {
         setSuccess("Website updated successfully");
+        console.log('updatedWebsite', res.updatedWebsite)
         updateWebsiteInStore(res.updatedWebsite);
       }
     })

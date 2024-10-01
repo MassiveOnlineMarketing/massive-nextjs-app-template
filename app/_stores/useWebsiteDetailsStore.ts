@@ -23,7 +23,7 @@ export type WebsiteDetailsActions = {
   resetSelectedStore: () => void;
 };
 
-interface WebsiteWithLocationDisplay extends WebsiteWithLocation {
+export interface WebsiteWithLocationDisplay extends WebsiteWithLocation {
   faviconUrl: string;
 }
 
@@ -81,6 +81,17 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
           }
           return state;
         });
+        set((state) => {
+          if (state.selectedWebsite?.id === website.id) {
+            return {
+              selectedWebsite: {
+                ...website,
+                faviconUrl: getFaviconUrl(website?.domainUrl),
+              },
+            };
+          }
+          return state;
+        });
       },
       addLocation(location) {
         set((state) => {
@@ -132,7 +143,7 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
                       if (loc.id === keywordTracker.locationId) {
                         return {
                           ...loc,
-                          keywordTrackerToolId: keywordTracker.id
+                          keywordTrackerToolId: keywordTracker.id,
                         };
                       }
                       return loc;
@@ -158,7 +169,7 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
                       if (loc.keywordTrackerToolId === keywordTracker.id) {
                         return {
                           ...loc,
-                          keywordTrackerToolId: null
+                          keywordTrackerToolId: null,
                         };
                       }
                       return loc;
@@ -213,6 +224,10 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
     }),
     {
       name: `website-details-store`,
+      partialize: (state) => ({
+        selectedWebsite: state.selectedWebsite,
+        selectedLocation: state.selectedLocation,
+      }),
     }
   )
 );

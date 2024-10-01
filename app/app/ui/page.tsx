@@ -16,6 +16,7 @@ import KwDetailCard from './KwDetailCard'
 import Theme from './Theme'
 import Tiers from './Tiers'
 import Switch from './Switch'
+import { MochGraphCard } from '@/app/_modules/google-keyword-tracker/components/keyword-details/main-keyword-details-graph/GoogleSearchConsoleKeywordDetailsGraph'
 
 const Page = () => {
   const { toast } = useToast()
@@ -314,6 +315,13 @@ const Page = () => {
         <div className='grid grid-cols-2 place-items-center gap-3'>
           <UiCard />
           <KwDetailCard />
+
+          {/* Clicks */}
+          <div className='animate-pulse  flex-1 h-full bg-slate-50 dark:bg-blue-700/10 px-4 pt-4 pb-6'>
+            <div className='pl-2.5 border-l-2 border-slate-500'>
+              <MochGraphCard value={420} dataKey='position' stroke='#64748B' label='Total Clicks' />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -322,7 +330,7 @@ const Page = () => {
       </div>
 
       <div className='p-6'>
-          <Switch />
+        <Switch />
       </div>
 
       <div className='p-6'>

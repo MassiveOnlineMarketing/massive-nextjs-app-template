@@ -22,6 +22,18 @@ export async function createWebsiteController(formData: z.infer<typeof formInput
       throw new InputParseError("Invalid data");
     }
 
-    return await createWebsiteUseCase(data, user);
+    let gscUrl = data.gscUrl;
+
+    if (gscUrl === "noWebsite") {
+      gscUrl = null;
+    }
+
+    const website = {
+      websiteName: data.websiteName,
+      domainUrl: data.domainUrl,
+      gscUrl: gscUrl,
+    };
+
+    return await createWebsiteUseCase(website, user);
   });
 }

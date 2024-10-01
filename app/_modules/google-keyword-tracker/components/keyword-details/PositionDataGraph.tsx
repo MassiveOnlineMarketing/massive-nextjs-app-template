@@ -21,16 +21,70 @@ const COLORS = ["#ec4899", "#a855f7", "#6366f1", "#0ea5e9", "#14b8a6", "#22c55e"
 
 const PositionDataGraph = ({ result, domain }: { result: LatestGoogleKeywordResultsDto, domain: string }) => {
   const [dataRange, setDataRange] = useState(7);
-  const { isLoading, data: res } = useFetchKeywordPositionsGraphData(result.keywordId, 'sc-domain:baristart.nl', result.keywordName, result.url, dataRange);
+  const { data: res } = useFetchKeywordPositionsGraphData(result.keywordId, result.keywordName, result.url, dataRange, 'sc-domain:baristart.nl');
   const { hasAccess } = useGoogleToken('search-console');
 
-  console.log('rerender position data graph')
-
+  const isLoading = true
 
   if (isLoading) {
     return (
-      <div>
-        Loading...
+      <div className='border theme-b-p ring-1 ring-offset-2 dark:ring-offset-transparent ring-theme-light-stroke dark:ring-theme-night-stroke rounded-xl theme-bg-p   flex flex-row'>
+        <div className='max-w-[273px] w-full flex flex-col'>
+          <div className='flex-1 h-full bg-blue-50 dark:bg-blue-700/10 px-4 pt-4 pb-6'>
+            <div className='h-[68px] flex   pl-2.5 border-l-2 border-blue-500'>
+              <p className='mt-auto theme-t-t text-sm'>Total Clicks</p>
+            </div>
+          </div>
+          <div className='flex-1 h-full bg-base-50 dark:bg-base-700/10 px-4 pt-4 pb-6'>
+            <div className='h-[68px]    pl-2.5 border-l-2 border-base-500'>
+              <GSCWrapper isLoading={isLoading} hasAccess={hasAccess}>
+                <div className='flex'>
+                  <p className='theme-t-p font-semibold text-[32px] w-[100px]'>100</p>
+                  <div className='ml-auto' style={{ width: '110px', height: '30px' }}>
+                    <ResponsiveContainer>
+                      <AreaChart data={res?.searchConsoleData}  >
+                        <XAxis
+                          dataKey={'date'}
+                          hide={true}
+                        />
+                        <YAxis
+                          yAxisId={1}
+                          hide={true}
+                        />
+
+                        <Area
+                          isAnimationActive={true}
+                          yAxisId={1}
+                          type="monotone"
+                          dataKey='impressions'
+                          stroke='#7857FE'
+                          strokeWidth={2}
+                          fill="transparent"
+                        />
+
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </GSCWrapper>
+              <p className='mt-auto theme-t-t text-sm'>Total Clicks</p>
+            </div>
+          </div>
+          <div className='flex-1 h-full bg-green-50 dark:bg-green-700/10 px-4 pt-4 pb-6'>
+            <div className='h-[68px]    pl-2.5 border-l-2 border-green-500'>
+              <p className='theme-t-t text-sm'>Total Clicks</p>
+            </div>
+          </div>
+          <div className='flex-1 h-full bg-yellow-50 dark:bg-yellow-700/10 px-4 pt-4 pb-6'>
+            <div className='h-[68px] flex   pl-2.5 border-l-2 border-yellow-500'>
+              <p className='mt-auto theme-t-t text-sm'>Total Clicks</p>
+            </div>
+          </div>
+        </div>
+
+        <div className='w-full h-[454px] px-4'>
+          Loading...
+        </div>
       </div>
     )
   }
@@ -473,6 +527,35 @@ function combineResults(array1: FormattedResult[], array2: FormattedResult[]): F
 
   // Convert the map back into an array
   return Array.from(map.values()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+}
+
+
+type GSCWrapperProps = {
+  children: React.ReactNode;
+  isLoading: boolean;
+  hasAccess: boolean;
+}
+
+const GSCWrapper = ({ children, isLoading, hasAccess }: GSCWrapperProps) => {
+
+  if (!hasAccess) {
+    return (
+      <div className='h-12 flex items-center justify-center'>
+        <p>connect gsc</p>
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className='h-12 flex items-center justify-center'>
+        <p>Loading</p>
+      </div>
+    )
+  }
+
+
+  return children
 }
 
 export default PositionDataGraph

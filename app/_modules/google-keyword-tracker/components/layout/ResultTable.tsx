@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+
 import useColumnOrder from "@/app/_components/ui/table/useColumnOrder";
+import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
 
 import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
 
@@ -12,9 +14,8 @@ import DataTablePagination from "@/app/_components/ui/table/table-pagination";
 
 import ResultsDataTableTopBar from "../table/topbar/ResultsTableTopbar";
 import { cn } from "@/app/_components/utils";
-import KeywordDetails from "./KeywordDetails";
-import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
 
+import KeywordDetails from "./KeywordDetails";
 
 
 
@@ -42,7 +43,7 @@ function DataTable<TData, TValue>({
   });
 
   //* Result Details row
-  const currentDomain = useWebsiteDetailsStore((state) => state.selectedWebsite?.domainUrl);
+  const selectedWebsite = useWebsiteDetailsStore((state) => state.selectedWebsite);
   const [selectedRowIndex, setSelectedRowIndex] = useState<string | null>(null);
   const [keywordData, setKeywordData] = useState<LatestGoogleKeywordResultsDto | null>(null);
 
@@ -54,7 +55,7 @@ function DataTable<TData, TValue>({
         setSelectedRowIndex(null);
         return;
       }
-
+      console.log('🚀 click row', id)
       setSelectedRowIndex((prevId) => (prevId === id ? null : id));
 
       if (!isNaN(index) && index >= 0 && index < data.length) {
@@ -92,6 +93,8 @@ function DataTable<TData, TValue>({
   });
 
   const numberOfVisibleColumns = table.getVisibleFlatColumns().length;
+
+  console.log('selectedWebsite', selectedWebsite)
 
   return (
 
@@ -162,8 +165,7 @@ function DataTable<TData, TValue>({
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
                           <KeywordDetails
                             result={keywordData}
-                            domain={currentDomain || ""}
-                            // googleSearchCampaign={googleSearchCampaign}
+                            website={selectedWebsite}
                           />
                         </td>
                       ) : (

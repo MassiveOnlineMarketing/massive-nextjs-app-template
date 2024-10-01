@@ -115,6 +115,8 @@ export async function getKeywordPositionsGraphDataController(
         let userResult = formatUserResults(userResultsRes);
         userResult = fillMissingDates(userResult, range);
 
+        const combinedData = combineResults(userResult, competitorResult);
+
         let searchConsoleData = null;
         if (url) {
           try {
@@ -144,6 +146,7 @@ export async function getKeywordPositionsGraphDataController(
           success: true,
           userResult,
           competitorResult,
+          combinedData,
           searchConsoleData: searchConsoleData?.data,
         };
       } catch (error) {
@@ -159,4 +162,28 @@ export async function getKeywordPositionsGraphDataController(
       }
     }
   );
+}
+
+function combineResults(array1: FormattedResult[], array2: FormattedResult[]): FormattedResult[] {
+  // Convert array1 to a map for easier merging by date
+  const map = new Map<string, FormattedResult>();
+
+  array1.forEach((item) => {
+    map.set(item.date, { ...item });
+  });
+
+  // Merge array2 into the map, adding the URL data to the correct date
+  array2.forEach((item) => {
+    const existingEntry = map.get(item.date);
+    if (existingEntry) {
+      // Merge URLs from array2 into the existing entry
+      Object.assign(existingEntry, item);
+    } else {
+      // If no existing entry for the date, add the new entry
+      map.set(item.date, { ...item });
+    }
+  });
+
+  // Convert the map back into an array
+  return Array.from(map.values()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }

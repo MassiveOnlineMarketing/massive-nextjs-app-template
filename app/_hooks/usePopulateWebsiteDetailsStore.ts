@@ -16,7 +16,6 @@ export const usePopulateWebsiteDetailsStore = () => {
     (state) => state.resetSelectedStore
   );
 
-  
   const user = useCurrentUser();
 
   useEffect(() => {
@@ -31,12 +30,12 @@ export const usePopulateWebsiteDetailsStore = () => {
       if (res.website || res.error === "Must be logged in to get a website") {
         console.log("settings initial websites details", res.website);
         if (res.website?.length === 0) {
-            console.log("no website found");
-            resetSelectedStore();
+          console.log("no website found");
+          resetSelectedStore();
         }
-        if (selectedWebsite?.userId !== user.id) {
-            console.log("reset selected store");
-            resetSelectedStore();
+        if (selectedWebsite?.userId && selectedWebsite.userId !== user.id) {
+          console.log("reset selected store");
+          resetSelectedStore();
         }
         setInitialWebsiteDetails(res.website || []);
       }
