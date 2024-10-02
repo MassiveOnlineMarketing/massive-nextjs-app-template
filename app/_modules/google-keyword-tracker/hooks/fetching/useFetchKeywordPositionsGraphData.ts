@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getKeywordPositionsGraphDataController } from "@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordPositionsGraphData.controller";
 
 
-function useFetchKeywordPositionsGraphData(keywordId: string, keyword: string, url: string | null, range: number = 7, siteProperty?: string | null) {
+function useFetchKeywordPositionsGraphData(keywordId: string, range: number = 7) {
   return useQuery({
     queryKey: ['googleSearchCompetitorGraphData', keywordId, range],
-    queryFn: () => getKeywordPositionsGraphDataController(keywordId, keyword, url, range),
+    queryFn: () => getKeywordPositionsGraphDataController(keywordId, range),
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 }

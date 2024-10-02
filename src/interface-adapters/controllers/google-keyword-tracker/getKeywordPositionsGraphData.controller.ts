@@ -11,8 +11,6 @@ export interface GroupedData {
   [date: string]: { [url: string]: number | null };
 }
 
-const DATE_RANGE = 7;
-
 // Helper functions
 const format = (date: Date) => formatDate(date, "yyyy-MM-dd");
 
@@ -88,15 +86,12 @@ function fillMissingDates(result: any[], dateRange: number) {
 
 export async function getKeywordPositionsGraphDataController(
   keywordId: string,
-  keyword: string,
-  url: string | null,
   range: number
 ) {
   return await startSpan(
     { name: "getKeywordPositionsGraphData Controller" },
     async () => {
       const authenticationService = getInjection("IAuthenticationService");
-      const searchConsoleApi = getInjection("ISearchConsoleApi");
 
       const { user } = await authenticationService.validateSession();
 

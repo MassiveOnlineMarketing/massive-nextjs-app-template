@@ -18,7 +18,7 @@ import { cn } from '@/app/_components/utils';
 const MainKeywordDetailsGraph = ({ result, website }: { result: LatestGoogleKeywordResultsDto, website?: WebsiteWithLocationDisplay }) => {
 
   const [dataRange, setDataRange] = useState(7);
-  const { isLoading: isLoadingPositions, data: resPositions } = useFetchKeywordPositionsGraphData(result.keywordId, result.keywordName, result.url, dataRange);
+  const { isLoading: isLoadingPositions, data: resPositions } = useFetchKeywordPositionsGraphData(result.keywordId, dataRange);
   const { isLoading: isLoadingSearchConsole, data: searchConsoleData } = useFetchSearchConsoleKeywordGraphData(result.keywordName, result.url, dataRange, website?.gscUrl);
   const { hasAccess, } = useGoogleToken('search-console');
 
