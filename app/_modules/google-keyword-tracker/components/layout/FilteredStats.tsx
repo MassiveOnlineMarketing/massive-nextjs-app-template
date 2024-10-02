@@ -5,7 +5,7 @@ import useFilteredKeywordResults from '../../hooks/useFilteredResults';
 
 const FilteredStats = () => {
   const filteredResults = useFilteredKeywordResults();
-  
+
   // Filter results once and reuse
   const improvedResults = filteredResults.filter(result => result.latestChange !== null && result.latestChange <= 0);
   const decreasedResults = filteredResults.filter(result => result.latestChange !== null && result.latestChange > 0);
@@ -33,12 +33,22 @@ const FilteredStats = () => {
 
   return (
     <div className='inline-flex gap-12'>
-      <div className='text-right'>
-        <p className='theme-t-s text-[26px] font-semibold'>{improvedCount}</p>
+      <div className='flex flex-col'>
+        <div className='ml-auto flex gap-1.5 items-center'>
+          <svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.80385 0L11 9H0.607697L5.80385 0Z" fill="#22C55E" />
+          </svg>
+          <p className='theme-t-s text-[26px] font-semibold'>{improvedCount}</p>
+        </div>
         <p className='text-xs text-slate-500'><span className='text-green-500'>{improvedPercentage.toFixed(0)}%</span> Improved</p>
       </div>
-      <div className='text-right'>
-        <p className='theme-t-s text-[26px] font-semibold'>{decreasedCount}</p>
+      <div className='flex flex-col'>
+        <div className='ml-auto flex gap-1.5 items-center'>
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9.5L0.803848 0.5L11.1962 0.5L6 9.5Z" fill="#EF4444" />
+          </svg>
+          <p className='theme-t-s text-[26px] font-semibold'>{decreasedCount}</p>
+        </div>
         <p className='text-xs text-slate-500'><span className='text-red-500'>{decreasedPercentage.toFixed(0)}%</span> Decreased</p>
       </div>
       <div className='text-right'>
