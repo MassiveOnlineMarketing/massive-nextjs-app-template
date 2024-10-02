@@ -61,6 +61,9 @@ const CreateLocationForm = ({ location, usersWebsites }: {
       console.log('setting websiteId', websiteId)
       form.setValue('websiteId', websiteId);
     }
+
+    // No need to add form to the dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [websiteId]);
 
   const router = useRouter();
@@ -122,7 +125,6 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                       <PopoverTrigger asChild>
                         <FormControl>
                           <button
-                            role="combobox"
                             className={cn(
                               "w-[412px] justify-between items-center text-sm outline-none",
                               "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -182,7 +184,6 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                     <PopoverTrigger asChild>
                       <FormControl>
                         <button
-                          role="combobox"
                           className={cn(
                             "w-[412px] justify-between items-center text-sm",
                             "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -231,7 +232,6 @@ const CreateLocationForm = ({ location, usersWebsites }: {
               <Popover>
                 <PopoverTrigger asChild>
                   <button
-                    role="combobox"
                     className={cn("w-[412px] flex justify-between items-baseline mt-1 text-sm",
                       "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
                       "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
@@ -284,7 +284,6 @@ const CreateLocationForm = ({ location, usersWebsites }: {
                     <PopoverTrigger asChild>
                       <FormControl>
                         <button
-                          role="combobox"
                           disabled={selectedLocationDisplayTitle ? true : false}
                           className={cn(
                             "w-[412px] justify-between items-center text-sm",

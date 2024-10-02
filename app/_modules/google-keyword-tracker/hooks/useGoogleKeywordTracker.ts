@@ -27,6 +27,9 @@ function useGoogleKeywordTracker() {
     if (!location) return;
     router.push(`/app/google-keyword-tracker/${location.keywordTrackerToolId}`);
     console.log('🟢 Pushing new route');
+    
+    // No need to add router to the dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
   }, [location]);
 
 

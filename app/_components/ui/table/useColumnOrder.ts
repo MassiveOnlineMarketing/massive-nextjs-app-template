@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react';
  * @returns An object containing the column order, functions to update the column order, and event handlers for drag and drop functionality.
  */
 function useColumnOrder(columns: ColumnDef<any, any>[], localStorageKey: string) {
-  const initialColumnOrder = useMemo(() => loadColumnOrder(columns, localStorageKey), [columns]);
+  const initialColumnOrder = useMemo(() => loadColumnOrder(columns, localStorageKey), [columns, localStorageKey]);
   const [columnOrder, setColumnOrder] = useState(initialColumnOrder);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {

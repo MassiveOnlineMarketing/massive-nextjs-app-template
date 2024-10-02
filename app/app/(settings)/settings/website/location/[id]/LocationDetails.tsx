@@ -42,7 +42,6 @@ const LocationDetails = async ({
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Website</Label>
           <div
-            role="combobox"
             className={cn(
               "w-[412px] justify-between items-center text-sm opacity-50 ",
               "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -59,7 +58,6 @@ const LocationDetails = async ({
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Language</Label>
           <div
-            role="combobox"
             className={cn(
               "w-[412px] justify-between items-center text-sm opacity-50 ",
               "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -76,7 +74,6 @@ const LocationDetails = async ({
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Location <span className='text-xs'>(optional)</span></Label>
           <div
-            role="combobox"
             className={cn(
               "w-[412px] justify-between items-center text-sm opacity-50 ",
               "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -98,7 +95,6 @@ const LocationDetails = async ({
         <div className='flex flex-col'>
           <Label className={cn('font-normal text-sm text-slate-500',)}>Country</Label>
           <div
-            role="combobox"
             className={cn(
               "w-[412px] justify-between items-center text-sm opacity-50 ",
               "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 placeholder-gray-400 ring-base-500 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",

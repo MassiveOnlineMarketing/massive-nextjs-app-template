@@ -16,6 +16,9 @@ const ClientPage = ({ latestResults }: { latestResults: LatestGoogleKeywordResul
   
   useEffect(() => {
     setNewSerpResultState(latestResults)
+    
+    // No need to add setNewSerpResultState to the dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestResults])
   
   const filteredResults = useFilteredKeywordResults()

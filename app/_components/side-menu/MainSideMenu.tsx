@@ -98,7 +98,7 @@ const MainSideMenu = () => {
         active: isActive('/app/integrations', pathname)
       },
     ])
-  }, [pathname, selectedKeywordTrackerId, selectedWebsiteId])
+  }, [pathname, keywordTrackerLink, selectedWebsiteId])
 
   const websites = useWebsiteDetailsStore((state) => state.websites)
 

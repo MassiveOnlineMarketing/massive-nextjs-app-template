@@ -170,7 +170,6 @@ const LocationForm = ({ form, isPending, usersWebsites }: LocationFromProps) => 
                     <FormControl>
                       <button
                         disabled={isPending}
-                        role="combobox"
                         className={cn(
                           "w-[412px] justify-between items-center text-sm outline-none theme-t-p",
                           "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -231,7 +230,6 @@ const LocationForm = ({ form, isPending, usersWebsites }: LocationFromProps) => 
                   <FormControl>
                     <button
                       disabled={isPending}
-                      role="combobox"
                       className={cn(
                         "w-[412px] justify-between items-center text-sm theme-t-p",
                         "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -281,7 +279,6 @@ const LocationForm = ({ form, isPending, usersWebsites }: LocationFromProps) => 
             <PopoverTrigger asChild>
               <button
                 disabled={isPending}
-                role="combobox"
                 className={cn("w-[412px] flex justify-between items-baseline mt-1 text-sm theme-t-p",
                   "inline-flex w-full mt-1 justify-between px-4 py-3 rounded-xl border theme-b-p bg-primary-50/50 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
                   "ring-base-500 focus:ring-1 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-base-950 ",
@@ -325,7 +322,6 @@ const LocationForm = ({ form, isPending, usersWebsites }: LocationFromProps) => 
                 <PopoverTrigger asChild>
                   <FormControl>
                     <button
-                      role="combobox"
                       disabled={isPending ? isPending : selectedLocationDisplayTitle ? true : false}
                       className={cn(
                         "w-[412px] justify-between items-center text-sm theme-t-p",
