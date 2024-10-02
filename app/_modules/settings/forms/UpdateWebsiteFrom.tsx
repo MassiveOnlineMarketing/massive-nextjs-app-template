@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useTransition } from 'react'
+import { useToast } from '@/app/_components/ui/toast/use-toast';
 
 import { useWebsiteDetailsStore } from '@/app/_stores/useWebsiteDetailsStore';
 import useGoogleToken from "@/app/_modules/auth/hooks/useGoogleRefreshToken";
@@ -13,7 +14,7 @@ import { formInputUpdateWebsiteSchema } from '@/src/entities/models/website';
 import { ConnectedGscProperties } from '@/src/application/api/search-console.api.types';
 import { updateWebsite } from '@/app/_actions/website.actions';
 
-import { Form, FormControl, FormError, FormSuccess, FormField, FormItem, FormLabel, FormMessage, FormInputField, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../components/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormInputField, FormInputSelect, FormInputSelectContent, FormInputSelectItem, FormInputSelectTrigger, FormInputSelectValue } from '../components/form';
 import GSCWrapper from './GSCWrapper';
 
 import DeleteWebsiteButton from '../components/DeleteWebsiteButton';
@@ -34,9 +35,8 @@ type DefaultValues = {
 
 const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: DefaultValues, gscProperties?: ConnectedGscProperties[] }) => {
   const { hasAccess, isLoading } = useGoogleToken('search-console');
+  const { toast } = useToast();
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
   const updateWebsiteInStore = useWebsiteDetailsStore(state => state.updateWebsite);
@@ -52,19 +52,23 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
   });
 
   const onFormSubmit = async (values: z.infer<typeof formInputUpdateWebsiteSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
       const res = await updateWebsite(values, defaultValues.id);
 
       if (res.error) {
-        setError(res.error);
-      }
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        })      }
 
       if (res.updatedWebsite) {
-        setSuccess("Website updated successfully");
-        console.log('updatedWebsite', res.updatedWebsite)
+        toast({
+          title: "Success",
+          description: "Website created successfully",
+          variant: "success",
+          icon: 'success'
+        })
         updateWebsiteInStore(res.updatedWebsite);
       }
     })
@@ -156,9 +160,6 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
 
           </CardContent>
         </Card>
-
-        <FormError message={error} />
-        <FormSuccess message={success} />
 
         <div className='flex ml-auto'>
           <Button

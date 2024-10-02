@@ -87,12 +87,8 @@ const UpdateGoogleKeywordTrackerToolFrom = ({ keywordTracker }: { keywordTracker
       })
 
       if (values.keywords) {
+        form.setValue('keywords', '');
         addNewGoogleKeyword(values.keywords, keywordTracker.id)
-          .then((res) => {
-            if (res.success) {
-              form.setValue('keywords', '');
-            }
-          })
       }
     })
   }

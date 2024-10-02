@@ -20,6 +20,7 @@ import {
 
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { useToast } from '@/app/_components/ui/toast/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
@@ -27,6 +28,7 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
   const deleteWebsiteFromStore = useWebsiteDetailsStore(state => state.deleteWebsite)
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast();
+  const router = useRouter()
 
   const handleDeleteLocation = async () => {
     startTransition(async () => {
@@ -45,6 +47,7 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
       if (res.deletedWebsite) {
         deleteWebsiteFromStore(res.deletedWebsite.id)
         // TODO: Route user to settings page?
+        router.push('/app/settings/webiste')
       }
     })
   }
