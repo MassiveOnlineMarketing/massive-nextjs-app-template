@@ -13,8 +13,8 @@ import { format, parse } from 'date-fns';
 
 type Props = {
   isLoading: boolean;
-  userResults?: FormattedResult[];
   competitorsResult?: FormattedResult[];
+  combinedData?: FormattedResult[];
   domain?: string;
   keywordName: string;
   resultUrl: string | null;
@@ -24,17 +24,17 @@ const LINE_COLORS = ["#ec4899", "#a855f7", "#6366f1", "#0ea5e9", "#14b8a6", "#22
 
 const MainPositionWithCompetitorsGraph = ({
   isLoading,
-  userResults,
   competitorsResult,
+  combinedData,
   domain,
   keywordName,
   resultUrl
 }: Props) => {
+
   if (isLoading) return <MockGraphMainPositionWithCompetitors />
 
-  if (!userResults) return <MockGraphMainPositionWithCompetitors />
+  if (!combinedData) return <MockGraphMainPositionWithCompetitors />
 
-  const data = combineResults(userResults, competitorsResult);
   const websiteKeys = Object.keys(competitorsResult?.[competitorsResult.length - 1] || {}).filter(key => key !== 'date');
 
   // Chart config 
@@ -42,62 +42,59 @@ const MainPositionWithCompetitorsGraph = ({
   const strokeColor = '#DFE5FA'
   const tickColor = '#9CA3AF'
 
-  if (data) {
-
-    return (
-      <div className='w-full h-[454px] px-4'>
-        <div style={{ width: '100%', height: '454px' }}>
-          <ResponsiveContainer>
-            <AreaChart data={data} >
-              <XAxis
-                dataKey={'date'}
-                interval={0}
-                tickFormatter={(tickItem) => {
-                  const date = parse(tickItem, "yyyy-MM-dd", new Date());
-                  return format(date, "MM/dd");
-                }}
-                tick={{ fontSize: 14, fill: tickColor }}
-                padding={{ left: 30, right: 30 }}
-                axisLine={{ strokeWidth: 1, stroke: strokeColor }}
-              />
-              <CartesianGrid stroke={strokeColor} strokeDasharray={'10 10'} horizontal={true} vertical={false} />
-              <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< MainKeywordDetailsGrapTooltip keywordName={keywordName} chartData={data} userDomain={userDomain} />} />
-              <YAxis
-                reversed
-                yAxisId={1}
-                hide={true}
-                axisLine={false}
-                tick={{ fontSize: 14, fill: tickColor }}
-              />
-              {websiteKeys.map((websiteKey, index) => (
-                <Area
-                  key={websiteKey}
-                  isAnimationActive={true}
-                  yAxisId={1}
-                  type="monotone"
-                  dataKey={websiteKey}
-                  stroke={LINE_COLORS[index % LINE_COLORS.length]}
-                  strokeWidth={2}
-                  fill="transparent"
-                />
-              ))}
+  return (
+    <div className='w-full h-[454px] px-4' >
+      <div style={{ width: '100%', height: '454px' }}>
+        <ResponsiveContainer>
+          <AreaChart data={combinedData} >
+            <XAxis
+              dataKey={'date'}
+              interval={0}
+              tickFormatter={(tickItem) => {
+                const date = parse(tickItem, "yyyy-MM-dd", new Date());
+                return format(date, "MM/dd");
+              }}
+              tick={{ fontSize: 14, fill: tickColor }}
+              padding={{ left: 30, right: 30 }}
+              axisLine={{ strokeWidth: 1, stroke: strokeColor }}
+            />
+            <CartesianGrid stroke={strokeColor} strokeDasharray={'10 10'} horizontal={true} vertical={false} />
+            <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< MainKeywordDetailsGrapTooltip keywordName={keywordName} chartData={combinedData} userDomain={userDomain} />} />
+            <YAxis
+              reversed
+              yAxisId={1}
+              hide={true}
+              axisLine={false}
+              tick={{ fontSize: 14, fill: tickColor }}
+            />
+            {websiteKeys.map((websiteKey, index) => (
               <Area
-                key={userDomain}
+                key={websiteKey}
                 isAnimationActive={true}
-
                 yAxisId={1}
                 type="monotone"
-                dataKey={userDomain}
-                stroke='#EAB308'
+                dataKey={websiteKey}
+                stroke={LINE_COLORS[index % LINE_COLORS.length]}
                 strokeWidth={2}
                 fill="transparent"
               />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+            ))}
+            <Area
+              key={userDomain}
+              isAnimationActive={true}
+
+              yAxisId={1}
+              type="monotone"
+              dataKey={userDomain}
+              stroke='#EAB308'
+              strokeWidth={2}
+              fill="transparent"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
-    )
-  }
+    </div >
+  )
 }
 const MOCK_LINE_COLORS = ["#e5e7eb", "#d1d5db", "#9ca3af", "#e5e7eb", "#4b5563", "#374151", "#1f2937", "#111827"];
 const MockGraphMainPositionWithCompetitors = () => {
@@ -147,30 +144,6 @@ const MockGraphMainPositionWithCompetitors = () => {
       </div>
     </div>
   )
-}
-
-function combineResults(array1: FormattedResult[], array2?: FormattedResult[]): FormattedResult[] {
-  // Convert array1 to a map for easier merging by date
-  const map = new Map<string, FormattedResult>();
-
-  array1.forEach((item) => {
-    map.set(item.date, { ...item });
-  });
-
-  // Merge array2 into the map, adding the URL data to the correct date
-  array2?.forEach((item) => {
-    const existingEntry = map.get(item.date);
-    if (existingEntry) {
-      // Merge URLs from array2 into the existing entry
-      Object.assign(existingEntry, item);
-    } else {
-      // If no existing entry for the date, add the new entry
-      map.set(item.date, { ...item });
-    }
-  });
-
-  // Convert the map back into an array
-  return Array.from(map.values()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
 const MOCK_DATA = [

@@ -9,7 +9,6 @@ import useFetchKeywordPositionsGraphData from '../../hooks/fetching/useFetchKeyw
 import useFetchSearchConsoleKeywordGraphData from '../../hooks/fetching/useFetchSearchConsoleKeywordGraphData';
 import useGoogleToken from '@/app/_modules/auth/hooks/useGoogleRefreshToken';
 
-import NewTest from './main-keyword-details-graph/NewTest';
 import MainPositionWithCompetitorsGraph from './main-keyword-details-graph/MainPositionWithCompetitorsGraph';
 import UserPositionDetailsGraph from './main-keyword-details-graph/UserPositionDetailsGraph';
 import GoogleSearchConsoleKeywordDetailsGraph from './main-keyword-details-graph/GoogleSearchConsoleKeywordDetailsGraph';
@@ -19,7 +18,7 @@ import { cn } from '@/app/_components/utils';
 const MainKeywordDetailsGraph = ({ result, website }: { result: LatestGoogleKeywordResultsDto, website?: WebsiteWithLocationDisplay }) => {
 
   const [dataRange, setDataRange] = useState(7);
-  const { isLoading: isLoadingPositions, data: resPositions } = useFetchKeywordPositionsGraphData(result.keywordId, result.keywordName, result.url, dataRange, website?.gscUrl);
+  const { isLoading: isLoadingPositions, data: resPositions } = useFetchKeywordPositionsGraphData(result.keywordId, result.keywordName, result.url, dataRange);
   const { isLoading: isLoadingSearchConsole, data: searchConsoleData } = useFetchSearchConsoleKeywordGraphData(result.keywordName, result.url, dataRange, website?.gscUrl);
   const { hasAccess, } = useGoogleToken('search-console');
 
@@ -44,8 +43,7 @@ const MainKeywordDetailsGraph = ({ result, website }: { result: LatestGoogleKeyw
             isLoading={isLoadingPositions}
           />
         </div>
-        <NewTest
-          userResults={resPositions?.userResult}
+        <MainPositionWithCompetitorsGraph
           competitorsResult={resPositions?.competitorResult}
           combinedData={resPositions?.combinedData}
           isLoading={isLoadingPositions}
@@ -75,31 +73,6 @@ const MainKeywordDetailsGraph = ({ result, website }: { result: LatestGoogleKeyw
     </>
   )
 }
-
-function combineResults(array1?: FormattedResult[], array2?: FormattedResult[]): FormattedResult[] {
-  // Convert array1 to a map for easier merging by date
-  const map = new Map<string, FormattedResult>();
-
-  array1?.forEach((item) => {
-    map.set(item.date, { ...item });
-  });
-
-  // Merge array2 into the map, adding the URL data to the correct date
-  array2?.forEach((item) => {
-    const existingEntry = map.get(item.date);
-    if (existingEntry) {
-      // Merge URLs from array2 into the existing entry
-      Object.assign(existingEntry, item);
-    } else {
-      // If no existing entry for the date, add the new entry
-      map.set(item.date, { ...item });
-    }
-  });
-
-  // Convert the map back into an array
-  return Array.from(map.values()).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-}
-
 
 const Divider = () => {
   return <div className="h-5 w-[1px] my-[10px] bg-theme-light-stroke dark:bg-theme-night-stroke"></div>

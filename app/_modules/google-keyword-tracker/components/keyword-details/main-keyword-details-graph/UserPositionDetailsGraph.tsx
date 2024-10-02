@@ -29,7 +29,13 @@ const UserPositionDetailsGraph = ({
   }
 
   if (!data) {
-    return null;
+    return (
+      <div className='animate-pulse  flex-1 h-full bg-slate-50 dark:bg-blue-700/10 px-4 pt-4 pb-6'>
+        <div className='pl-2.5 border-l-2 border-slate-500'>
+          <MochGraphCard value={420} dataKey='position' stroke='#64748B' label='Average Position' />
+        </div>
+      </div>
+    );
   }
   const userKey = Object.keys(data?.[data.length - 1] || {}).filter(key => key !== 'date')[0];
   const positionTotal = getAveragePositionForUser(data, userKey).toFixed(1);

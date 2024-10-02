@@ -88,7 +88,6 @@ function fillMissingDates(result: any[], dateRange: number) {
 
 export async function getKeywordPositionsGraphDataController(
   keywordId: string,
-  siteProperty: string,
   keyword: string,
   url: string | null,
   range: number
@@ -117,37 +116,11 @@ export async function getKeywordPositionsGraphDataController(
 
         const combinedData = combineResults(userResult, competitorResult);
 
-        let searchConsoleData = null;
-        if (url) {
-          try {
-            const refreshTokens =
-              await authenticationService.getGoogleRefreshTokenForService(
-                user.id,
-                "search-console"
-              );
-            searchConsoleData = await searchConsoleApi.fetchKeywordData(
-              refreshTokens,
-              siteProperty,
-              keyword,
-              url,
-              format(subDays(new Date(), range)),
-              format(new Date())
-            );
-          } catch (error) {
-            if (error instanceof GoogleTokenError) {
-              console.log("Error fetching search consosle data: ", error.message);
-            } else {
-              console.error("Error fetching search console data: ", error);
-            }
-          }
-        }
-
         return {
           success: true,
           userResult,
           competitorResult,
           combinedData,
-          searchConsoleData: searchConsoleData?.data,
         };
       } catch (error) {
         console.error(
