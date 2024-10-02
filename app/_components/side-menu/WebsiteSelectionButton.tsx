@@ -13,11 +13,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuPorta
 
 import { cn } from '../utils';
 import { getFaviconUrl } from '@/app/_utils/imageUtils';
+
 import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { BoxIcon } from '@radix-ui/react-icons';
-
-
 
 interface WebsiteWithGroupedLocations extends WebsiteWithLocation {
   groupedLocations: Record<string, Location[]>;
@@ -194,7 +193,7 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
                 </Command>
 
                 {/* Add Location */}
-                <Link onClick={() => setOpen(false)} href='/app/settings/website/location' className='rounded-sm px-2 py-1.5  flex gap-2 items-center text-sm theme-t-t hover:bg-base-50 dark:hover:bg-theme-night-background-secondary'>
+                <Link onClick={() => setOpen(false)} href={`/app/settings/website/location?websiteId=${website.id}`} className='rounded-sm px-2 py-1.5  flex gap-2 items-center text-sm theme-t-t hover:bg-base-50 dark:hover:bg-theme-night-background-secondary'>
                   <Cog6ToothIcon className="h-4 w-4 theme-t-n" />
                   Add new location
                   <PlusIcon className="ml-auto h-4 w-4 theme-t-n" />
