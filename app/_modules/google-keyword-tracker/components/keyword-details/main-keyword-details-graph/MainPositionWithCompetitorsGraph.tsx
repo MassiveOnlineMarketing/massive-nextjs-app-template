@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordPositionsGraphData.controller';
+import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/from-hooks/getKeywordPositionsGraphData.controller';
 
 import { YAxis, XAxis, ResponsiveContainer, Area, AreaChart, CartesianGrid, Tooltip } from "recharts";
 import MainKeywordDetailsGrapTooltip from './Tooltip';
@@ -59,7 +59,7 @@ const MainPositionWithCompetitorsGraph = ({
               axisLine={{ strokeWidth: 1, stroke: strokeColor }}
             />
             <CartesianGrid stroke={strokeColor} strokeDasharray={'10 10'} horizontal={true} vertical={false} />
-            <Tooltip wrapperStyle={{ zIndex: 1000 }} content={< MainKeywordDetailsGrapTooltip keywordName={keywordName} chartData={combinedData} userDomain={userDomain} />} />
+            <Tooltip  wrapperStyle={{ zIndex: 1000}} content={< MainKeywordDetailsGrapTooltip keywordName={keywordName} chartData={combinedData} userDomain={userDomain} />} />
             <YAxis
               reversed
               yAxisId={1}

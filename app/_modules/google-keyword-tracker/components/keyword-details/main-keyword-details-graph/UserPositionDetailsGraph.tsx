@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordPositionsGraphData.controller';
+import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/from-hooks/getKeywordPositionsGraphData.controller';
 
 import { YAxis, XAxis, ResponsiveContainer, Area, AreaChart } from "recharts";
 import { MochGraphCard } from './GoogleSearchConsoleKeywordDetailsGraph';

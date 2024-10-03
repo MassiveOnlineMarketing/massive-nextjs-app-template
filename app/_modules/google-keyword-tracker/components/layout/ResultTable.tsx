@@ -6,6 +6,7 @@ import useColumnOrder from "@/app/_components/ui/table/useColumnOrder";
 import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
 
 import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { GoogleKeywordTracker } from "@/src/entities/models/google-keyword-tracker";
 
 // Components
 import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
@@ -22,11 +23,13 @@ import KeywordDetails from "./KeywordDetails";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  googleKeywordTracker: GoogleKeywordTracker
 }
 
 function DataTable<TData, TValue>({
   columns,
   data,
+  googleKeywordTracker
 }: DataTableProps<TData, TValue>) {
 
   const [rowSelection, setRowSelection] = useState({});
@@ -166,6 +169,7 @@ function DataTable<TData, TValue>({
                           <KeywordDetails
                             result={keywordData}
                             website={selectedWebsite}
+                            googleKeywordTracker={googleKeywordTracker}
                           />
                         </td>
                       ) : (

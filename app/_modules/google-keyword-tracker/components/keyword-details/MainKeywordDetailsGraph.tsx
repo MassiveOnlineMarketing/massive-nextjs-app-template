@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
 import { WebsiteWithLocationDisplay } from '@/app/_stores/useWebsiteDetailsStore';
-import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordPositionsGraphData.controller';
+import { FormattedResult } from '@/src/interface-adapters/controllers/google-keyword-tracker/from-hooks/getKeywordPositionsGraphData.controller';
 
 import useFetchKeywordPositionsGraphData from '../../hooks/fetching/useFetchKeywordPositionsGraphData';
 import useFetchSearchConsoleKeywordGraphData from '../../hooks/fetching/useFetchSearchConsoleKeywordGraphData';

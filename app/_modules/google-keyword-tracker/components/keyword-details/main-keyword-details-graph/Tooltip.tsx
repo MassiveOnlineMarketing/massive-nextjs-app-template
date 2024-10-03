@@ -2,7 +2,7 @@ import { TooltipProps } from "recharts";
 import { format, parse } from 'date-fns';
 import { getOrdinalSuffix } from '@/app/_utils/numberUtils';
 import { cn } from "@/app/_components/utils";
-import { FormattedResult } from "@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordPositionsGraphData.controller";
+import { FormattedResult } from "@/src/interface-adapters/controllers/google-keyword-tracker/from-hooks/getKeywordPositionsGraphData.controller";
 
 const MainKeywordDetailsGrapTooltip = ({ payload, label, chartData, keywordName, userDomain }: TooltipProps<string, string> & { chartData: FormattedResult[], keywordName: string, userDomain: string }) => {
   if (!payload || payload.length === 0) {

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 
 import { isAuthenticated } from '@/app/_modules/auth/actions';
-import { getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
+import { getGoogleKeywordTracker, getLatestGoogleKeywordResults } from '@/app/_modules/actions/google-keyword-tracker.actions';
 
 import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layout/FilteredStats';
 import ClientPage from './ClientPage';
@@ -52,8 +52,16 @@ const page = async ({
 
 async function PageInitialization({ toolId }: { toolId: string }) {
   const res = await getLatestGoogleKeywordResults(toolId)
+  const toolRes = await getGoogleKeywordTracker(toolId)
 
-  return <ClientPage latestResults={res.results || []} />
+  const tool = toolRes.googleKeywordTracker
+
+  if (!res || !tool) {
+    return <div>error</div>
+  }
+
+
+  return <ClientPage latestResults={res.results || []} googleKeywordTracker={tool} />
 }
 
 export default page

@@ -12,7 +12,6 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/app/_components/ui/alert-dialog'
 
 import UiCard from './UiCard'
-import KwDetailCard from './KwDetailCard'
 import Theme from './Theme'
 import Tiers from './Tiers'
 import Switch from './Switch'
@@ -314,7 +313,6 @@ const Page = () => {
         <h1 className='text-xl font-semibold mb-2'>Settings & kw detail card</h1>
         <div className='grid grid-cols-2 place-items-center gap-3'>
           <UiCard />
-          <KwDetailCard />
 
           {/* Clicks */}
           <div className='animate-pulse  flex-1 h-full bg-slate-50 dark:bg-blue-700/10 px-4 pt-4 pb-6'>

@@ -1,9 +1,10 @@
 
-import { cn } from "../../../_components/utils";
+
 import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-// import { KeywordMetricsApiResponse } from "@/application/useCases/googleAdsApi/getGoogleSearchKeywordMetrics";
+import { cn } from "@/app/_components/utils";
+import { FetchHistoricalMetricsResponseGoogleAdsApi } from "@/src/application/api/google-ads.api.types";
 
 
 const FILL = "dark:bg-dark-bg-light bg-[#FBFBFF]";
@@ -18,7 +19,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white dark:bg-dark-bg-light p-1 rounded-lg  border border-light-stroke dark:border-dark-stroke", 
+          "theme-bg-w border theme-b-p p-1 rounded-[8px] ", 
           className,
         )}
         {...props}
@@ -51,11 +52,11 @@ const CardTitle = React.forwardRef<HTMLDivElement, CardTitleProps>(
         {...props}
       >
         {/* Title */}
-        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="theme-t-p font-medium">
           {title}
         </p>
-        {/* Divider */}
-        <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
+        {/* CHECK: Divider */}
+        <div className="w-full h-[1px] theme-bg-s"></div>
         {/* Children */}
         {children}
       </div>
@@ -77,7 +78,7 @@ const CardPlainRow = React.forwardRef<HTMLDivElement, CardPlainRowProps>(
       <div
         ref={ref}
         className={cn(
-          "p-3 w-full flex items-center justify-between",
+          "p-3 w-full flex items-center justify-between theme-bg-p rounded-[4px]",
           fill ? FILL : "",
           className,
         )}
@@ -85,7 +86,7 @@ const CardPlainRow = React.forwardRef<HTMLDivElement, CardPlainRowProps>(
       >
         {/* Value */}
         <p className={cn(
-          'text-base leading-5 text-slate-500 dark:text-dark-text-dark',
+          'text-base  theme-t-s',
           paragraphStyles
         )}>
           {value}
@@ -116,11 +117,11 @@ const CardRow = React.forwardRef<HTMLDivElement, CardRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm text-p-800 dark:text-dark-text-light">
+        <p className="text-sm theme-t-p">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm text-slate-500 dark:text-dark-text-dark">
+        <p className="text-sm theme-t-t">
           {value ? value : "N/A"}
         </p>
       </div>
@@ -129,8 +130,40 @@ const CardRow = React.forwardRef<HTMLDivElement, CardRowProps>(
 );
 CardRow.displayName = "CardRow";
 
-const CardAdsBidRow = React.forwardRef<HTMLDivElement, CardRowProps>(
-  ({ className, label, value, fill, ...props }, ref) => {
+
+interface WhiteRowProps extends React.HTMLAttributes<HTMLDivElement> {
+  label: string;
+  value: string | number | null;
+  noBorder?: boolean;
+}
+const WhiteRow = React.forwardRef<HTMLDivElement, WhiteRowProps>(
+  ({ className, label, value, noBorder, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "p-3 w-full flex items-center justify-between",
+          noBorder ? '' : "border-dashed border-b theme-b-p",
+          className,
+        )}
+        {...props}
+      >
+        {/* Label */}
+        <p className="text-sm theme-t-s">
+          {label}
+        </p>
+        {/* Value */}
+        <p className="text-sm theme-t-p">
+          {value ? value : "N/A"}
+        </p>
+      </div>
+    );
+  }
+);
+WhiteRow.displayName = "WhiteRow";
+
+const CardAdsBidRow = React.forwardRef<HTMLDivElement, WhiteRowProps>(
+  ({ className, label, value, noBorder, ...props }, ref) => {
 
     const formattedValue = typeof value === 'number' ? `$${(value / 1000000).toFixed(2)}` : value;
     return (
@@ -138,17 +171,17 @@ const CardAdsBidRow = React.forwardRef<HTMLDivElement, CardRowProps>(
         ref={ref}
         className={cn(
           "p-3 w-full flex items-center justify-between",
-          fill ? FILL : "",
+          noBorder ? '' : "border-dashed border-b theme-b-p",
           className,
         )}
         {...props}
       >
         {/* Label */}
-        <p className="text-sm text-p-800 dark:text-dark-text-light">
+        <p className="text-sm theme-t-s">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm text-slate-500 dark:text-dark-text-dark">
+        <p className="text-sm theme-t-p">
           {formattedValue}
         </p>
       </div>
@@ -161,26 +194,26 @@ CardAdsBidRow.displayName = "CardAdsBidRow";
 interface CardDateRowProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   value: Date;
-  fill?: boolean;
+  noBorder?: boolean;
 }
 const CardDateRow = React.forwardRef<HTMLDivElement, CardDateRowProps>(
-  ({ className, label, value, fill, ...props }, ref) => {
+  ({ className, label, value, noBorder, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
           "p-3 w-full flex items-center justify-between",
-          fill ? FILL : "",
+          noBorder ? '' : "border-dashed border-b theme-b-p",
           className,
         )}
         {...props}
       >
         {/* Label */}
-        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm theme-t-s">
           {label}
         </p>
         {/* Value */}
-        <p className="text-sm leading-5 text-slate-500 dark:text-dark-text-dark">
+        <p className="text-sm theme-t-p">
           {new Date(value).toLocaleDateString()}
         </p>
       </div>
@@ -213,13 +246,13 @@ const CardTagsRow = React.forwardRef<HTMLDivElement, CardTagsRowProps>(
         {...props}
       >
         {/* Label */}
-        <p className="text-sm leading-5 text-p-800 dark:text-dark-text-light">
+        <p className="text-sm leading-5 theme-t-p">
           {label}
         </p>
-        {/* Data */}
+        {/* CHECK:Data */}
         <div className="flex gap-2">
           {tags.map((tag: Tags) => (
-            <span key={tag.id} className="text-xs leading-5 text-slate-500 dark:text-dark-text-dark bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter px-2 py-1 rounded-sm">
+            <span key={tag.id} className="text-xs leading-5 theme-t-t bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter px-2 py-1 rounded-sm">
               {tag.name}
             </span>
           ))}
@@ -230,50 +263,6 @@ const CardTagsRow = React.forwardRef<HTMLDivElement, CardTagsRowProps>(
 );
 
 CardTagsRow.displayName = "CardTagsRow";
-
-// interface CardRowInputProps {
-//   item: KeywordMetricsApiResponse;
-//   selectedSearches: string[];
-//   handleCheckboxChange: (query: string) => void;
-// }
-// const CardRowInput = React.forwardRef<HTMLLabelElement, CardRowInputProps>(({
-//   item,
-//   selectedSearches,
-//   handleCheckboxChange
-// }, ref) => (
-//   <label
-//     className={cn(
-//       "flex items-center gap-3 px-3 py-2 cursor-pointer",
-//       selectedSearches.includes(item.text) && "bg-p-25 dark:bg-dark-bg-light rounded-lg"
-//     )}
-//     key={item.text}
-//     ref={ref}
-//   >
-//     {/* Label */}
-//     <span className="ml-auto min-w-10">{item.keyword_metrics.avg_monthly_searches ?? 'N/A'}</span>
-//     <p className="text-nowrap flex justify-between text-xs leading-5 text-slate-500 dark:text-dark-text-dark">
-//       <span>{item.text}</span>
-//     </p>
-//     {/* Divider */}
-//     <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
-//     {/* Checkbox */}
-//     <input
-//       type="checkbox"
-//       name={item.text}
-//       // TODO: Styles
-//       className={cn(
-//         "h-4 w-4 my-auto rounded",
-//         "bg-transparent",
-//         "border border-slate-300 dark:border-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter focus:ring-p-1100 ",
-//         // "appearance-none"
-//       )}
-//       value={item.text}
-//       checked={selectedSearches.includes(item.text)}
-//       onChange={() => handleCheckboxChange(item.text)}
-//     />
-//   </label>
-// ));
-// CardRowInput.displayName = "CardRowInput";
 
 
 
@@ -287,7 +276,7 @@ const CardAccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('rounded-lg data-[state=open]:shadow-CardAccordion data-[state=open]:bg-primary-50 data-[state=open]:dark:bg-transparent overflow-hidden', className)}
+    className={cn('data-[state=open]:border theme-b-p px-1 rounded-[8px] data-[state=open]:shadow-CardAccordion data-[state=open]:bg-primary-50 data-[state=open]:dark:bg-transparent overflow-hidden', className)}
     {...props}
   />
 ))
@@ -302,14 +291,14 @@ const CardAccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         // TODO: light styles
-        "flex flex-1 items-center justify-between gap-3 px-2 py-2 text-sm leading-5 transition-all text-slate-500 dark:text-dark-text-dark dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90 bg-white dark:bg-transparent m-1",
+        "flex flex-1 items-center justify-between gap-3 px-1 py-2 text-sm leading-5 transition-all theme-t-t dark:hover:text-[#DFE5FA] dark:[&[data-state=open]]:text-[#DFE5FA] [&[data-state=open]>svg]:-rotate-90 bg-white dark:bg-transparent ",
         className
       )}
       {...props}
     >
       <div className="text-nowrap">{children}</div>
       {/* Divider */}
-      <div className="w-full h-[1px] bg-p-100 dark:bg-dark-stroke mix-blend-multiply dark:mix-blend-plus-lighter"></div>
+      <div className="w-full h-[1px] theme-bg-s"></div>
       <ChevronDownIcon className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
@@ -322,16 +311,14 @@ const CardAccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="mx-[1px] mb-1  dark:bg-p-1100 overflow-hidden text-sm font-light transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="mx-[1px] mb-1 theme-bg-p rounded-[4px] overflow-hidden transition-width data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn("p-3 text-slate-500 dark:text-dark-text-dark", className)}>{children}</div>
+    <div className={cn("p-3 theme-t-t", className)}>{children}</div>
   </AccordionPrimitive.Content>
 ))
 
 CardAccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Card, CardTitle, CardPlainRow, CardRow, CardAdsBidRow, CardDateRow, CardTagsRow,
-  //  CardRowInput 
-  };
+export { Card, CardTitle, CardPlainRow, CardRow, WhiteRow, CardAdsBidRow, CardDateRow, CardTagsRow };
 export { CardAccordion, CardAccordionItem, CardAccordionTrigger, CardAccordionContent }

@@ -1,10 +1,10 @@
 "use server";
 
 import { getInjection } from "@/di/container";
-import { db } from "@/prisma";
-import { GoogleTokenError } from "@/src/entities/errors/auth";
-import { extractHostname } from "@/src/utils/url.utils";
 import { startSpan } from "@sentry/nextjs";
+
+import { db } from "@/prisma";
+import { extractHostname } from "@/src/utils/url.utils";
 import { format as formatDate, subDays } from "date-fns";
 
 export interface GroupedData {

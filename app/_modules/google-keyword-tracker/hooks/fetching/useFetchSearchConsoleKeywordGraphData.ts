@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getKeywordSearchConsoleGraphDataController } from "@/src/interface-adapters/controllers/google-keyword-tracker/getKeywordSearchConsoleGraphData.controller";
+import { getKeywordSearchConsoleGraphDataController } from "@/src/interface-adapters/controllers/google-keyword-tracker/from-hooks/getKeywordSearchConsoleGraphData.controller";
 
 function useFetchSearchConsoleKeywordGraphData(
   keyword: string,

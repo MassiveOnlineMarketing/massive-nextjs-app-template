@@ -8,7 +8,7 @@ import { processNewGoogleKeywordUseCase } from "@/src/application/use-cases/goog
 import { splitAndTrimKeywords } from "@/src/utils/string.utils";
 
 export async function processNewGoogleKeywordsController(
-  keywordsSting: string,
+  keywordsSting: string | string[],
   googleKeywordTrackerToolId: string
 ) {
   return await startSpan(
@@ -19,7 +19,12 @@ export async function processNewGoogleKeywordsController(
       const { user } = await authenticationService.validateSession();
 
       // Split and trim keywords
-      const stingsArray = splitAndTrimKeywords(keywordsSting);
+      let stingsArray: string[];
+      if (typeof keywordsSting === "string") {
+        stingsArray = splitAndTrimKeywords(keywordsSting);
+      } else {
+        stingsArray = keywordsSting;
+      }
 
       // Format keywords to lower case
       const keywords = stingsArray.map((keyword) => keyword.toLowerCase());

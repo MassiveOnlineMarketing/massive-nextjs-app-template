@@ -17,6 +17,7 @@ import {
 } from "@/src/entities/models/google-keyword-tracker/keyword";
 import { GoogleKeywordTrackerResult } from "@/src/entities/models/google-keyword-tracker/result";
 import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
+import { GoogleKeywordTrackerSerpResult } from "@/src/entities/models/google-keyword-tracker/serp-result";
 
 @injectable()
 export class GoogleKeywordTrackerKeywordsRepository
@@ -224,6 +225,33 @@ export class GoogleKeywordTrackerKeywordsRepository
       }
     );
   }
+
+  async findTopTenSerpResultsByKeywordId(keywordId: string): Promise<GoogleKeywordTrackerSerpResult[]> {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerKeywordsRepository > findTopTenSerpResultsByKeywordId",
+      },
+      async () => {
+        try {
+          const serpResults = await db.googleKeywordTrackerSerpResult.findMany({
+            where: {
+              keywordId,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+            take: 10,
+          });
+
+          return serpResults;
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
+
 
   async insertTag(name: string): Promise<GoogleKeywordTrackerKeywordTag> {
     return await startSpan(

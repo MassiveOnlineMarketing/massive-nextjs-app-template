@@ -18,7 +18,7 @@ export function useKeywordOpperations() {
   );
 
   async function addNewGoogleKeyword(
-    keywordsString: string,
+    keywordsString: string | string[],
     googleKeywordTrackerToolId: string
   ) {
     const res = await fetch("/api/serp", {

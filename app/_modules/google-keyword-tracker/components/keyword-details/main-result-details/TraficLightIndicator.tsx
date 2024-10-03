@@ -1,10 +1,13 @@
-import { cn } from '../../../_components/utils';
+
 import React from 'react'
+
+import { cn } from '@/app/_components/utils'
 
 type TraficLightIndicatorProps = {
   maxValue: number | null
   currentValue: number | null
   flip?: boolean
+  className?: string
 }
 
 const getBgColor = (index: number, isSelected: boolean) => {
@@ -14,7 +17,7 @@ const getBgColor = (index: number, isSelected: boolean) => {
   return 'lightgray'; // Default color if none of the above conditions match
 };
 
-const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, currentValue, flip }) => {
+const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, currentValue, flip, className }) => {
   let value = currentValue
   if (value === null) value = 0
 
@@ -30,7 +33,10 @@ const TraficLightIndicator: React.FC<TraficLightIndicatorProps> = ({ maxValue, c
 
   if (value > maximumValue) litSquares = 1;
   return (
-    <div className='w-fit flex gap-1 p-1  rounded-[4px] bg-white dark:bg-dark-stroke border border-light-stroke dark:border-none'>
+    <div className={cn(
+      'w-fit flex gap-1 p-1  rounded-[4px]',
+      className
+    )}>
       {Array.from({ length: 10 }, (_, index) => (
         <div
           className={cn(
@@ -65,7 +71,7 @@ type TraficLightMinMaxValueProps = {
 const TraficLightMinMaxValue: React.FC<TraficLightMinMaxValueProps> = ({ maxValue, currentValue }) => {
 
   return (
-    <p className='px-3 text-slate-500 dark:text-slate-300/50 text-sm'><span>{currentValue ? currentValue : 'N/A'}</span>/<span>{maxValue}</span></p>
+    <p className='px-3 theme-t-s text-sm'><span>{currentValue ? currentValue : 'N/A'}</span>/<span>{maxValue}</span></p>
   )
 }
 

@@ -1,8 +1,10 @@
 'use server';
 
 import { getInjection } from "@/di/container";
-import { GoogleTokenError } from "@/src/entities/errors/auth";
 import { startSpan } from "@sentry/nextjs";
+
+import { GoogleTokenError } from "@/src/entities/errors/auth";
+
 import { formatDate, subDays } from "date-fns";
 
 // Helper functions

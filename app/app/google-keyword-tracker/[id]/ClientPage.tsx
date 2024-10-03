@@ -3,6 +3,7 @@
 
 import useGoogleKeywordTracker from '@/app/_modules/google-keyword-tracker/hooks/useGoogleKeywordTracker';
 import { LatestGoogleKeywordResultsDto } from '@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller';
+import { GoogleKeywordTracker } from '@/src/entities/models/google-keyword-tracker';
 import React, { useEffect } from 'react'
 
 import useFilteredKeywordResults from '@/app/_modules/google-keyword-tracker/hooks/useFilteredResults';
@@ -10,7 +11,7 @@ import useFilteredKeywordResults from '@/app/_modules/google-keyword-tracker/hoo
 import DataTable from '@/app/_modules/google-keyword-tracker/components/layout/ResultTable';
 import { columns } from '@/app/_modules/google-keyword-tracker/components/table/columns';
 
-const ClientPage = ({ latestResults }: { latestResults: LatestGoogleKeywordResultsDto[]}) => {
+const ClientPage = ({ latestResults, googleKeywordTracker }: { latestResults: LatestGoogleKeywordResultsDto[], googleKeywordTracker: GoogleKeywordTracker}) => {
   
   const { setNewSerpResultState } = useGoogleKeywordTracker()
   
@@ -28,6 +29,7 @@ const ClientPage = ({ latestResults }: { latestResults: LatestGoogleKeywordResul
       <DataTable
         columns={columns()}
         data={filteredResults}
+        googleKeywordTracker={googleKeywordTracker}
       />
     </div>
   )
