@@ -1,5 +1,7 @@
-import { GoogleKeywordTracker } from "@/src/entities/models/google-keyword-tracker";
+
 import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { Location } from "@/src/entities/models/location";
+
 import KeywordDetails from "./main-result-details/cards/KeywordDetails";
 import GoogleAdsMetrics from "./main-result-details/cards/GoogleAdsMetrics";
 import MetaData from "./main-result-details/cards/MetaData";
@@ -7,8 +9,8 @@ import Url from "./main-result-details/cards/Url";
 import TopSerpResults from "./main-result-details/cards/TopSerpResults";
 import RelatedSearches from "./main-result-details/cards/RelatedSearches";
 import PeopleAlsoAsk from "./main-result-details/cards/PeopleAlsoAsk";
+
 import { BarChart } from "lucide-react";
-import { Location } from "@/src/entities/models/location";
 
 
 const MainResultDetails = ({ keywordData, domain, toolId, location }: {
@@ -18,7 +20,7 @@ const MainResultDetails = ({ keywordData, domain, toolId, location }: {
   location: Location | undefined
 }) => {
 
-  console.log('MainKeywordDetailsRow', keywordData, domain);
+  console.log('Render MainResultDetails');
 
   return (
     <>

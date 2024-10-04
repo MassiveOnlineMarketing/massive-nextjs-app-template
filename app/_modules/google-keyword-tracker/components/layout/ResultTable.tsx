@@ -14,9 +14,10 @@ import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/_c
 import DataTablePagination from "@/app/_components/ui/table/table-pagination";
 
 import ResultsDataTableTopBar from "../table/topbar/ResultsTableTopbar";
+import KeywordDetailsRow from "./KeywordDetailsRow";
+
 import { cn } from "@/app/_components/utils";
 
-import KeywordDetails from "./KeywordDetails";
 
 
 
@@ -166,7 +167,7 @@ function DataTable<TData, TValue>({
                     <tr>
                       {keywordData ? (
                         <td className="pt-6" colSpan={numberOfVisibleColumns}>
-                          <KeywordDetails
+                          <KeywordDetailsRow
                             result={keywordData}
                             website={selectedWebsite}
                             googleKeywordTracker={googleKeywordTracker}

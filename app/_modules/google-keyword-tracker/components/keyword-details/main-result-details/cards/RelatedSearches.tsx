@@ -19,7 +19,6 @@ import { LoadingSpinnerSmall } from "@/app/_components/ui/loading-spinner";
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/app/_components/utils";
-import { Car } from "lucide-react";
 
 const RelatedSearches = ({
   keywordData,

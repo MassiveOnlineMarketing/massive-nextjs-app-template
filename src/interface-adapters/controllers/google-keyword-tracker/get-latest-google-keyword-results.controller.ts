@@ -85,7 +85,7 @@ function presenter(
       highTopOfPageBid: googleAdsMetrics.highTopOfPageBid ?? null,
       lowTopOfPageBid: googleAdsMetrics.lowTopOfPageBid ?? null,
 
-      createdAt: keyword.createdAt,
+      createdAt: keyword.results[0].createdAt,
     };
   });
 }

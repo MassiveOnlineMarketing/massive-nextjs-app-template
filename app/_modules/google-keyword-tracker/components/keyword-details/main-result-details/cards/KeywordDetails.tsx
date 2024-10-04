@@ -20,7 +20,7 @@ const KeywordDetails = ({ keywordData }: { keywordData: LatestGoogleKeywordResul
         </TraficLight>
       </CardTitle>
       {/* <CardPlainRow value={keywordData.keywordName} /> */}
-      <WhiteRow label='Position' value={keywordData.position} />
+      {/* <WhiteRow label='Position' value={keywordData.position} /> */}
       <WhiteRow label='Best Position' value={keywordData.bestPosition} />
       <WhiteRow label='First Position' value={keywordData.firstPosition} />
       <WhiteRow label='Latest Change' value={keywordData.latestChange} />

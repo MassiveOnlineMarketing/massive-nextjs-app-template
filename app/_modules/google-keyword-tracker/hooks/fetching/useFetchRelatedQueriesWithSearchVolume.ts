@@ -13,6 +13,9 @@ function useFetchRelatedQueriesWithSearchVolume(relatedSearches: SerpApiRelatedS
             if (!location) {
                 throw new Error("Location not found");
             }
+            if (!relatedSearches) {
+                return null;
+            }
             return getRelatedQueriesWithSearchVolumeController(relatedSearches, location);
         },
         staleTime: 10 * 60 * 10000, // 100 minutes

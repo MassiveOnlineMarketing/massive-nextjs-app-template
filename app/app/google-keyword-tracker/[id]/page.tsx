@@ -7,7 +7,6 @@ import FilteredStats from '@/app/_modules/google-keyword-tracker/components/layo
 import ClientPage from './ClientPage';
 
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
-import dynamic from 'next/dynamic';
 import { LoadingSpinner } from '@/app/_components/ui/loading-spinner';
 
 
@@ -18,10 +17,6 @@ const page = async ({
   params: { id: string }
 }) => {
   await isAuthenticated();
-
-
-  // console.log('new page fetch',id, res.results?.length)
-
 
   return (
     <div className='w-full theme-bg-w border theme-b-p mr-3 rounded-t-2xl '>

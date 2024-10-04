@@ -16,6 +16,7 @@ import GoogleSearchConsoleKeywordDetailsGraph from './main-keyword-details-graph
 import { cn } from '@/app/_components/utils';
 
 const MainKeywordDetailsGraph = ({ result, website }: { result: LatestGoogleKeywordResultsDto, website?: WebsiteWithLocationDisplay }) => {
+  console.log('Render MainKeywordDetailsGraph');
 
   const [dataRange, setDataRange] = useState(7);
   const { isLoading: isLoadingPositions, data: resPositions } = useFetchKeywordPositionsGraphData(result.keywordId, dataRange);
