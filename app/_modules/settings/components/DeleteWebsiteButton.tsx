@@ -47,7 +47,7 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
       if (res.deletedWebsite) {
         deleteWebsiteFromStore(res.deletedWebsite.id)
         // TODO: Route user to settings page?
-        router.push('/app/settings/webiste')
+        router.push('/app/settings/website')
       }
     })
   }

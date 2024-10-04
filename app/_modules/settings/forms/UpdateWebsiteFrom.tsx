@@ -47,7 +47,7 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
       id: defaultValues.id,
       websiteName: defaultValues.websiteName,
       domainUrl: defaultValues.domainUrl,
-      gscUrl: defaultValues.gscUrl || undefined,
+      gscUrl: defaultValues.gscUrl || null,
     }
   });
 

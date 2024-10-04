@@ -80,7 +80,11 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
             return {
               websites: state.websites.map((w) => {
                 if (w.id === website.id) {
-                  return website;
+                  return {
+                    ...w,
+                    ...website,
+                    location: w.location
+                  };
                 }
                 return w;
               }),
