@@ -9,6 +9,8 @@ import { getSession, useSession } from "next-auth/react";
 import { GoogleKeywordTracker } from "@/src/entities/models/google-keyword-tracker";
 
 export type WebsiteDetailsActions = {
+  setLoaded: (loaded: boolean) => void;
+
   initialteWebsiteDetails: (website: WebsiteWithLocation[]) => void;
   addWebsite: (website: WebsiteWithLocation) => void;
   deleteWebsite: (id: string) => void;
@@ -28,6 +30,7 @@ export interface WebsiteWithLocationDisplay extends WebsiteWithLocation {
 }
 
 export type WebsiteDetailsState = {
+  loaded: boolean;
   websites: WebsiteWithLocation[] | undefined;
   selectedWebsite: WebsiteWithLocationDisplay | undefined;
   selectedLocation: Location | undefined;
@@ -38,10 +41,14 @@ export type WebsiteDetailsStore = WebsiteDetailsState & WebsiteDetailsActions;
 export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
   persist(
     (set) => ({
+      loaded: false,
       websites: undefined,
       selectedWebsite: undefined,
       selectedLocation: undefined,
 
+      setLoaded: (loaded: boolean) => {
+        set({ loaded });
+      },
       initialteWebsiteDetails: (website: WebsiteWithLocation[]) => {
         set({ websites: website });
       },
@@ -224,10 +231,10 @@ export const useWebsiteDetailsStore = create<WebsiteDetailsStore>()(
     }),
     {
       name: `website-details-store`,
-      partialize: (state) => ({
-        selectedWebsite: state.selectedWebsite,
-        selectedLocation: state.selectedLocation,
-      }),
+      // partialize: (state) => ({
+      //   selectedWebsite: state.selectedWebsite,
+      //   selectedLocation: state.selectedLocation,
+      // }),
     }
   )
 );

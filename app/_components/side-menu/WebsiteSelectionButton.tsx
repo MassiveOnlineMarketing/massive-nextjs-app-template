@@ -101,7 +101,7 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <div className='cursor-pointer w-fit flex items-center      molecule rounded-lg before:rounded-lg after:rounded-[14px] before:top-0 before:left-0 '>
+        <div className='cursor-pointer w-fit flex items-center      molecule2 rounded-lg'>
 
           {/* Favicon box */}
           <div className={cn(
@@ -150,7 +150,7 @@ const WebsiteSelectionButton: React.FC<{ websites: WebsiteWithLocation[] | undef
       </DropdownMenuTrigger>
 
 
-      <DropdownMenuContent className='w-[350px]'>
+      <DropdownMenuContent className='w-[305px]'>
         <DropdownMenuLabel>Websites</DropdownMenuLabel>
 
         {websitesWithGroupedLocations?.map((website) => (
