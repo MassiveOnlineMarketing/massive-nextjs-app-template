@@ -6,6 +6,12 @@ import CreateWebsiteForm from '@/app/_modules/settings/forms/CreateWebsiteForm'
 import { isAuthenticated } from '@/app/_modules/auth/actions';
 import { getConnectedGscProperties } from '@/app/_modules/google-keyword-tracker/google-keyword-tracker.actions';
 
+export async function generateMetadata(){
+  return {
+    title: "Massive | Create Website"
+  }
+}
+
 const page = async () => {
   await isAuthenticated();
   const connectedGscProperties = await getConnectedGscProperties();

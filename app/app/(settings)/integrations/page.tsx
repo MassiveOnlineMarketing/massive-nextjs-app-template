@@ -5,6 +5,12 @@ import { isAuthenticated } from '@/app/_modules/auth/actions'
 import GoogleIntegrations from './GoogleIntegrations'
 import Message from './_components/Message'
 
+export async function generateMetadata(){
+  return {
+    title: "Massive | Integrations",
+  }
+}
+
 const page = async () => {
   await isAuthenticated();
   

@@ -6,6 +6,12 @@ import { isAuthenticated } from '@/app/_modules/auth/actions';
 
 import ProfileSettingsForm from './ProfileSettingsForm'
 
+export async function generateMetadata(){
+  return {
+    title: "Massive | Profile Settings",
+  }
+}
+
 const page = async () => {
   const { user } = await isAuthenticated();
 

@@ -10,6 +10,10 @@ import UpdateWebsiteForm from '@/app/_modules/settings/forms/UpdateWebsiteFrom';
 import LocationsCard from './LocationsCard';
 import { getFaviconUrl } from '@/app/_utils/imageUtils';
 
+export async function generateMetadata() {
+  return {title: "Massive | Website Settings",}
+ }
+
 const page = async ({
   params: { id }
 }: {

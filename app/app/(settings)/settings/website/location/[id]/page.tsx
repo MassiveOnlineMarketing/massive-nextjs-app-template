@@ -27,7 +27,11 @@ const CreateGoogleKeywordTrackerToolFrom = dynamic(
 
 import { MapPinIcon } from "@heroicons/react/20/solid"
 
-
+export async function generateMetadata(){
+  return {
+    title: "Massive | Location Settings",
+  }
+}
 
 const page = async ({
   params: { id }

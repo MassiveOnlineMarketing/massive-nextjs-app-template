@@ -6,6 +6,12 @@ import { getWebsitesByUser } from '@/app/_actions/website.actions';
 // import CreateLocationForm from '@/app/_modules/settings/forms/CreateLocationForm';
 import SetupLocationForm from '@/app/_modules/settings/forms/SetupLocationForm';
 
+export async function generateMetadata(){
+  return {
+    title:  "Massive | Create Location",
+  }
+}
+
 const page = async () => {
   const { user } = await isAuthenticated() 
 

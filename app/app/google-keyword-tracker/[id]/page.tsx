@@ -9,7 +9,11 @@ import ClientPage from './ClientPage';
 import { ViewfinderCircleIcon } from '@heroicons/react/20/solid'
 import { LoadingSpinner } from '@/app/_components/ui/loading-spinner';
 
-
+export async function generateMetadata(){
+  return {
+    title:  "Massive | Keyword Tracker",
+  }
+}
 
 const page = async ({
   params: { id }

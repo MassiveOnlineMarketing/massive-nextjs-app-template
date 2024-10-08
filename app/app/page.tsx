@@ -20,5 +20,9 @@ const page = async () => {
   )
 }
 
+export async function generateMetadata() {
+ return {title: "Massive | Home",}
+}
+
 export default page
 
