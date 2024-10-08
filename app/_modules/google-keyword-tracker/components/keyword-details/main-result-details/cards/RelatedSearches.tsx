@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 
-import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 import { FetchHistoricalMetricsResponseGoogleAdsApi } from "@/src/application/api/google-ads.api.types";
 import { SerpApiRelatedSearches } from "@/src/application/api/serper.api.types";
 import { Location } from "@/src/entities/models/location";
@@ -48,15 +48,13 @@ const RelatedSearches = ({
   // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    startTransition(() => {
+    startTransition(async () => {
       if (!toolId) return;
 
-      addNewGoogleKeyword(selectedSearches, toolId)
-        .then((res) => {
-          if (res.success) {
-            setSelectedSearches([]);
-          }
-        })
+      const res = await addNewGoogleKeyword(selectedSearches, toolId)
+      if (res.success) {
+        setSelectedSearches([]);
+      }
     });
   };
 
@@ -72,10 +70,10 @@ const RelatedSearches = ({
             type="submit"
             variant="outline"
           >
-            {isPending ? (
-              <LoadingSpinnerSmall className="w-4 h-4" />
-            ) :
+            {isPending ?
               (
+                <LoadingSpinnerSmall className="w-4 h-4" />
+              ) : (
                 <PlusIcon className="w-4 h-4" />
               )}
             Add

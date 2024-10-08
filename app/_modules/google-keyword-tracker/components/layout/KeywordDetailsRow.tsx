@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-import { LatestGoogleKeywordResultsDto } from '@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller'
+import { LatestGoogleKeywordResultsDto } from '@/src/interface-adapters/presenters/latest-google-keyword-results.presenter'
 import { GoogleKeywordTracker } from '@/src/entities/models/google-keyword-tracker'
 
 import { useWebsiteDetailsStore, WebsiteWithLocationDisplay } from '@/app/_stores/useWebsiteDetailsStore'

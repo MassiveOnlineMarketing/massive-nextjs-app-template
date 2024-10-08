@@ -1,14 +1,17 @@
 "use client";
 
 import { useToast } from "@/app/_components/ui/toast/use-toast";
+import { useMemo } from "react";
+import { useGoogleKeywordTrackerStore } from "../stores/useGoogleKeywordTrackerStore";
+
 import {
   addTagToGoogleKeywords,
   deleteGoogleKeywords,
   removeTagFromGoogleKeywords,
 } from "../../actions/keyword.actions";
+
 import { GoogleKeywordTrackerKeywordTag } from "@/src/entities/models/google-keyword-tracker/tag";
-import { useGoogleKeywordTrackerStore } from "../stores/useGoogleKeywordTrackerStore";
-import { useMemo } from "react";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 
 export function useKeywordOpperations() {
   const { toast } = useToast();
@@ -19,7 +22,8 @@ export function useKeywordOpperations() {
 
   async function addNewGoogleKeyword(
     keywordsString: string | string[],
-    googleKeywordTrackerToolId: string
+    googleKeywordTrackerToolId: string,
+    streamResults: boolean = false
   ) {
     const res = await fetch("/api/serp", {
       method: "POST",
@@ -29,6 +33,7 @@ export function useKeywordOpperations() {
       body: JSON.stringify({
         keywordsString,
         googleKeywordTrackerToolId,
+        streamResults,
       }),
     });
 
@@ -36,15 +41,25 @@ export function useKeywordOpperations() {
     const data = await res.json();
 
     if (status === 200) {
+      const resData: LatestGoogleKeywordResultsDto[] | number =
+        data.message;
       // TODO: Deduct display credits
-      const creditsToDeduct = data.message;
-
       toast({
         title: "Keywords added",
         variant: "success",
       });
 
-      return { success: true };
+      if (streamResults) {
+        const data = resData as LatestGoogleKeywordResultsDto[];
+        const credutsToDeduct = data.length;
+
+        return { success: true, data: data };
+      } else {
+        const data = resData as number;
+        const creditsToDeduct = data;
+
+        return { success: true };
+      }
     }
 
     toast({
@@ -75,7 +90,7 @@ export function useKeywordOpperations() {
       const keywordIdsArray = Array.isArray(keywordIds)
         ? keywordIds
         : [keywordIds];
-        
+
       const updatedResults = results.filter(
         (result) => !keywordIdsArray.includes(result.keywordId)
       );
@@ -111,7 +126,9 @@ export function useKeywordOpperations() {
         : [keywordIds];
 
       keywordIdsArray.forEach((keywordId) => {
-        const keyword = results.find((result) => result.keywordId === keywordId);
+        const keyword = results.find(
+          (result) => result.keywordId === keywordId
+        );
 
         if (keyword) {
           keyword.tags.push(tag);
@@ -146,12 +163,14 @@ export function useKeywordOpperations() {
     if (res.success) {
       // Remove the tag from the keyword results in the store
       // TODO: Refaction into keyword tracker store actions
-      const keywordIdsArray = Array.isArray(keywordIds) ? keywordIds : [keywordIds];
+      const keywordIdsArray = Array.isArray(keywordIds)
+        ? keywordIds
+        : [keywordIds];
 
       // Assuming `results` is available in the scope
-      const updatedResults = results.map(result => {
+      const updatedResults = results.map((result) => {
         if (keywordIdsArray.includes(result.keywordId)) {
-          result.tags = result.tags.filter(tag => tag.id !== tagId);
+          result.tags = result.tags.filter((tag) => tag.id !== tagId);
         }
         return result;
       });

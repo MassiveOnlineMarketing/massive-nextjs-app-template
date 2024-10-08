@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useGoogleKeywordTrackerStore } from "../stores/useGoogleKeywordTrackerStore";
-import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
 import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 
 
 /**

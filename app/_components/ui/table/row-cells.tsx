@@ -55,7 +55,7 @@ interface DateRowCellProps {
   value: Date;
 }
 const DateRowCell: React.FC<DateRowCellProps> = ({ value }) => {
-  if (value) {
+  if (value instanceof Date) {
     return (
       <p className="text-sm font-normal theme-t-t">
         {value.toDateString()}
@@ -65,7 +65,7 @@ const DateRowCell: React.FC<DateRowCellProps> = ({ value }) => {
 
   return (
     <p className="text-sm font-normal theme-t-t">
-      Not yet Checked
+      {new Date().toDateString()}
     </p>
   );
 };

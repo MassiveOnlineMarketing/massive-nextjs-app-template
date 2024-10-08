@@ -22,6 +22,7 @@ import { GoogleKeywordTrackerSerpResultInsert } from "@/src/entities/models/goog
 import { GoogleKeywordTrackerCompetitorResultInsert } from "@/src/entities/models/google-keyword-tracker/competitor-result";
 import { GoogleKeywordTrackerStatsInsert } from "@/src/entities/models/google-keyword-tracker/stats";
 
+import { GoogleAdsKeywordMetricsInsert } from "@/src/entities/models/google-keyword-tracker/google-ads-keyword-metrics";
 import {
   SerpApiPeopleAsloAsk,
   SerpApiRelatedSearches,
@@ -32,7 +33,6 @@ import {
 
 import { SerpResultMapper } from "@/src/interface-adapters/mappers/serp-result.mapper";
 import { GoogleAdsApiMapper } from "@/src/interface-adapters/mappers/google-ads.mappers";
-import { GoogleAdsKeywordMetricsInsert } from "@/src/entities/models/google-keyword-tracker/google-ads-keyword-metrics";
 
 @injectable()
 export class ProcessGoogleKeywordsService
@@ -51,7 +51,7 @@ export class ProcessGoogleKeywordsService
   async execute(
     tool: GoogleKeywordTrackerWithCompetitorsWebsiteAndLocation,
     keywords: GoogleKeywordTrackerKeyword[]
-  ): Promise<GoogleKeywordTrackerResultTransferDTO[]> {
+  ): Promise<{userResults: GoogleKeywordTrackerResultTransferDTO[], googleAdsMetrics: GoogleAdsKeywordMetricsInsert[]}> {
     return await startSpan(
       {
         name: "ProcessGoogleKeywordsService > execute",
@@ -111,7 +111,7 @@ export class ProcessGoogleKeywordsService
           competitorsSerpResultsDTO.push(...competitorsSerpResults);
         });
 
-        this.googleAdsHistoricalMetrics(
+        const googleAdsMetrics = await this.googleAdsHistoricalMetrics(
           tool.location.locationCode,
           tool.location.languageCode,
           keywords
@@ -119,7 +119,9 @@ export class ProcessGoogleKeywordsService
         this.insertTopTenResults(topTenSerpResultsDTO);
         this.insertCompetitorResult(competitorsSerpResultsDTO);
 
-        return userSerpResultsDTO;
+
+
+        return {userResults: userSerpResultsDTO, googleAdsMetrics};
       }
     );
   }
@@ -128,7 +130,7 @@ export class ProcessGoogleKeywordsService
     country_code: string,
     language_code: string,
     keywords: GoogleKeywordTrackerKeyword[]
-  ): Promise<void> {
+  ): Promise<GoogleAdsKeywordMetricsInsert[]> {
     return await startSpan(
       { name: "ProcessGoogleKeywordsService > googleAdsHistoricalMetrics" },
       async () => {
@@ -166,6 +168,8 @@ export class ProcessGoogleKeywordsService
 
         const GoogleAdsKeywordMetricsInsert = GoogleAdsApiMapper.fromApiResponse(filteredAdsMetrics);
         this.insertGoogleAdsMetrics(GoogleAdsKeywordMetricsInsert);
+
+        return GoogleAdsKeywordMetricsInsert;
       }
     );
   }

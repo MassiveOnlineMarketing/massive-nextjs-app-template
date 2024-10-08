@@ -3,6 +3,7 @@ import { startSpan } from "@sentry/nextjs";
 
 import { InputParseError } from "@/src/entities/errors/common";
 
+import { LatestGoogleKeywordResultsDto } from "../../presenters/latest-google-keyword-results.presenter";
 import { processNewGoogleKeywordUseCase } from "@/src/application/use-cases/google-keyword-tracker/process-new-google-keywords.use-case";
 
 import { splitAndTrimKeywords } from "@/src/utils/string.utils";
@@ -10,7 +11,7 @@ import { splitAndTrimKeywords } from "@/src/utils/string.utils";
 export async function processNewGoogleKeywordsController(
   keywordsSting: string | string[],
   googleKeywordTrackerToolId: string
-) {
+): Promise<LatestGoogleKeywordResultsDto[]> {
   return await startSpan(
     { name: "processNewGoogleKeywords Controller" },
     async () => {
@@ -40,7 +41,7 @@ export async function processNewGoogleKeywordsController(
         user
       );
 
-      return result.length;
+      return result;
     }
   );
 }

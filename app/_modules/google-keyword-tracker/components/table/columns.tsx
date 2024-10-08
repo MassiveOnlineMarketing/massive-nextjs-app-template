@@ -1,6 +1,6 @@
 "use client";
 
-import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 
 import KeywordRowActionsDropdown from "./KeywordRowActions";
 

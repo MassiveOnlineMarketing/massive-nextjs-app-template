@@ -59,7 +59,9 @@ export class GoogleKeywordTrackerKeywordsRepository
               ...result,
               relatedSearches:
                 typeof result.relatedSearches === "string"
-                  ? (JSON.parse(result.relatedSearches) as SerpApiRelatedSearches[])
+                  ? (JSON.parse(
+                      result.relatedSearches
+                    ) as SerpApiRelatedSearches[])
                   : null,
               peopleAlsoAsk:
                 typeof result.peopleAlsoAsk === "string"
@@ -71,7 +73,64 @@ export class GoogleKeywordTrackerKeywordsRepository
                   : null,
             })),
           })) as GoogleKeywordTrackerKeywordWithResultsQuery[];
+        } catch (error) {
+          captureException(error);
+          throw error;
+        }
+      }
+    );
+  }
 
+  async getKeywordsWithResultsByKeywordIds(keywordIds: string[]) {
+    return await startSpan(
+      {
+        name: "GoogleKeywordTrackerKeywordsRepository >  getKeywordsWithResultsByKeywordIds",
+      },
+      async () => {
+        try {
+          const keywordResutls = await db.googleKeywordTrackerKeyword.findMany({
+            where: {
+              id: {
+                in: keywordIds,
+              },
+            },
+            select: {
+              results: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+              tags: true,
+              googleAdsKeywordMetrics: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          });
+
+          return keywordResutls.map((keyword) => ({
+            ...keyword,
+            results: keyword.results.map((result) => ({
+              ...result,
+              relatedSearches:
+                typeof result.relatedSearches === "string"
+                  ? (JSON.parse(
+                      result.relatedSearches
+                    ) as SerpApiRelatedSearches[])
+                  : null,
+              peopleAlsoAsk:
+                typeof result.peopleAlsoAsk === "string"
+                  ? (JSON.parse(result.peopleAlsoAsk) as SerperApiSerpResult[])
+                  : null,
+              siteLinks:
+                typeof result.siteLinks === "string"
+                  ? (JSON.parse(result.siteLinks) as SiteLinks[])
+                  : null,
+            })),
+          })) as GoogleKeywordTrackerKeywordWithResultsQuery[]
         } catch (error) {
           captureException(error);
           throw error;
@@ -226,7 +285,9 @@ export class GoogleKeywordTrackerKeywordsRepository
     );
   }
 
-  async findTopTenSerpResultsByKeywordId(keywordId: string): Promise<GoogleKeywordTrackerSerpResult[]> {
+  async findTopTenSerpResultsByKeywordId(
+    keywordId: string
+  ): Promise<GoogleKeywordTrackerSerpResult[]> {
     return await startSpan(
       {
         name: "GoogleKeywordTrackerKeywordsRepository > findTopTenSerpResultsByKeywordId",
@@ -251,7 +312,6 @@ export class GoogleKeywordTrackerKeywordsRepository
       }
     );
   }
-
 
   async insertTag(name: string): Promise<GoogleKeywordTrackerKeywordTag> {
     return await startSpan(

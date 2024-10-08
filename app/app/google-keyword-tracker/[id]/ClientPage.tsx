@@ -2,7 +2,7 @@
 
 
 import useGoogleKeywordTracker from '@/app/_modules/google-keyword-tracker/hooks/useGoogleKeywordTracker';
-import { LatestGoogleKeywordResultsDto } from '@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller';
+import { LatestGoogleKeywordResultsDto } from '@/src/interface-adapters/presenters/latest-google-keyword-results.presenter';
 import { GoogleKeywordTracker } from '@/src/entities/models/google-keyword-tracker';
 import React, { useEffect } from 'react'
 

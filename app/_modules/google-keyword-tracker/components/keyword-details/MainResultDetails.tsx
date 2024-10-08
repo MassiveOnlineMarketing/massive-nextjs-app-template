@@ -1,6 +1,6 @@
 
-import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
 import { Location } from "@/src/entities/models/location";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 
 import KeywordDetails from "./main-result-details/cards/KeywordDetails";
 import GoogleAdsMetrics from "./main-result-details/cards/GoogleAdsMetrics";

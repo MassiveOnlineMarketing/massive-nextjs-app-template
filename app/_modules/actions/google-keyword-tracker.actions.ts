@@ -28,13 +28,16 @@ import {
   GoogleKeywordTrackerWithCompetitors,
 } from "@/src/entities/models/google-keyword-tracker";
 
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
+
 import { updateGoogleKeywordTrackerController } from "@/src/interface-adapters/controllers/google-keyword-tracker/update-google-keyword-tracker.controller";
 import { createGoogleKeywordTrackerController } from "@/src/interface-adapters/controllers/google-keyword-tracker/create-google-keyword-tracker.controller";
 import { deleteGoogleKeywordTrackerController } from "@/src/interface-adapters/controllers/google-keyword-tracker/delete-google-keyword-tracker.controller";
 import { getGoogleKeywordTrackerWithCompetitorsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-google-keyword-tracker-with-competitors.controller";
 import { changeGoogleKeywordTrackerStatusController } from "@/src/interface-adapters/controllers/google-keyword-tracker/change-google-keyword-tracker-status.controller";
-import { getLatestGoogleKeywordResultsController, LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { getLatestGoogleKeywordResultsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
 import { getGoogleKeywordTrackerController } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-google-keyword-tracker.controller";
+import { getLatestGoogleKeywordResultsByKeywordIdsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keywords-by-keyword-ids.controller";
 
 export async function createGoogleKeywordTracker(
   formData: z.infer<typeof formInputCreateGoogleKeywordTrackerSchema>
@@ -133,40 +136,40 @@ export async function changeGoogleKeywordTrackerStatus(
   status: GoogleKeywordTrackerStatus
 ): Promise<{ error?: string; googleKeywordTracker?: GoogleKeywordTracker }> {
   return await withServerActionInstrumentation(
-    'changeGoogleKeywordTrackerStatus',
+    "changeGoogleKeywordTrackerStatus",
     { recordResponse: true },
     async () => {
       const session = await auth();
       if (!session?.user || !session?.user.id) {
-        return { error: 'Must be logged in to change Keyword Tracker status' };
+        return { error: "Must be logged in to change Keyword Tracker status" };
       }
 
       try {
-        const googleKeywordTracker = await changeGoogleKeywordTrackerStatusController(
-          id,
-          status
-        );
+        const googleKeywordTracker =
+          await changeGoogleKeywordTrackerStatusController(id, status);
         revalidatePath(
           `/app/settings/website/location/${googleKeywordTracker.locationId}`
         );
         return { googleKeywordTracker };
       } catch (error) {
         if (error instanceof NotFoundError) {
-          return { error: 'Google Keyword Tracker not found' };
+          return { error: "Google Keyword Tracker not found" };
         } else if (error instanceof ForbiddenError) {
-          return { error: 'User does not own this Google Keyword Tracker' };
+          return { error: "User does not own this Google Keyword Tracker" };
         } else if (error instanceof UnauthenticatedError) {
-          return { error: 'Must be logged in to change Keyword Tracker status' };
+          return {
+            error: "Must be logged in to change Keyword Tracker status",
+          };
         }
-        console.error('changeGoogleKeywordTrackerStatus error: ', error);
+        console.error("changeGoogleKeywordTrackerStatus error: ", error);
         captureException(error);
         return {
           error:
-            'An error happened. The developers have been notified. Please try again later.',
+            "An error happened. The developers have been notified. Please try again later.",
         };
       }
     }
-  )
+  );
 }
 
 export async function deleteGoogleKeywordTracker(
@@ -230,7 +233,9 @@ export async function getGoogleKeywordTracker(id: string | null): Promise<{
       }
 
       try {
-        const googleKeywordTracker = await getGoogleKeywordTrackerController(id);
+        const googleKeywordTracker = await getGoogleKeywordTrackerController(
+          id
+        );
 
         return { googleKeywordTracker };
       } catch (error) {
@@ -295,7 +300,6 @@ export async function getGoogleKeywordTrackerWithCompetitors(
   );
 }
 
-
 export async function getLatestGoogleKeywordResults(
   googleKeywordTrackerToolId: string
 ): Promise<{
@@ -313,7 +317,7 @@ export async function getLatestGoogleKeywordResults(
 
       try {
         const results = await getLatestGoogleKeywordResultsController(
-          googleKeywordTrackerToolId,
+          googleKeywordTrackerToolId
         );
 
         return { results };
@@ -326,6 +330,46 @@ export async function getLatestGoogleKeywordResults(
           return { error: "Must be logged in to get Google Keyword Results" };
         }
         console.error("getLatestGoogleKeywordResults error: ", error);
+        captureException(error);
+        return {
+          error:
+            "An error happened. The developers have been notified. Please try again later.",
+        };
+      }
+    }
+  );
+}
+
+export async function getLatestGoogleKeywordResultsByKeywordIds(
+  keywordIds: string[]
+): Promise<{
+  error?: string;
+  results?: LatestGoogleKeywordResultsDto[];
+}> {
+  return await withServerActionInstrumentation(
+    "getLatestGoogleKeywordResultsByKeywordIds",
+    { recordResponse: true },
+    async () => {
+      const session = await auth();
+      if (!session?.user || !session?.user.id) {
+        return { error: "Must be logged in to get Google Keyword Results" };
+      }
+
+      try {
+        const results = await getLatestGoogleKeywordResultsByKeywordIdsController(
+          keywordIds
+        );
+
+        return { results };
+      } catch (error) {
+        if (error instanceof NotFoundError) {
+          return { error: "Keyword Tracker not found" };
+        } else if (error instanceof ForbiddenError) {
+          return { error: "User does not have access to this Keyword Tracker" };
+        } else if (error instanceof UnauthenticatedError) {
+          return { error: "Must be logged in to get Google Keyword Results" };
+        }
+        console.error("getLatestGoogleKeywordResultsByKeywordIds error: ", error);
         captureException(error);
         return {
           error:

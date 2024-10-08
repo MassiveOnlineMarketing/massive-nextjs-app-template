@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import useColumnOrder from "@/app/_components/ui/table/useColumnOrder";
 import { useWebsiteDetailsStore } from "@/app/_stores/useWebsiteDetailsStore";
 
-import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/controllers/google-keyword-tracker/get-latest-google-keyword-results.controller";
+import { LatestGoogleKeywordResultsDto } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 import { GoogleKeywordTracker } from "@/src/entities/models/google-keyword-tracker";
 
 // Components

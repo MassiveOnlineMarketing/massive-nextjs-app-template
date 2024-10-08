@@ -24,6 +24,7 @@ import {
 import downloadKeywordsToExcel from '@/app/_lib/xlsx';
 
 import { PlusIcon } from "@heroicons/react/20/solid";
+import ResultAddKeywordsModal from './ResultAddKeywordsModal';
 
 function ResultTableActions<TData>({ table, data }: { table: Table<TData>, data: TData[] }) {
   return (
@@ -31,8 +32,10 @@ function ResultTableActions<TData>({ table, data }: { table: Table<TData>, data:
       <TooltipProvider delayDuration={0}>
         {/* Add keyword */}
         <Tooltip>
-          <TooltipTrigger className='px-4 py-[10px]'>
-            <PlusIcon className="w-5 h-5 theme-t-t group-hover:text-green-500" />
+          <TooltipTrigger >
+            <ResultAddKeywordsModal className='px-4 py-[10px]'>
+              <PlusIcon className="w-5 h-5 theme-t-t group-hover:text-green-500" />
+            </ResultAddKeywordsModal>
           </TooltipTrigger>
           <TooltipContent>
             <p>Add Keyword</p>

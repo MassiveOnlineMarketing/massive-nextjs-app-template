@@ -7,6 +7,7 @@ import { GoogleKeywordTrackerSerpResult } from "@/src/entities/models/google-key
 
 export interface IGoogleKeywordTrackerKeywordsRepository {
     getKeywordsWithResultsByToolId(toolId: string): Promise<GoogleKeywordTrackerKeywordWithResultsQuery[]>;
+    getKeywordsWithResultsByKeywordIds(keywordIds: string[]): Promise<GoogleKeywordTrackerKeywordWithResultsQuery[]>;
     insertMany(googleKeywordTrackerToolId: string, keywords: string[]): Promise<GoogleKeywordTrackerKeyword[]>;
     deleteMany(ids: string[]): Promise<void>;
     findMany(ids: string[]): Promise<GoogleKeywordTrackerKeyword[]>;

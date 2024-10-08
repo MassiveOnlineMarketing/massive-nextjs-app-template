@@ -1,20 +1,19 @@
 import { auth } from "@/app/_modules/auth/_nextAuth";
 import { captureException } from "@sentry/nextjs";
 
-import {
-  InputParseError,
-  NotFoundError,
-} from "@/src/entities/errors/common";
+import { InputParseError, NotFoundError } from "@/src/entities/errors/common";
 import { InsufficientCreditsError } from "@/src/entities/errors/credits";
 import { processNewGoogleKeywordsController } from "@/src/interface-adapters/controllers/google-keyword-tracker/process-new-google-keywords.controller";
 
 export const maxDuration = 300;
 
+
+
 export async function POST(req: Request) {
   const data = await req.json();
   console.log("Data on serp route", data);
 
-  const { keywordsString, googleKeywordTrackerToolId } = data;
+  const { keywordsString, googleKeywordTrackerToolId, streamResults } = data;
 
   const session = await auth();
   if (!session?.user) {
@@ -30,17 +29,24 @@ export async function POST(req: Request) {
     );
     console.log("res", res);
 
-    if (res === 0) {
+    if (res.length === 0) {
       return new Response(
         JSON.stringify({ message: "Failed to process new keywords" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    return new Response(JSON.stringify({ message: res }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    if (streamResults) {
+      return new Response(JSON.stringify({ message: res }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    } else { 
+      return new Response(JSON.stringify({ message: res.length }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
   } catch (error) {
     console.error("Failed to process new keywords", error);
     if (error instanceof InputParseError) {

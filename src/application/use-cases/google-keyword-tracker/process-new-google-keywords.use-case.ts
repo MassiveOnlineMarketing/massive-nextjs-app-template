@@ -10,6 +10,7 @@ import { InsufficientCreditsError } from "@/src/entities/errors/credits";
 import { User } from "@/src/entities/models/user";
 
 import { SerpResultMapper } from "@/src/interface-adapters/mappers/serp-result.mapper";
+import { GoogleLatestResultPresenter } from "@/src/interface-adapters/presenters/latest-google-keyword-results.presenter";
 
 const BATCH_SIZE = 99;
 function delay(ms: number) {
@@ -81,11 +82,11 @@ export async function processNewGoogleKeywordUseCase(
       }
 
       const batchResults = await Promise.all(batchPromises);
-      const results = batchResults.flat();
+      const userResults = batchResults.map((result) => result.userResults).flat();
 
       // Format results
       const formattedResultsInserDTO =
-        SerpResultMapper.toNewUserSerpResultInsertDTO(results);
+        SerpResultMapper.toNewUserSerpResultInsertDTO(userResults);
 
       // Insert results
       await processGoogleKeywordsService.insertUserResult(
@@ -93,9 +94,9 @@ export async function processNewGoogleKeywordUseCase(
       );
 
       // Deduct credits
-      await usersRepository.deductCredits(user.id, results.length);
+      await usersRepository.deductCredits(user.id, userResults.length);
 
-      return results;
+      return GoogleLatestResultPresenter.toLatestKeywordResultDTOFromUser(batchResults);
     }
   );
 }
