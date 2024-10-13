@@ -35,7 +35,7 @@ export class GoogleKeywordTrackerRepository
             }
           );
 
-          // Attach the keyword tracker to the location
+          // Attach the keyword tracker to the location --> also see 'delete' website in the website.repository.ts
           await db.location.update({
             where: {
               id: inputSchema.locationId,
