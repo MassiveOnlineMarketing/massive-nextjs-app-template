@@ -23,7 +23,7 @@ import { useToast } from '@/app/_components/ui/toast/use-toast';
 import { useRouter } from 'next/navigation';
 
 
-function DeleteLocationButton({ locationId }: { locationId: string }) {
+function DeleteLocationButton({ locationId, websiteId }: { locationId: string, websiteId: string }) {
 
   const deleteLocationFromStore = useWebsiteDetailsStore(state => state.deleteLocation)
   const [isPending, startTransition] = useTransition()
@@ -33,22 +33,28 @@ function DeleteLocationButton({ locationId }: { locationId: string }) {
 
   const handleDeleteLocation = async () => {
     startTransition(async () => {
-      const res = await deleteLocation(locationId)
+      deleteLocation(locationId)
+        .then((res) => {
+          router.push(`/app/settings/website/${websiteId}`)
+          if (res.error) {
+            toast({
+              title: "Error",
+              description: res.error,
+              variant: "destructive",
+            })
+            console.error(res.error)
+            return
+          }
 
-      if (res.error) {
-        toast({
-          title: "Error",
-          description: res.error,
-          variant: "destructive",
-        })
-        console.error(res.error)
-        return
-      }
-
-      if (res.deletedLocation) {
-        deleteLocationFromStore(res.deletedLocation.id)
-        router.push(`/app/settings/website/${res.deletedLocation.websiteId}`)
-      }
+          if (res.deletedLocation) {
+            toast({
+              description: "Location deleted",
+              variant: "success",
+              icon: "success",
+            })
+            deleteLocationFromStore(res.deletedLocation.id)
+          }
+        });
     })
   }
 

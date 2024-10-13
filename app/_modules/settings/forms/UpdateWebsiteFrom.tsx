@@ -53,24 +53,25 @@ const UpdateWebsiteForm = ({ defaultValues, gscProperties }: { defaultValues: De
 
   const onFormSubmit = async (values: z.infer<typeof formInputUpdateWebsiteSchema>) => {
     startTransition(async () => {
-      const res = await updateWebsite(values, defaultValues.id);
+      updateWebsite(values, defaultValues.id)
+        .then((res) => {
+          if (res.error) {
+            toast({
+              title: "Error",
+              description: res.error,
+              variant: "destructive",
+            })
+          }
 
-      if (res.error) {
-        toast({
-          title: "Error",
-          description: res.error,
-          variant: "destructive",
-        })      }
-
-      if (res.updatedWebsite) {
-        toast({
-          title: "Success",
-          description: "Website created successfully",
-          variant: "success",
-          icon: 'success'
-        })
-        updateWebsiteInStore(res.updatedWebsite);
-      }
+          if (res.updatedWebsite) {
+            toast({
+              description: "Website updated successfully",
+              variant: "success",
+              icon: 'success'
+            })
+            updateWebsiteInStore(res.updatedWebsite);
+          }
+        });
     })
   }
 

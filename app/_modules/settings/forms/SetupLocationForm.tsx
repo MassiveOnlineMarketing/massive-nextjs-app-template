@@ -62,39 +62,37 @@ const SetupLocationForm = ({ usersWebsites }: SetupLocationProps) => {
 
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
-      console.log('form values', values);
-      const res = await setupLocation(values);
+      setupLocation(values)
+        .then((res) => {
+          if (res.error) {
+            toast({
+              description: res.error,
+              variant: 'destructive',
+              icon: 'destructive',
+            });
+            return;
+          }
 
-      if (res.error) {
-        toast({
-          title: 'Error setting up location',
-          description: res.error,
-          variant: 'destructive',
-          icon: 'destructive',
+          if (res.createdLocation) {
+            toast({
+              description: 'Location setup successfully',
+              variant: 'success',
+              icon: 'success',
+            });
+            addLocation(res.createdLocation);
+            router.push(`/app/settings/website/location/${res.createdLocation.id}`);
+            form.reset();
+
+            if (values.keywords && res.createdLocation.keywordTrackerToolId) {
+              addNewGoogleKeyword(values.keywords, res.createdLocation.keywordTrackerToolId)
+                .then((res) => {
+                  if (res.success) {
+                    // 
+                  }
+                })
+            }
+          }
         });
-        return;
-      }
-
-      if (res.createdLocation) {
-        toast({
-          title: 'Location setup successfully',
-          variant: 'success',
-          icon: 'success',
-        });
-        addLocation(res.createdLocation);
-        router.push(`/app/settings/website/location/${res.createdLocation.id}`);
-        form.reset();
-
-        if (values.keywords && res.createdLocation.keywordTrackerToolId) {
-          addNewGoogleKeyword(values.keywords, res.createdLocation.keywordTrackerToolId)
-            .then((res) => {
-              if (res.success) {
-
-              }
-            })
-        }
-
-      }
     })
   }
 

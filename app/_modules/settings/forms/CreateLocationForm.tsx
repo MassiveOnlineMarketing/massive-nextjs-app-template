@@ -85,23 +85,28 @@ const CreateLocationForm = ({ location, usersWebsites }: {
 
   const onSubmit = async (values: z.infer<typeof formInputCreateLocationSchema>) => {
     startTransition(async () => {
-      console.log('formValues', values)
-      const res = await createLocation(values);
+      createLocation(values)
+        .then((res) => {
+          if (res.error) {
+            toast({
+              title: 'Error creating location',
+              description: res.error,
+              variant: 'destructive',
+            })
+          }
 
-      if (res.error) {
-        toast({
-          title: 'Error creating location',
-          description: res.error,
-          variant: 'destructive',
-        })
-      }
-
-      if (res.createdLocation) {
-        addLocation(res.createdLocation);
-        form.reset();
-        router.push(`/app/settings/website/location/${res.createdLocation.id}`);
-      }
-    })
+          if (res.createdLocation) {
+            addLocation(res.createdLocation);
+            form.reset();
+            toast({
+              description: 'Location created',
+              variant: 'success',
+              icon: 'success',
+            })
+            router.push(`/app/settings/website/location/${res.createdLocation.id}`);
+          }
+        });
+    });
   }
 
   return (

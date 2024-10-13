@@ -32,23 +32,29 @@ function DeleteWebsiteButton({ websiteId }: { websiteId: string }) {
 
   const handleDeleteLocation = async () => {
     startTransition(async () => {
-      const res = await deleteWebsite(websiteId)
-
-      if (res.error) {
-        toast({
-          title: "Error",
-          description: res.error,
-          variant: "destructive",
-        })
-        console.error(res.error)
-        return
-      }
-
-      if (res.deletedWebsite) {
-        deleteWebsiteFromStore(res.deletedWebsite.id)
-        // TODO: Route user to settings page?
-        router.push('/app/settings/website')
-      }
+      deleteWebsite(websiteId)
+        .then((res) => {
+          // TODO: Route user to settings page?
+          router.push('/app/settings/website')
+          if (res.error) {
+            toast({
+              title: "Error",
+              description: res.error,
+              variant: "destructive",
+            })
+            console.error(res.error)
+            return
+          }
+    
+          if (res.deletedWebsite) {
+            deleteWebsiteFromStore(res.deletedWebsite.id)
+            toast({
+              description: "Website deleted",
+              variant: "success",
+              icon: "success",
+            })
+          }
+        });
     })
   }
 

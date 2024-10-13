@@ -43,19 +43,27 @@ const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProp
     startTransition(async () => {
       const res = await createWebsite(values);
 
-      if (res.error) {
-        toast({
-          title: "Error",
-          description: res.error,
-          variant: "destructive",
-        })
-      }
+      createWebsite(values)
+        .then((res) => {
+          if (res.error) {
+            toast({
+              title: "Error",
+              description: res.error,
+              variant: "destructive",
+            })
+          }
 
-      if (res.createdWebsite) {
-        addWebsiteToStore(res.createdWebsite);
-        form.reset();
-        router.push(`/app/settings/website/${res.createdWebsite.id}`);
-      }
+          if (res.createdWebsite) {
+            addWebsiteToStore(res.createdWebsite);
+            form.reset();
+            toast({
+              description: "Website created",
+              variant: "success",
+              icon: "success",
+            })
+            router.push(`/app/settings/website/${res.createdWebsite.id}`);
+          }
+        });
     })
   }
 
