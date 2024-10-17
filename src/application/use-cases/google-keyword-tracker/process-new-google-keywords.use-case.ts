@@ -1,5 +1,5 @@
 import { getInjection } from "@/di/container";
-import { startSpan } from "@sentry/nextjs";
+import { captureException, startSpan } from "@sentry/nextjs";
 
 import {
   DatabaseOperationError,
@@ -112,18 +112,34 @@ export async function processNewGoogleKeywordUseCase(
 }
 
 
-async function insertGoogleAdsMetrics(GoogleAdsMetrics: GoogleAdsKeywordMetricsInsert[]): Promise<void> {
-  const formattedMetrics = GoogleAdsMetrics.map((metric) => ({
-    ...metric,
-    monthlySearchVolumes: metric.monthlySearchVolumes
-      ? JSON.stringify(metric.monthlySearchVolumes)
-      : Prisma.JsonNull,
-  }));
+async function insertGoogleAdsMetrics(
+  GoogleAdsMetrics: GoogleAdsKeywordMetricsInsert[],
+  batchSize: number = 250
+): Promise<void> {
+  return await startSpan(
+    { name: 'processNewGoogleKeyword Use Case > insertGoogleAdsMetrics' },
+    async () => {
+      const formattedMetrics = GoogleAdsMetrics.map((metric) => ({
+        ...metric,
+        monthlySearchVolumes: metric.monthlySearchVolumes
+          ? JSON.stringify(metric.monthlySearchVolumes)
+          : Prisma.JsonNull,
+      }));
 
-
-  await db.googleAdsKeywordMetrics.createMany({
-    data: formattedMetrics,
-  })
+      const totalMetrics = formattedMetrics.length;
+      for (let i = 0; i < totalMetrics; i += batchSize) {
+        const batch = formattedMetrics.slice(i, i + batchSize);
+        try {
+          await db.googleAdsKeywordMetrics.createMany({
+            data: batch,
+          });
+        } catch (error) {
+          captureException(error);
+          console.error(`Failed to insert batch starting at index ${i}:`, error);
+        }
+      }
+    }
+  );
 }
 
 async function generateGoogleAdsHistoricalMetrics(
