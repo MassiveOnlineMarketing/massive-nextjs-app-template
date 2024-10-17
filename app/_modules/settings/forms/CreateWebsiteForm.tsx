@@ -41,8 +41,6 @@ const CreateWebsiteForm = ({ gscProperties }: { gscProperties?: ConnectedGscProp
 
   const onSubmit = async (values: z.infer<typeof formInputCreateWebsiteSchema>) => {
     startTransition(async () => {
-      const res = await createWebsite(values);
-
       createWebsite(values)
         .then((res) => {
           if (res.error) {
