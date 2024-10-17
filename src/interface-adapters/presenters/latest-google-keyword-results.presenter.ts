@@ -98,9 +98,13 @@ export class GoogleLatestResultPresenter {
     );
   }
 
-  static toLatestKeywordResultDTOFromUser(data: test[]): LatestGoogleKeywordResultsDto[] {
+  static toLatestKeywordResultDTOFromUser(
+    data: test[]
+  ): LatestGoogleKeywordResultsDto[] {
     return startSpan(
-      { name: "GoogleLatestResultPresenter > toLatestKeywordResultDTOFromUser" },
+      {
+        name: "GoogleLatestResultPresenter > toLatestKeywordResultDTOFromUser",
+      },
       () => {
         return data.map((result) => {
           const googleAdsMetrics = result.googleAdsMetrics[0] || {};
@@ -130,10 +134,48 @@ export class GoogleLatestResultPresenter {
           };
         });
       }
+    );
+  }
+
+  static toLatestKeywordResultDTOFromUserAndAds(
+    usersResults: GoogleKeywordTrackerResultTransferDTO[],
+    googleAdsMetrics: GoogleAdsKeywordMetricsInsert[]
+  ): LatestGoogleKeywordResultsDto[] {
+    return startSpan(
+      {name: 'GoogleLatestResultPresenter > toLatestKeywordResultDTOFromUserAndAds'},
+      () => {
+        return usersResults.map((result) => {
+          const googleAdsMetricForResult = googleAdsMetrics.find((metric) => metric.keywordId === result.keywordId)
+          return {
+            // Set the keyword id as the result id since it has not yet. Due to returing the results after they are genereated, so no fetching from the database
+            id: result.keywordId,
+            keywordId: result.keywordId,
+            keywordName: result.keywordName,
+            position: result.position,
+            url: result.url,
+            metaTitle: result.metaTitle,
+            metaDescription: result.metaDescription,
+            firstPosition: result.position,
+            bestPosition: result.position,
+            latestChange: null,
+            relatedSearches: result.relatedSearches,
+            peopleAlsoAsk: result.peopleAlsoAsk,
+            tags: [],
+
+            avgMonthlySearches: googleAdsMetricForResult?.avgMonthlySearches ?? null,
+            competition: googleAdsMetricForResult?.competition ?? null,
+            competitionIndex: googleAdsMetricForResult?.competitionIndex ?? null,
+            highTopOfPageBid: googleAdsMetricForResult?.highTopOfPageBid ?? null,
+            lowTopOfPageBid: googleAdsMetricForResult?.lowTopOfPageBid ?? null,
+
+            createdAt: new Date(),
+          }
+        })
+      }
     )
   }
 }
 type test = {
   userResults: GoogleKeywordTrackerResultTransferDTO[];
   googleAdsMetrics: GoogleAdsKeywordMetricsInsert[];
-}
+};

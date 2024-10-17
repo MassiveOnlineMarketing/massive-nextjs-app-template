@@ -7,7 +7,6 @@ import { Prisma } from "@prisma/client";
 import { DatabaseOperationError } from "@/src/entities/errors/common";
 
 import type { ISerperApi } from "@/src/application/api/serper.api.interface";
-import type { IGoogleAdsApi } from "@/src/application/api/google-ads.api.interface";
 import { IProcessGoogleKeywordsService } from "@/src/application/services/process-google-keywords.service.interface";
 
 // Models
@@ -22,7 +21,6 @@ import { GoogleKeywordTrackerSerpResultInsert } from "@/src/entities/models/goog
 import { GoogleKeywordTrackerCompetitorResultInsert } from "@/src/entities/models/google-keyword-tracker/competitor-result";
 import { GoogleKeywordTrackerStatsInsert } from "@/src/entities/models/google-keyword-tracker/stats";
 
-import { GoogleAdsKeywordMetricsInsert } from "@/src/entities/models/google-keyword-tracker/google-ads-keyword-metrics";
 import {
   SerpApiPeopleAsloAsk,
   SerpApiRelatedSearches,
@@ -32,7 +30,6 @@ import {
 } from "@/src/application/api/serper.api.types";
 
 import { SerpResultMapper } from "@/src/interface-adapters/mappers/serp-result.mapper";
-import { GoogleAdsApiMapper } from "@/src/interface-adapters/mappers/google-ads.mappers";
 
 @injectable()
 export class ProcessGoogleKeywordsService
@@ -41,17 +38,14 @@ export class ProcessGoogleKeywordsService
   constructor(
     @inject(DI_SYMBOLS.ISerperApi)
     private _serperApi: ISerperApi,
-    @inject(DI_SYMBOLS.IGoogleAdsApi)
-    private _googleAdsApi: IGoogleAdsApi
   ) {
     this._serperApi = _serperApi;
-    this._googleAdsApi = _googleAdsApi;
   }
 
   async execute(
     tool: GoogleKeywordTrackerWithCompetitorsWebsiteAndLocation,
     keywords: GoogleKeywordTrackerKeyword[]
-  ): Promise<{userResults: GoogleKeywordTrackerResultTransferDTO[], googleAdsMetrics: GoogleAdsKeywordMetricsInsert[]}> {
+  ): Promise<GoogleKeywordTrackerResultTransferDTO[]> {
     return await startSpan(
       {
         name: "ProcessGoogleKeywordsService > execute",
@@ -111,69 +105,16 @@ export class ProcessGoogleKeywordsService
           competitorsSerpResultsDTO.push(...competitorsSerpResults);
         });
 
-        const googleAdsMetrics = await this.googleAdsHistoricalMetrics(
-          tool.location.locationCode,
-          tool.location.languageCode,
-          keywords
-        );
         this.insertTopTenResults(topTenSerpResultsDTO);
         this.insertCompetitorResult(competitorsSerpResultsDTO);
 
 
-
-        return {userResults: userSerpResultsDTO, googleAdsMetrics};
+        return userSerpResultsDTO
       }
     );
   }
 
-  async googleAdsHistoricalMetrics(
-    country_code: string,
-    language_code: string,
-    keywords: GoogleKeywordTrackerKeyword[]
-  ): Promise<GoogleAdsKeywordMetricsInsert[]> {
-    return await startSpan(
-      { name: "ProcessGoogleKeywordsService > googleAdsHistoricalMetrics" },
-      async () => {
-        const keywordIdMap = keywords.reduce<{ [key: string]: string }>(
-          (map, keyword) => {
-            map[keyword.keyword] = keyword.id;
-            return map;
-          },
-          {}
-        );
-        // Not implemented yet
-        const keywordString = keywords.map((keyword) => keyword.keyword);
-
-        const googleAdsMetrics =
-          await this._googleAdsApi.generateHistoricalMetrics(
-            country_code,
-            language_code,
-            keywordString
-          );
-
-        if (!googleAdsMetrics) {
-          throw new Error("🔴  Failed to fetch google ads metrics");
-        }
-
-        const filteredAdsMetrics = googleAdsMetrics
-          .filter((metric) => keywordIdMap[metric.text] !== undefined)
-          .map((metric) => {
-            return {
-              keywordId: keywordIdMap[metric.text],
-              ...metric,
-            };
-          });
-
-          console.log("🟢 Google Ads Metrics", filteredAdsMetrics.length);
-
-        const GoogleAdsKeywordMetricsInsert = GoogleAdsApiMapper.fromApiResponse(filteredAdsMetrics);
-        this.insertGoogleAdsMetrics(GoogleAdsKeywordMetricsInsert);
-
-        return GoogleAdsKeywordMetricsInsert;
-      }
-    );
-  }
-
+  
   findPositionInSerpData(
     serp: SuccessfulSerpApiFetches,
     userDomain: string
@@ -307,18 +248,5 @@ export class ProcessGoogleKeywordsService
         }
       }
     );
-  }
-  async insertGoogleAdsMetrics(GoogleAdsMetrics: GoogleAdsKeywordMetricsInsert[]): Promise<void> {
-    const formattedMetrics = GoogleAdsMetrics.map((metric) => ({
-      ...metric,
-      monthlySearchVolumes: metric.monthlySearchVolumes
-        ? JSON.stringify(metric.monthlySearchVolumes)
-        : Prisma.JsonNull,
-    }));
-  
-  
-    await db.googleAdsKeywordMetrics.createMany({
-      data: formattedMetrics,
-    })
   }
 }

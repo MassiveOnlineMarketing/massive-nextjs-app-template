@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       keywordsString,
       googleKeywordTrackerToolId
     );
-    console.log("res", res);
+    console.log("res serp route", res.length);
 
     if (res.length === 0) {
       return new Response(

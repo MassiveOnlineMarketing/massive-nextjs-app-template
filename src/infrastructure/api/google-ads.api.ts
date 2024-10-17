@@ -8,24 +8,24 @@ import { FetchHistoricalMetricsResponseGoogleAdsApi } from "@/src/application/ap
 @injectable()
 export class GoogleAdsApi implements IGoogleAdsApi {
   async generateHistoricalMetrics(
-    country_code: string,
-    language_code: string,
+    locationCode: string,
+    languageCode: string,
     keywords: string[]
   ): Promise<FetchHistoricalMetricsResponseGoogleAdsApi[] | null> {
     return await startSpan(
       { name: "GoogleAdsApi > generateHistoricalMetrics" },
       async () => {
         try {
-          // make api call to adsApi to get the keyword metrices
-          const keywordString = keywords.join(',');
-          const encodedKeywords = encodeURIComponent(keywordString);
-          const url = `${
-            process.env.NEXT_PUBLIC_PYTHON_API_URL
-          }/ads/historical-metrics?country-code=${country_code}&language-code=${language_code}&keywords=${encodedKeywords}`;
-          console.log("reqUrl", url);
-          const res = await axios(url);
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_PYTHON_API_URL}/ads/historical-metrics`,
+            {
+              'country-code': locationCode,
+              'language-code': languageCode,
+              'keywords': keywords,
+            }
+          )
 
-          return res.data.data.results;
+          return response.data.data.results;
         } catch (error) {
           console.error(error);
           return null;
