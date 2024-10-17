@@ -32,10 +32,12 @@ function ResultTableActions<TData>({ table, data }: { table: Table<TData>, data:
       <TooltipProvider delayDuration={0}>
         {/* Add keyword */}
         <Tooltip>
-          <TooltipTrigger >
-            <ResultAddKeywordsModal className='px-4 py-[10px]'>
-              <PlusIcon className="w-5 h-5 theme-t-t group-hover:text-green-500" />
-            </ResultAddKeywordsModal>
+          <TooltipTrigger asChild >
+            <div className="px-4 py-[10px]">
+              <ResultAddKeywordsModal >
+                <PlusIcon className="w-5 h-5 theme-t-t group-hover:text-green-500" />
+              </ResultAddKeywordsModal>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
             <p>Add Keyword</p>

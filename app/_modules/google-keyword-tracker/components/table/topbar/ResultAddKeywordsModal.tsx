@@ -4,10 +4,8 @@ import {  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, D
 
 
 const ResultAddKeywordsModal = ({
-  className,
   children,
 }: {
-  className: string;
   children: React.ReactNode;
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -15,7 +13,6 @@ const ResultAddKeywordsModal = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className={className}
         onClick={() => setOpen(true)}
       >
         {children}
