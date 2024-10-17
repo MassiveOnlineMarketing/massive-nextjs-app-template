@@ -19,7 +19,6 @@ import { LoadingSpinnerSmall } from "@/app/_components/ui/loading-spinner";
 // Assets
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/app/_components/utils";
-import { useGoogleKeywordTrackerStore } from "@/app/_modules/google-keyword-tracker/stores/useGoogleKeywordTrackerStore";
 
 const RelatedSearches = ({
   keywordData,
@@ -36,7 +35,6 @@ const RelatedSearches = ({
 
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
   const { addNewGoogleKeyword } = useKeywordOpperations();
-  const addNewResultsToStore = useGoogleKeywordTrackerStore(state => state.updateLatestResults);
 
   // Function to handle checkbox selection
   const handleCheckboxChange = (search: string) => {
@@ -53,13 +51,10 @@ const RelatedSearches = ({
     startTransition(async () => {
       if (!toolId) return;
 
-      addNewGoogleKeyword(selectedSearches, toolId, true)
+      await addNewGoogleKeyword(selectedSearches, toolId, true)
         .then((res) => {
-          if (res.success) {
+          if (res?.success) {
             setSelectedSearches([]);
-            if (res.data && Array.isArray(res.data)) {
-              addNewResultsToStore(res.data)
-            }
           }
         });
     });

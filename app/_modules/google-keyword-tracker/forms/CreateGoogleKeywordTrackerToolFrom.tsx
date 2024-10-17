@@ -73,7 +73,7 @@ const CreateGoogleKeywordTrackerToolFrom = ({ locationId, websiteId }: { locatio
         if (values.keywords && res.googleKeywordTracker?.id) {
           addNewGoogleKeyword(values.keywords, res.googleKeywordTracker.id)
             .then((res) => {
-              if (res.success) {
+              if (res?.success) {
                 form.setValue('keywords', '');
               }
             })

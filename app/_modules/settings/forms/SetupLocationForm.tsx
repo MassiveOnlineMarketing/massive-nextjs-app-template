@@ -84,12 +84,7 @@ const SetupLocationForm = ({ usersWebsites }: SetupLocationProps) => {
             form.reset();
 
             if (values.keywords && res.createdLocation.keywordTrackerToolId) {
-              addNewGoogleKeyword(values.keywords, res.createdLocation.keywordTrackerToolId)
-                .then((res) => {
-                  if (res.success) {
-                    // 
-                  }
-                })
+              addNewGoogleKeyword(values.keywords, res.createdLocation.keywordTrackerToolId, true)
             }
           }
         });

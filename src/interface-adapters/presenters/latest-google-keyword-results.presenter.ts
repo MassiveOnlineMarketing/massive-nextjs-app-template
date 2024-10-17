@@ -98,45 +98,6 @@ export class GoogleLatestResultPresenter {
     );
   }
 
-  static toLatestKeywordResultDTOFromUser(
-    data: test[]
-  ): LatestGoogleKeywordResultsDto[] {
-    return startSpan(
-      {
-        name: "GoogleLatestResultPresenter > toLatestKeywordResultDTOFromUser",
-      },
-      () => {
-        return data.map((result) => {
-          const googleAdsMetrics = result.googleAdsMetrics[0] || {};
-
-          return {
-            id: result.userResults[0].keywordId,
-            keywordId: result.userResults[0].keywordId,
-            keywordName: result.userResults[0].keywordName,
-            position: result.userResults[0].position,
-            url: result.userResults[0].url,
-            metaTitle: result.userResults[0].metaTitle,
-            metaDescription: result.userResults[0].metaDescription,
-            firstPosition: result.userResults[0].position,
-            bestPosition: result.userResults[0].position,
-            latestChange: null,
-            relatedSearches: result.userResults[0].relatedSearches,
-            peopleAlsoAsk: result.userResults[0].peopleAlsoAsk,
-            tags: [],
-
-            avgMonthlySearches: googleAdsMetrics.avgMonthlySearches ?? null,
-            competition: googleAdsMetrics.competition ?? null,
-            competitionIndex: googleAdsMetrics.competitionIndex ?? null,
-            highTopOfPageBid: googleAdsMetrics.highTopOfPageBid ?? null,
-            lowTopOfPageBid: googleAdsMetrics.lowTopOfPageBid ?? null,
-
-            createdAt: new Date(),
-          };
-        });
-      }
-    );
-  }
-
   static toLatestKeywordResultDTOFromUserAndAds(
     usersResults: GoogleKeywordTrackerResultTransferDTO[],
     googleAdsMetrics: GoogleAdsKeywordMetricsInsert[]
@@ -175,7 +136,3 @@ export class GoogleLatestResultPresenter {
     )
   }
 }
-type test = {
-  userResults: GoogleKeywordTrackerResultTransferDTO[];
-  googleAdsMetrics: GoogleAdsKeywordMetricsInsert[];
-};

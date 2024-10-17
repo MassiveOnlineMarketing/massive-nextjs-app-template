@@ -47,11 +47,6 @@ const AddKeywordsFrom = ({
     startTransition(async () => {
       setOpen(false)
       addNewGoogleKeyword(data.keywords, googleKeywordTrackerId, true)
-        .then((res) => {
-          if (res.success && res.data && Array.isArray(res.data)) {
-            addNewResultsToStore(res.data)
-          }
-        })
     })
 
   };
