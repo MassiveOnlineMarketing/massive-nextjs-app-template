@@ -104,6 +104,8 @@ export async function processNewGoogleKeywordUseCase(
         googleKeywordTrackerKeywords
       )
 
+      
+
       return GoogleLatestResultPresenter.toLatestKeywordResultDTOFromUserAndAds(batchResults, googleAdsMetrics);
     }
   );
@@ -164,7 +166,7 @@ async function generateGoogleAdsHistoricalMetrics(
           };
         });
 
-        console.log("🟢 Google Ads Metrics", filteredAdsMetrics.length);
+      console.log("🟢 Google Ads Metrics", filteredAdsMetrics.length);
 
       const GoogleAdsKeywordMetricsInsert = GoogleAdsApiMapper.fromApiResponse(filteredAdsMetrics);
       insertGoogleAdsMetrics(GoogleAdsKeywordMetricsInsert);
