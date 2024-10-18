@@ -264,8 +264,25 @@ export function useKeywordOpperations() {
    * 
    * @param {GoogleKeywordTrackerKeywordTag[]} results - The array of results from which tags are extracted.
    */
-  const uniqueTags = useMemo(() => {
-    const allTags = results.reduce(
+  // const uniqueTags = useMemo(() => {
+  //   const allTags = results.reduce(
+  //     (acc: GoogleKeywordTrackerKeywordTag[], result) => {
+  //       result.tags?.forEach((tag: GoogleKeywordTrackerKeywordTag) => {
+  //         if (
+  //           tag &&
+  //           !acc.some((existingTag) => existingTag.name === tag.name)
+  //         ) {
+  //           acc.push({ id: tag.id, name: tag.name });
+  //         }
+  //       });
+  //       return acc;
+  //     },
+  //     []
+  //   );
+  //   return allTags;
+  // }, [results]);
+
+  const uniqueTags = results.reduce(
       (acc: GoogleKeywordTrackerKeywordTag[], result) => {
         result.tags?.forEach((tag: GoogleKeywordTrackerKeywordTag) => {
           if (
@@ -279,8 +296,6 @@ export function useKeywordOpperations() {
       },
       []
     );
-    return allTags;
-  }, [results]);
 
   return { addNewGoogleKeyword, deleteKeywords, uniqueTags, addTag, removeTag };
 }
