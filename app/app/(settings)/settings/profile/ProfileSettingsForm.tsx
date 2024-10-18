@@ -205,7 +205,6 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
               currentPassword: undefined
             })}
             type="reset"
-            size='default'
             variant='outline'
             className='ml-auto'
           >
@@ -214,8 +213,6 @@ const ProfileSettingsForm = ({ user }: { user: ExtendedUser }) => {
           <Button
             disabled={isPending}
             type="submit"
-            size='default'
-            variant='outline'
             className='ml-2'
           >
             {isPending ? "Saving..." : "Save"}  

@@ -11,11 +11,8 @@ const page = async () => {
   const { user } = await isAuthenticated();
 
   return (
-    <div className='w-full'>
-      <LogoutButton />
-      <Link href='/auth/login' className='ml-2'>Login</Link>
-      <ClientPage userId={user.id} />
-      <p>home</p>
+    <div className='w-full px-4'>
+      <ClientPage user={user} />
     </div>
   )
 }
